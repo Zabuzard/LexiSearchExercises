@@ -3,8 +3,8 @@ package de.zabuza.lexisearch.indexing;
 import java.util.Collections;
 import java.util.HashMap;
 
-public final class InvertedIndex<KEY> implements IInvertedIndex<KEY> {
-  private final HashMap<KEY, IInvertedList> mKeyToRecordIds;
+public final class InvertedIndex<K> implements IInvertedIndex<K> {
+  private final HashMap<K, IInvertedList> mKeyToRecordIds;
 
   public InvertedIndex() {
     mKeyToRecordIds = new HashMap<>();
@@ -18,7 +18,7 @@ public final class InvertedIndex<KEY> implements IInvertedIndex<KEY> {
    * int)
    */
   @Override
-  public boolean addRecord(final KEY key, final int recordId) {
+  public boolean addRecord(final K key, final int recordId) {
     IInvertedList records = mKeyToRecordIds.get(key);
     if (records == null) {
       records = new InvertedList();
@@ -36,7 +36,7 @@ public final class InvertedIndex<KEY> implements IInvertedIndex<KEY> {
    * de.zabuza.lexisearch.indexing.IInvertedIndex#containsKey(java.lang.Object)
    */
   @Override
-  public boolean containsKey(final KEY key) {
+  public boolean containsKey(final K key) {
     return mKeyToRecordIds.containsKey(key);
   }
 
@@ -47,7 +47,7 @@ public final class InvertedIndex<KEY> implements IInvertedIndex<KEY> {
    * Object, int)
    */
   @Override
-  public boolean containsRecord(final KEY key, final int recordId) {
+  public boolean containsRecord(final K key, final int recordId) {
     final IInvertedList records = mKeyToRecordIds.get(key);
     return records != null && records.containsRecord(recordId);
   }
@@ -58,7 +58,7 @@ public final class InvertedIndex<KEY> implements IInvertedIndex<KEY> {
    * @see de.zabuza.lexisearch.indexing.IInvertedIndex#getKeys()
    */
   @Override
-  public Iterable<KEY> getKeys() {
+  public Iterable<K> getKeys() {
     return Collections.unmodifiableSet(mKeyToRecordIds.keySet());
   }
 
@@ -69,7 +69,7 @@ public final class InvertedIndex<KEY> implements IInvertedIndex<KEY> {
    * de.zabuza.lexisearch.indexing.IInvertedIndex#getRecords(java.lang.Object)
    */
   @Override
-  public IInvertedList getRecords(final KEY key) {
+  public IInvertedList getRecords(final K key) {
     return mKeyToRecordIds.get(key);
   }
 }

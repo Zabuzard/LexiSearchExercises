@@ -1,15 +1,15 @@
 package de.zabuza.lexisearch.indexing;
 
-public interface IInvertedIndex<KEY> {
+public interface IInvertedIndex<K> {
 
-  public boolean addRecord(final KEY key, final int recordId);
+  public boolean addRecord(final K key, final int recordId);
 
-  public boolean containsKey(final KEY key);
+  public boolean containsKey(final K key);
 
-  public boolean containsRecord(final KEY key, final int recordId);
+  public boolean containsRecord(final K key, final int recordId);
 
-  public IInvertedList getRecords(final KEY key);
+  public IInvertedList getRecords(final K key);
 
-  public Iterable<KEY> getKeys();
+  public Iterable<K> getKeys();
 
 }

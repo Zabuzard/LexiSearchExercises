@@ -4,8 +4,8 @@
         makes your tutor's life a lot easier. -->
 	<property name="projectdir" value="./" />
 	<property name="libdir" value="${projectdir}/lib" />
-    <property name="Main-class" value="de.zabuza.lexisearch.examples.IndexSearchListingExample" />
-    <property name="jar-name" value="IndexSearchListingExample" />
+    <property name="Main-class" value="de.zabuza.lexisearch.examples.KeywordQueryExample" />
+    <property name="jar-name" value="KeywordQueryExample" />
     <property name="src-dir" location="${projectdir}/src" />
     <property name="test-dir" location="${projectdir}/test" />
     <property name="bin-dir" location="${projectdir}/bin" />

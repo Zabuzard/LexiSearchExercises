@@ -13,6 +13,13 @@ import de.zabuza.lexisearch.indexing.IInvertedIndex;
 
 public final class IndexSearchListingExample {
 
+  /**
+   * Utility class. No implementation.
+   */
+  private IndexSearchListingExample() {
+
+  }
+
   private static final String MSG_WRONG_ARGUMENT_LENGTH =
       "Wrong length of arguments.";
   private static final String PATH_DEFAULT_EXAMPLE_FILE =

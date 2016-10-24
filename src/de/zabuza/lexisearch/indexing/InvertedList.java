@@ -51,4 +51,24 @@ public final class InvertedList implements IInvertedList {
     return mRecords.size();
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.indexing.IInvertedList#isEmpty()
+   */
+  @Override
+  public boolean isEmpty() {
+    return mRecords.isEmpty();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return mRecords.toString();
+  }
+
 }
