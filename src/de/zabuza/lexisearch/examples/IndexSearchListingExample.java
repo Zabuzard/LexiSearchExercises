@@ -11,25 +11,44 @@ import java.util.List;
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 
+/**
+ * Example which demonstrates the usage of {@link DocumentSet}s and
+ * {@link IInvertedIndex}. It accepts a content file in a given format or uses a
+ * small sample file. Then it constructs a {@link DocumentSet} which represents
+ * the content and builds a corresponding {@link IInvertedIndex}. After that it
+ * lists all words of the content file sorted by their hits in documents.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ */
 public final class IndexSearchListingExample {
 
   /**
-   * Utility class. No implementation.
+   * Message shown when using the {@link #main(String[])} with the wrong amount
+   * of arguments.
    */
-  private IndexSearchListingExample() {
-
-  }
-
   private static final String MSG_WRONG_ARGUMENT_LENGTH =
       "Wrong length of arguments.";
+
+  /**
+   * Path to the default sample file.
+   */
   private static final String PATH_DEFAULT_EXAMPLE_FILE =
       "res/examples/movies_small.tsv";
 
   /**
+   * Example which demonstrates the usage of {@link DocumentSet}s and
+   * {@link IInvertedIndex}. It accepts a content file in a given format or uses
+   * a small sample file. Then it constructs a {@link DocumentSet} which
+   * represents the content and builds a corresponding {@link IInvertedIndex}.
+   * After that it lists all words of the content file sorted by their hits in
+   * documents.
    * 
    * @param args
-   *          The first argument specifies the path to the file
+   *          The first argument specifies the path to the file to use, else a
+   *          sample file gets used.
    * @throws IOException
+   *           If an I/O-Exception occurred
    */
   public static void main(final String[] args) throws IOException {
     final boolean isWindowsFile = false;
@@ -93,6 +112,13 @@ public final class IndexSearchListingExample {
 
     System.out.println("Time index building: " + indexBuildTime + "ms");
     System.out.println("Terminated.");
+  }
+
+  /**
+   * Utility class. No implementation.
+   */
+  private IndexSearchListingExample() {
+
   }
 
 }

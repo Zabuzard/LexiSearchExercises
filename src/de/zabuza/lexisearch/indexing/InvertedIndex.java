@@ -3,9 +3,23 @@ package de.zabuza.lexisearch.indexing;
 import java.util.Collections;
 import java.util.HashMap;
 
+/**
+ * Generic implementation of {@link IInvertedIndex}.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ * @param <K>
+ *          The key which is content of records
+ */
 public final class InvertedIndex<K> implements IInvertedIndex<K> {
+  /**
+   * Data structure that maps content to their records.
+   */
   private final HashMap<K, IInvertedList> mKeyToRecordIds;
 
+  /**
+   * Creates a new empty inverted index.
+   */
   public InvertedIndex() {
     mKeyToRecordIds = new HashMap<>();
   }

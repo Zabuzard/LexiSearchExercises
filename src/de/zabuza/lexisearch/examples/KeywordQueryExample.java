@@ -7,30 +7,53 @@ import java.util.Scanner;
 
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.document.IDocument;
+import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IInvertedList;
 import de.zabuza.lexisearch.queries.KeywordQuery;
 
+/**
+ * Example which demonstrates the usage of {@link DocumentSet}s,
+ * {@link IInvertedIndex} and {@link KeywordQuery}. It accepts a content file in
+ * a given format or uses a small sample file. Then it constructs a
+ * {@link DocumentSet} which represents the content and builds a corresponding
+ * {@link IInvertedIndex} by building a {@link KeywordQuery} object. After that
+ * it starts a search service where the user types in keywords. The service then
+ * lists all documents that contain all given keywords.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ */
 public final class KeywordQueryExample {
 
+  /**
+   * Text used to separate keywords.
+   */
+  private static final String KEYWORD_SEPARATOR = " ";
+  /**
+   * Message shown when using the {@link #main(String[])} with the wrong amount
+   * of arguments.
+   */
   private static final String MSG_WRONG_ARGUMENT_LENGTH =
       "Wrong length of arguments.";
-  private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/movies.txt";
-
-  private static final String KEYWORD_SEPARATOR = " ";
-
   /**
-   * Utility class. No implementation.
+   * Path to the default sample file.
    */
-  private KeywordQueryExample() {
-
-  }
+  private static final String PATH_DEFAULT_EXAMPLE_FILE =
+      "res/examples/movies_small.tsv";
 
   /**
+   * Example which demonstrates the usage of {@link DocumentSet}s,
+   * {@link IInvertedIndex} and {@link KeywordQuery}. It accepts a content file
+   * in a given format or uses a small sample file. Then it constructs a
+   * {@link DocumentSet} which represents the content and builds a corresponding
+   * {@link IInvertedIndex} by building a {@link KeywordQuery} object. After
+   * that it starts a search service where the user types in keywords. The
+   * service then lists all documents that contain all given keywords.
    * 
    * @param args
    *          The first argument specifies the path to the file
    * @throws IOException
+   *           If an I/O-Exception occurred
    */
   public static void main(final String[] args) throws IOException {
     final boolean isWindowsFile = true;
@@ -97,6 +120,13 @@ public final class KeywordQueryExample {
 
     scanner.close();
     System.out.println("Terminated.");
+  }
+
+  /**
+   * Utility class. No implementation.
+   */
+  private KeywordQueryExample() {
+
   }
 
 }

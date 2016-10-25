@@ -2,6 +2,7 @@ package de.zabuza.lexisearch.queries;
 
 import java.util.LinkedList;
 
+import de.zabuza.lexisearch.document.IDocument;
 import de.zabuza.lexisearch.indexing.AggregateMode;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IInvertedList;
@@ -9,10 +10,31 @@ import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.InvertedList;
 
+/**
+ * Generic implementation of {@link IQuery} which operates on
+ * {@link IWordRecord}s. Thus it searches in a list of, for example,
+ * {@link IDocument}s by using keywords.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ * @param <T>
+ *          The class of documents to operate on which must extend
+ *          {@link IWordRecord}
+ */
 public final class KeywordQuery<T extends IWordRecord>
-    implements Query<String> {
+    implements IQuery<String> {
+  /**
+   * The inverted index representing the processed data to operate on.
+   */
   private final IInvertedIndex<String> mInvertedIndex;
 
+  /**
+   * Creates a new keyword query object. After initialization it is able to
+   * perform keyword queries by using the given methods.
+   * 
+   * @param wordRecords
+   *          The set of records to operate on
+   */
   public KeywordQuery(final Iterable<T> wordRecords) {
     mInvertedIndex = InvertedIndexUtil.createFromWordRecords(wordRecords);
   }
@@ -37,6 +59,17 @@ public final class KeywordQuery<T extends IWordRecord>
     return searchAggregate(keys, AggregateMode.UNION);
   }
 
+  /**
+   * Searches by combining each given keyword with an logical operator depending
+   * on the given {@link AggregateMode}.
+   * 
+   * @param keys
+   *          The keywords to search for
+   * @param mode
+   *          The aggregation mode to use
+   * @return An {@link IInvertedList} containing all records where the keywords
+   *         occur depending on the given {@link AggregateMode}.
+   */
   private IInvertedList searchAggregate(final Iterable<String> keys,
     final AggregateMode mode) {
     IInvertedList resultingList = new InvertedList();

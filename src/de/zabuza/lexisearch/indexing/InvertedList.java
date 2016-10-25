@@ -4,9 +4,22 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * Implementation of {@link IInvertedList} which holds its records sorted at all
+ * time by using a {@link SortedSet}.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ */
 public final class InvertedList implements IInvertedList {
+  /**
+   * Sorted set containing all records contained by this list.
+   */
   private final SortedSet<Integer> mRecords;
 
+  /**
+   * Creates a new empty inverted list.
+   */
   public InvertedList() {
     mRecords = new TreeSet<Integer>();
   }
