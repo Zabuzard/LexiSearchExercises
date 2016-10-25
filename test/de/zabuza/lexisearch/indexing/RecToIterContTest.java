@@ -7,16 +7,15 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test for {@link RecordIdToIteratorContainer}.
+ * Test for {@link RecToIterCont}.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public final class RecordIdToIteratorContainerTest {
+public final class RecToIterContTest {
 
   /**
-   * Test method for
-   * {@link RecordIdToIteratorContainer#compareTo(RecordIdToIteratorContainer)}.
+   * Test method for {@link RecToIterCont#compareTo(RecToIterCont)}.
    */
   @Test
   public void testCompareTo() {
@@ -26,10 +25,10 @@ public final class RecordIdToIteratorContainerTest {
     remainingRecords.add(2);
     remainingRecords.add(3);
     final Iterator<Integer> remainignRecordsIter = remainingRecords.iterator();
-    final RecordIdToIteratorContainer container =
-        new RecordIdToIteratorContainer(recordId, remainignRecordsIter);
-    final RecordIdToIteratorContainer anotherContainer =
-        new RecordIdToIteratorContainer(anotherRecordId, remainignRecordsIter);
+    final RecToIterCont container =
+        new RecToIterCont(recordId, remainignRecordsIter);
+    final RecToIterCont anotherContainer =
+        new RecToIterCont(anotherRecordId, remainignRecordsIter);
 
     Assert.assertTrue(container.compareTo(container) == 0);
     Assert.assertTrue(anotherContainer.compareTo(anotherContainer) == 0);
@@ -38,7 +37,7 @@ public final class RecordIdToIteratorContainerTest {
   }
 
   /**
-   * Test method for {@link RecordIdToIteratorContainer#getRecordId()}.
+   * Test method for {@link RecToIterCont#getRecordId()}.
    */
   @Test
   public void testGetRecordId() {
@@ -48,18 +47,17 @@ public final class RecordIdToIteratorContainerTest {
     remainingRecords.add(2);
     remainingRecords.add(3);
     final Iterator<Integer> remainignRecordsIter = remainingRecords.iterator();
-    final RecordIdToIteratorContainer container =
-        new RecordIdToIteratorContainer(recordId, remainignRecordsIter);
-    final RecordIdToIteratorContainer anotherContainer =
-        new RecordIdToIteratorContainer(anotherRecordId, remainignRecordsIter);
+    final RecToIterCont container =
+        new RecToIterCont(recordId, remainignRecordsIter);
+    final RecToIterCont anotherContainer =
+        new RecToIterCont(anotherRecordId, remainignRecordsIter);
 
     Assert.assertEquals(recordId, container.getRecordId());
     Assert.assertEquals(anotherRecordId, anotherContainer.getRecordId());
   }
 
   /**
-   * Test method for
-   * {@link RecordIdToIteratorContainer#getRemainingRecordIds()}.
+   * Test method for {@link RecToIterCont#getRemainingRecordIds()}.
    */
   @Test
   public void testGetRemainingRecordIds() {
@@ -75,10 +73,10 @@ public final class RecordIdToIteratorContainerTest {
     final Iterator<Integer> anotherRemainignRecordsIter =
         antoherRemainingRecords.iterator();
 
-    final RecordIdToIteratorContainer container =
-        new RecordIdToIteratorContainer(recordId, remainignRecordsIter);
-    final RecordIdToIteratorContainer anotherContainer =
-        new RecordIdToIteratorContainer(recordId, anotherRemainignRecordsIter);
+    final RecToIterCont container =
+        new RecToIterCont(recordId, remainignRecordsIter);
+    final RecToIterCont anotherContainer =
+        new RecToIterCont(recordId, anotherRemainignRecordsIter);
 
     Assert.assertEquals(remainignRecordsIter,
         container.getRemainingRecordIds());
@@ -88,8 +86,7 @@ public final class RecordIdToIteratorContainerTest {
 
   /**
    * Test method for
-   * {@link RecordIdToIteratorContainer#RecordIdToIteratorContainer(int, Iterator)}
-   * .
+   * {@link RecToIterCont#RecordIdToIteratorContainer (int, Iterator)} .
    */
   @Test
   public void testRecordIdToIteratorContainer() {
@@ -98,8 +95,8 @@ public final class RecordIdToIteratorContainerTest {
     remainingRecords.add(1);
     remainingRecords.add(2);
     final Iterator<Integer> remainignRecordsIter = remainingRecords.iterator();
-    final RecordIdToIteratorContainer container =
-        new RecordIdToIteratorContainer(recordId, remainignRecordsIter);
+    final RecToIterCont container =
+        new RecToIterCont(recordId, remainignRecordsIter);
 
     Assert.assertEquals(recordId, container.getRecordId());
     Assert.assertEquals(remainignRecordsIter,

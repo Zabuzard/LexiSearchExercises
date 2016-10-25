@@ -9,8 +9,7 @@ import java.util.Iterator;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public final class RecordIdToIteratorContainer
-    implements Comparable<RecordIdToIteratorContainer> {
+public final class RecToIterCont implements Comparable<RecToIterCont> {
 
   /**
    * The record id of this container.
@@ -30,7 +29,7 @@ public final class RecordIdToIteratorContainer
    * @param remainingRecordIds
    *          The remaining record IDs to store
    */
-  public RecordIdToIteratorContainer(final int recordId,
+  public RecToIterCont(final int recordId,
       final Iterator<Integer> remainingRecordIds) {
     mRecordId = recordId;
     mRemainingRecordIds = remainingRecordIds;
@@ -42,7 +41,7 @@ public final class RecordIdToIteratorContainer
    * @see java.lang.Comparable#compareTo(java.lang.Object)
    */
   @Override
-  public int compareTo(final RecordIdToIteratorContainer o) {
+  public int compareTo(final RecToIterCont o) {
     return Integer.compare(getRecordId(), o.getRecordId());
   }
 

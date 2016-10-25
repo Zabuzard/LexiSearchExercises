@@ -91,13 +91,12 @@ public abstract class AInvertedList {
     }
 
     // Setup a priority queue containing all initial elements
-    PriorityQueue<RecordIdToIteratorContainer> queue = new PriorityQueue<>();
+    PriorityQueue<RecToIterCont> queue = new PriorityQueue<>();
     for (final AInvertedList list : lists) {
       final Iterator<Integer> records = list.getRecords().iterator();
       if (records.hasNext()) {
         final int firstRecord = records.next();
-        final RecordIdToIteratorContainer container =
-            new RecordIdToIteratorContainer(firstRecord, records);
+        final RecToIterCont container = new RecToIterCont(firstRecord, records);
         queue.add(container);
       }
     }
@@ -107,20 +106,19 @@ public abstract class AInvertedList {
     // Process all queue elements
     while (!queue.isEmpty()) {
       // Poll the smallest value of all lists
-      RecordIdToIteratorContainer smallestContainer = queue.poll();
+      RecToIterCont smallestContainer = queue.poll();
       final int smallestRecordId = smallestContainer.getRecordId();
       // Put the next value of this list in the queue
       final Iterator<Integer> smallestIter =
           smallestContainer.getRemainingRecordIds();
       if (smallestIter.hasNext()) {
-        queue.add(
-            new RecordIdToIteratorContainer(smallestIter.next(), smallestIter));
+        queue.add(new RecToIterCont(smallestIter.next(), smallestIter));
       }
 
       // Check if all other lists currently also hold this record
       int amountOfListsMatching = 1;
       while (amountOfListsMatching != amountOfLists) {
-        RecordIdToIteratorContainer nextSmallestContainer = queue.peek();
+        RecToIterCont nextSmallestContainer = queue.peek();
         if (nextSmallestContainer == null) {
           // The queue is empty, break
           break;
@@ -133,8 +131,8 @@ public abstract class AInvertedList {
           final Iterator<Integer> nextSmallestIter =
               nextSmallestContainer.getRemainingRecordIds();
           if (nextSmallestIter.hasNext()) {
-            queue.add(new RecordIdToIteratorContainer(nextSmallestIter.next(),
-                nextSmallestIter));
+            queue.add(
+                new RecToIterCont(nextSmallestIter.next(), nextSmallestIter));
           }
         } else {
           // The list does not hold the record, break the loop as

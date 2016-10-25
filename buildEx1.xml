@@ -41,6 +41,7 @@
         <checkstyle config = "${checkstyle-config}"
                     failOnViolation="false" >
             <fileset dir="${src-dir}" includes="**/*.java"/>
+        	<fileset dir="${test-dir}" includes="**/*.java"/>
             <formatter type="plain" usefile="false"/>
         </checkstyle>
     </target>
