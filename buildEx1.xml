@@ -52,6 +52,11 @@
                debug="on">
             <classpath refid="classpath.test" />
         </javac>
+        <javac srcdir="${test-dir}" destdir="${bin-dir}"
+               verbose="false" includeantruntime="false"
+               debug="on">
+            <classpath refid="classpath.test" />
+        </javac>
     </target>
 
     <!-- Please note: This is no ideal "jar" target since it does not exclude 
