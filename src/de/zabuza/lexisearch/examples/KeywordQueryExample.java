@@ -7,8 +7,7 @@ import java.util.Scanner;
 
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.document.IDocument;
-import de.zabuza.lexisearch.indexing.IInvertedIndex;
-import de.zabuza.lexisearch.indexing.IInvertedList;
+import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.queries.KeywordQuery;
 
 /**
@@ -97,7 +96,7 @@ public final class KeywordQueryExample {
         stopService = true;
       } else {
         String[] keywords = query.split(KEYWORD_SEPARATOR);
-        IInvertedList queryResults =
+        AInvertedList queryResults =
             keywordQuery.searchAnd(Arrays.asList(keywords));
         System.out.println("Matching records are: " + queryResults);
 

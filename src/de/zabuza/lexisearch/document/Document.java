@@ -47,8 +47,8 @@ public class Document implements IDocument {
   /**
    * Builds an document representing the content given as text format.<br/>
    * The format is:
-   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}description</tt>
-   * <br/>
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
+   * description</tt><br/>
    * where <tt>id</tt> is optional.
    * 
    * @param documentAsText
@@ -60,7 +60,7 @@ public class Document implements IDocument {
    *           If the document is in the wrong format
    */
   public static Document buildFromText(final String documentAsText,
-    final String contentSeparator) throws IllegalArgumentException {
+    final String contentSeparator) {
     final String[] content = documentAsText.split(contentSeparator);
 
     if (content.length == 2) {

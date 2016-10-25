@@ -15,7 +15,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
   /**
    * Data structure that maps content to their records.
    */
-  private final HashMap<K, IInvertedList> mKeyToRecordIds;
+  private final HashMap<K, AInvertedList> mKeyToRecordIds;
 
   /**
    * Creates a new empty inverted index.
@@ -33,7 +33,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean addRecord(final K key, final int recordId) {
-    IInvertedList records = mKeyToRecordIds.get(key);
+    AInvertedList records = mKeyToRecordIds.get(key);
     if (records == null) {
       records = new InvertedList();
     }
@@ -62,7 +62,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean containsRecord(final K key, final int recordId) {
-    final IInvertedList records = mKeyToRecordIds.get(key);
+    final AInvertedList records = mKeyToRecordIds.get(key);
     return records != null && records.containsRecord(recordId);
   }
 
@@ -83,7 +83,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    * de.zabuza.lexisearch.indexing.IInvertedIndex#getRecords(java.lang.Object)
    */
   @Override
-  public IInvertedList getRecords(final K key) {
+  public AInvertedList getRecords(final K key) {
     return mKeyToRecordIds.get(key);
   }
 }

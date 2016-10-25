@@ -5,13 +5,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Implementation of {@link IInvertedList} which holds its records sorted at all
+ * Implementation of {@link AInvertedList} which holds its records sorted at all
  * time by using a {@link SortedSet}.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public final class InvertedList implements IInvertedList {
+public final class InvertedList extends AInvertedList {
   /**
    * Sorted set containing all records contained by this list.
    */

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 /**
  * Container which stores a record id and the remaining record IDs that belong
- * to a given {@link IInvertedList}.
+ * to a given {@link AInvertedList}.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
@@ -23,7 +23,7 @@ public final class RecordIdToIteratorContainer
 
   /**
    * Creates a new container which stores a given record id and the remaining
-   * record IDs that belong to a given {@link IInvertedList}.
+   * record IDs that belong to a given {@link AInvertedList}.
    * 
    * @param recordId
    *          The record id to store

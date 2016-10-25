@@ -24,8 +24,8 @@ public final class FixFileLookupDocument extends Document {
   /**
    * Builds an document representing the content given as text format.<br/>
    * The format is:
-   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}description</tt>
-   * <br/>
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
+   * description</tt><br/>
    * where <tt>id</tt> is optional.
    * 
    * @param id
@@ -221,7 +221,7 @@ public final class FixFileLookupDocument extends Document {
    * @throws IllegalArgumentException
    *           If the document is in the wrong format
    */
-  private String[] fetchContent() throws IOException, IllegalArgumentException {
+  private String[] fetchContent() throws IOException {
     final RandomAccessFile raf = new RandomAccessFile(mFile, FLAG_READ_ONLY);
     raf.seek(mLineStartPos);
     final String line = raf.readLine();

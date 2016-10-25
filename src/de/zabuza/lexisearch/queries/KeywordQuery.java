@@ -2,10 +2,9 @@ package de.zabuza.lexisearch.queries;
 
 import java.util.LinkedList;
 
-import de.zabuza.lexisearch.document.IDocument;
-import de.zabuza.lexisearch.indexing.AggregateMode;
+import de.zabuza.lexisearch.indexing.EAggregateMode;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
-import de.zabuza.lexisearch.indexing.IInvertedList;
+import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.InvertedList;
@@ -36,7 +35,7 @@ public final class KeywordQuery<T extends IWordRecord>
    *          The set of records to operate on
    */
   public KeywordQuery(final Iterable<T> wordRecords) {
-    mInvertedIndex = InvertedIndexUtil.createFromWordRecords(wordRecords);
+    mInvertedIndex = InvertedIndexUtil.createFromWords(wordRecords);
   }
 
   /*
@@ -45,8 +44,8 @@ public final class KeywordQuery<T extends IWordRecord>
    * @see de.zabuza.lexisearch.queries.Query#search(java.lang.Iterable)
    */
   @Override
-  public IInvertedList searchAnd(final Iterable<String> keys) {
-    return searchAggregate(keys, AggregateMode.INTERSECT);
+  public AInvertedList searchAnd(final Iterable<String> keys) {
+    return searchAggregate(keys, EAggregateMode.INTERSECT);
   }
 
   /*
@@ -55,25 +54,25 @@ public final class KeywordQuery<T extends IWordRecord>
    * @see de.zabuza.lexisearch.queries.Query#searchOr(java.lang.Iterable)
    */
   @Override
-  public IInvertedList searchOr(final Iterable<String> keys) {
-    return searchAggregate(keys, AggregateMode.UNION);
+  public AInvertedList searchOr(final Iterable<String> keys) {
+    return searchAggregate(keys, EAggregateMode.UNION);
   }
 
   /**
    * Searches by combining each given keyword with an logical operator depending
-   * on the given {@link AggregateMode}.
+   * on the given {@link EAggregateMode}.
    * 
    * @param keys
    *          The keywords to search for
    * @param mode
    *          The aggregation mode to use
-   * @return An {@link IInvertedList} containing all records where the keywords
-   *         occur depending on the given {@link AggregateMode}.
+   * @return An {@link AInvertedList} containing all records where the keywords
+   *         occur depending on the given {@link EAggregateMode}.
    */
-  private IInvertedList searchAggregate(final Iterable<String> keys,
-    final AggregateMode mode) {
-    IInvertedList resultingList = new InvertedList();
-    LinkedList<IInvertedList> recordsForKeys = new LinkedList<>();
+  private AInvertedList searchAggregate(final Iterable<String> keys,
+    final EAggregateMode mode) {
+    AInvertedList resultingList = new InvertedList();
+    LinkedList<AInvertedList> recordsForKeys = new LinkedList<>();
 
     for (final String key : keys) {
       if (!mInvertedIndex.containsKey(key)) {
@@ -90,10 +89,10 @@ public final class KeywordQuery<T extends IWordRecord>
       return recordsForKeys.getFirst();
     }
 
-    if (mode == AggregateMode.INTERSECT) {
-      return IInvertedList.intersect(recordsForKeys);
-    } else if (mode == AggregateMode.UNION) {
-      return IInvertedList.union(recordsForKeys);
+    if (mode == EAggregateMode.INTERSECT) {
+      return AInvertedList.intersect(recordsForKeys);
+    } else if (mode == EAggregateMode.UNION) {
+      return AInvertedList.union(recordsForKeys);
     } else {
       throw new AssertionError();
     }

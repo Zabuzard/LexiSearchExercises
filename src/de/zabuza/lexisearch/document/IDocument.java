@@ -14,19 +14,19 @@ public interface IDocument extends IWordRecord {
    * 
    * @return The description of the document to get
    */
-  public String getDescription();
+  String getDescription();
 
   /**
    * Gets the id of the document.
    * 
    * @return The id of the document to get
    */
-  public int getId();
+  int getId();
 
   /**
    * Gets the name of the document.
    * 
    * @return The name of the document to get
    */
-  public String getName();
+  String getName();
 }

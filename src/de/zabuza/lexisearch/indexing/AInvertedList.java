@@ -6,13 +6,73 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 /**
- * Interface for inverted lists. Such lists contain records and are used by
+ * Abstract class for inverted lists. Such lists contain records and are used by
  * {@link IInvertedIndex} which maps content to lists of records.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public interface IInvertedList {
+public abstract class AInvertedList {
+
+  /**
+   * Intersects the given two lists.
+   * 
+   * @param firstList
+   *          First list to intersect
+   * @param secondList
+   *          Second list to intersect
+   * @return A list containing the data that both given lists have in common,
+   *         i.e. the intersection
+   */
+  public static AInvertedList intersect(final AInvertedList firstList,
+    final AInvertedList secondList) {
+    final LinkedList<AInvertedList> operands = new LinkedList<>();
+    operands.add(firstList);
+    operands.add(secondList);
+    return AInvertedList.intersect(operands);
+  }
+
+  /**
+   * Intersects the given lists.
+   * 
+   * @param lists
+   *          Lists to intersect
+   * @return A list containing the data that all of the given lists have in
+   *         common, i.e. the intersection
+   */
+  public static AInvertedList intersect(final Collection<AInvertedList> lists) {
+    return AInvertedList.aggregate(lists, EAggregateMode.INTERSECT);
+  }
+
+  /**
+   * Builds the union of the given two lists.
+   * 
+   * @param firstList
+   *          First list to unite
+   * @param secondList
+   *          Second list to unite
+   * @return A list containing the merged data of both given lists, i.e. the
+   *         union
+   */
+  public static AInvertedList union(final AInvertedList firstList,
+    final AInvertedList secondList) {
+    final LinkedList<AInvertedList> operands = new LinkedList<>();
+    operands.add(firstList);
+    operands.add(secondList);
+    return AInvertedList.union(operands);
+  }
+
+  /**
+   * Builds the union of the given lists.
+   * 
+   * @param lists
+   *          Lists to unite
+   * @return A list containing the merged data of all the given lists, i.e. the
+   *         union
+   */
+  public static AInvertedList union(final Collection<AInvertedList> lists) {
+    return AInvertedList.aggregate(lists, EAggregateMode.UNION);
+  }
 
   /**
    * Aggregates the given lists by the given aggregation mode.
@@ -23,16 +83,16 @@ public interface IInvertedList {
    *          Aggregation mode to use
    * @return A list containing the aggregated data of the given lists
    */
-  public static IInvertedList aggregate(final Collection<IInvertedList> lists,
-    final AggregateMode mode) {
-    final int amountOfLists = lists.size();
+  private static AInvertedList aggregate(final Collection<AInvertedList> lists,
+    final EAggregateMode mode) {
+    int amountOfLists = lists.size();
     if (amountOfLists <= 1) {
       throw new IllegalArgumentException();
     }
 
     // Setup a priority queue containing all initial elements
     PriorityQueue<RecordIdToIteratorContainer> queue = new PriorityQueue<>();
-    for (final IInvertedList list : lists) {
+    for (final AInvertedList list : lists) {
       final Iterator<Integer> records = list.getRecords().iterator();
       if (records.hasNext()) {
         final int firstRecord = records.next();
@@ -42,7 +102,7 @@ public interface IInvertedList {
       }
     }
 
-    final IInvertedList resultingList = new InvertedList();
+    final AInvertedList resultingList = new InvertedList();
 
     // Process all queue elements
     while (!queue.isEmpty()) {
@@ -88,7 +148,7 @@ public interface IInvertedList {
         resultingList.addRecord(smallestRecordId);
       } else {
         // The record is not hold by every list
-        if (mode == AggregateMode.UNION) {
+        if (mode == EAggregateMode.UNION) {
           resultingList.addRecord(smallestRecordId);
         }
       }
@@ -98,73 +158,13 @@ public interface IInvertedList {
   }
 
   /**
-   * Intersects the given lists.
-   * 
-   * @param lists
-   *          Lists to intersect
-   * @return A list containing the data that all of the given lists have in
-   *         common, i.e. the intersection
-   */
-  public static IInvertedList intersect(final Collection<IInvertedList> lists) {
-    return IInvertedList.aggregate(lists, AggregateMode.INTERSECT);
-  }
-
-  /**
-   * Intersects the given two lists.
-   * 
-   * @param firstList
-   *          First list to intersect
-   * @param secondList
-   *          Second list to intersect
-   * @return A list containing the data that both given lists have in common,
-   *         i.e. the intersection
-   */
-  public static IInvertedList intersect(final IInvertedList firstList,
-    final IInvertedList secondList) {
-    final LinkedList<IInvertedList> operands = new LinkedList<>();
-    operands.add(firstList);
-    operands.add(secondList);
-    return IInvertedList.intersect(operands);
-  }
-
-  /**
-   * Builds the union of the given lists.
-   * 
-   * @param lists
-   *          Lists to unite
-   * @return A list containing the merged data of all the given lists, i.e. the
-   *         union
-   */
-  public static IInvertedList union(final Collection<IInvertedList> lists) {
-    return IInvertedList.aggregate(lists, AggregateMode.UNION);
-  }
-
-  /**
-   * Builds the union of the given two lists.
-   * 
-   * @param firstList
-   *          First list to unite
-   * @param secondList
-   *          Second list to unite
-   * @return A list containing the merged data of both given lists, i.e. the
-   *         union
-   */
-  public static IInvertedList union(final IInvertedList firstList,
-    final IInvertedList secondList) {
-    final LinkedList<IInvertedList> operands = new LinkedList<>();
-    operands.add(firstList);
-    operands.add(secondList);
-    return IInvertedList.union(operands);
-  }
-
-  /**
    * Adds a record to the inverted list.
    * 
    * @param recordId
    *          Record to add
    * @return If the record was added, i.e. not already contained
    */
-  public boolean addRecord(final int recordId);
+  public abstract boolean addRecord(final int recordId);
 
   /**
    * Returns whether the inverted list contains the given record or not.
@@ -173,7 +173,7 @@ public interface IInvertedList {
    *          The record in question
    * @return <tt>True</tt> if the record is contained, <tt>false</tt> otherwise
    */
-  public boolean containsRecord(final int recordId);
+  public abstract boolean containsRecord(final int recordId);
 
   /**
    * Gets all records of this inverted list. The order of how the records are
@@ -181,14 +181,14 @@ public interface IInvertedList {
    * 
    * @return All records of this inverted list in ascending order
    */
-  public Iterable<Integer> getRecords();
+  public abstract Iterable<Integer> getRecords();
 
   /**
    * Gets the size of this inverted list, i.e. the amount of records it holds.
    * 
    * @return The size of this inverted list, i.e. the amount of records it holds
    */
-  public int getSize();
+  public abstract int getSize();
 
   /**
    * Returns whether this inverted list is empty, i.e. the amount of records it
@@ -196,5 +196,5 @@ public interface IInvertedList {
    * 
    * @return <tt>True</tt> if the list is empty, <tt>false</tt> otherwise
    */
-  public boolean isEmpty();
+  public abstract boolean isEmpty();
 }

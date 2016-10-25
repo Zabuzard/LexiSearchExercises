@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -46,8 +45,8 @@ public final class DocumentSet implements Set<IDocument> {
   /**
    * Builds a {@link DocumentSet} from a text file. It needs to list documents
    * line per line where the format for a document is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}description</tt>
-   * <br/>
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
+   * description</tt><br/>
    * where <tt>id</tt> is optional.
    * 
    * @param textFile
@@ -73,8 +72,8 @@ public final class DocumentSet implements Set<IDocument> {
    * Builds a {@link DocumentSet} from a text file. The method assumes the text
    * file as encoded in UTF-8. It needs to list documents line per line where
    * the format for a document is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}description</tt>
-   * <br/>
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
+   * description</tt><br/>
    * where <tt>id</tt> is optional.
    * 
    * @param textFile
@@ -148,8 +147,8 @@ public final class DocumentSet implements Set<IDocument> {
   /**
    * Builds a {@link DocumentSet} from a text file. It needs to list documents
    * line per line where the format for a document is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}description</tt>
-   * <br/>
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
+   * description</tt><br/>
    * where <tt>id</tt> is optional.<br/>
    * This method uses {@link FixFileLookupDocument}s to represent the documents.
    * Those do not save the document information but their position in the file.
@@ -213,8 +212,8 @@ public final class DocumentSet implements Set<IDocument> {
    * Builds a {@link DocumentSet} from a text file. The method assumes the text
    * file as encoded in UTF-8. It needs to list documents line per line where
    * the format for a document is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}description</tt>
-   * <br/>
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
+   * description</tt><br/>
    * where <tt>id</tt> is optional.<br/>
    * This method uses {@link FixFileLookupDocument}s to represent the documents.
    * Those do not save the document information but their position in the file.
@@ -348,7 +347,7 @@ public final class DocumentSet implements Set<IDocument> {
    * @return The inverted index working on this set of documents
    */
   public IInvertedIndex<String> createInvertedIndex() {
-    return InvertedIndexUtil.createFromWordRecords(mIdToDocument.values());
+    return InvertedIndexUtil.createFromWords(mIdToDocument.values());
   }
 
   /**

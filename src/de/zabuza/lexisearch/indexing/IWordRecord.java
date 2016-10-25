@@ -13,12 +13,12 @@ public interface IWordRecord {
    * 
    * @return The id of this record
    */
-  public int getRecordId();
+  int getRecordId();
 
   /**
    * Gets all words contained by this record.
    * 
    * @return All words contained by this record
    */
-  public String[] getWords();
+  String[] getWords();
 }

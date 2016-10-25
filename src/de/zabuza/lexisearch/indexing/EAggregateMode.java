@@ -6,7 +6,7 @@ package de.zabuza.lexisearch.indexing;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public enum AggregateMode {
+public enum EAggregateMode {
   /**
    * Build the intersection of all given data.
    */

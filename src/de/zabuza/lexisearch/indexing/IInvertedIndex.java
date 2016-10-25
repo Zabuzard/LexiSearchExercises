@@ -20,7 +20,7 @@ public interface IInvertedIndex<K> {
    *          The record to add
    * @return If the record was added, i.e. if it was not already contained
    */
-  public boolean addRecord(final K key, final int recordId);
+  boolean addRecord(final K key, final int recordId);
 
   /**
    * Returns whether the inverted index contains the given key or not.
@@ -29,7 +29,7 @@ public interface IInvertedIndex<K> {
    *          The key in question
    * @return <tt>True</tt> if the key is contained, <tt>false</tt> otherwise
    */
-  public boolean containsKey(final K key);
+  boolean containsKey(final K key);
 
   /**
    * Returns whether the given key contains the given record or not.
@@ -41,14 +41,14 @@ public interface IInvertedIndex<K> {
    * @return <tt>True</tt> if the record is contained by the key, <tt>false</tt>
    *         otherwise
    */
-  public boolean containsRecord(final K key, final int recordId);
+  boolean containsRecord(final K key, final int recordId);
 
   /**
    * Gets all keys of this inverted index.
    * 
    * @return All keys of this inverted index
    */
-  public Iterable<K> getKeys();
+  Iterable<K> getKeys();
 
   /**
    * Gets all records of the given key.
@@ -57,6 +57,6 @@ public interface IInvertedIndex<K> {
    *          The key to get its records
    * @return All records of the given key
    */
-  public IInvertedList getRecords(final K key);
+  AInvertedList getRecords(final K key);
 
 }
