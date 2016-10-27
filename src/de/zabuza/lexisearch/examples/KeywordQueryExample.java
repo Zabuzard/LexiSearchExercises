@@ -38,7 +38,7 @@ public final class KeywordQueryExample {
    * Path to the default sample file.
    */
   private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/movies_small.tsv";
+      "res/examples/movies.txt";
 
   /**
    * Example which demonstrates the usage of {@link DocumentSet}s,
@@ -90,7 +90,7 @@ public final class KeywordQueryExample {
     final Scanner scanner = new Scanner(System.in);
     while (!stopService) {
       System.out.println(">Type your query. Type an empty text to stop.");
-      final String query = scanner.nextLine();
+      final String query = scanner.nextLine().toLowerCase();
 
       if (query.trim().isEmpty()) {
         stopService = true;

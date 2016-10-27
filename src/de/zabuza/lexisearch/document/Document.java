@@ -174,7 +174,7 @@ public class Document implements IDocument {
    */
   @Override
   public String[] getWords() {
-    return (getName() + TAB_VALUE + getDescription())
+    return (getName().toLowerCase() + TAB_VALUE + getDescription().toLowerCase())
         .split(WORD_BOUNDARY_PATTERN);
   }
 }
