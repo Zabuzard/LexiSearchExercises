@@ -101,7 +101,10 @@ public abstract class AInvertedList {
       }
     }
 
-    final AInvertedList resultingList = new InvertedList();
+    // It is absolutely necessary that the insertion
+    // order into this list is sorted, as the plain list itself does not sort
+    // its elements.
+    final AInvertedList resultingList = new PlainInvertedList();
 
     // Process all queue elements
     while (!queue.isEmpty()) {
