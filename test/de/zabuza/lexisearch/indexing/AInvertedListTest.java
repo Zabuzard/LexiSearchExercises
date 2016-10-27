@@ -21,20 +21,20 @@ public final class AInvertedListTest {
   @Test
   public void testIntersectAInvertedListAInvertedList() {
     final InvertedList invertedList = new InvertedList();
-    invertedList.addRecord(0);
-    invertedList.addRecord(1);
-    invertedList.addRecord(2);
-    invertedList.addRecord(3);
+    invertedList.addPosting(0);
+    invertedList.addPosting(1);
+    invertedList.addPosting(2);
+    invertedList.addPosting(3);
 
     final InvertedList anotherInvertedList = new InvertedList();
-    anotherInvertedList.addRecord(0);
-    anotherInvertedList.addRecord(3);
+    anotherInvertedList.addPosting(0);
+    anotherInvertedList.addPosting(3);
 
     final AInvertedList intersectionResult =
         AInvertedList.intersect(invertedList, anotherInvertedList);
     Assert.assertEquals(2, intersectionResult.getSize());
-    Assert.assertTrue(intersectionResult.containsRecord(0));
-    Assert.assertTrue(intersectionResult.containsRecord(3));
+    Assert.assertTrue(intersectionResult.containsPosting(0));
+    Assert.assertTrue(intersectionResult.containsPosting(3));
   }
 
   /**
@@ -43,20 +43,20 @@ public final class AInvertedListTest {
   @Test
   public void testIntersectCollectionOfAInvertedList() {
     final InvertedList firstInvertedList = new InvertedList();
-    firstInvertedList.addRecord(0);
-    firstInvertedList.addRecord(1);
-    firstInvertedList.addRecord(2);
-    firstInvertedList.addRecord(3);
+    firstInvertedList.addPosting(0);
+    firstInvertedList.addPosting(1);
+    firstInvertedList.addPosting(2);
+    firstInvertedList.addPosting(3);
 
     final InvertedList secondInvertedList = new InvertedList();
-    secondInvertedList.addRecord(0);
-    secondInvertedList.addRecord(3);
-    secondInvertedList.addRecord(4);
+    secondInvertedList.addPosting(0);
+    secondInvertedList.addPosting(3);
+    secondInvertedList.addPosting(4);
 
     final InvertedList thirdInvertedList = new InvertedList();
-    thirdInvertedList.addRecord(0);
-    thirdInvertedList.addRecord(3);
-    thirdInvertedList.addRecord(5);
+    thirdInvertedList.addPosting(0);
+    thirdInvertedList.addPosting(3);
+    thirdInvertedList.addPosting(5);
 
     Collection<AInvertedList> collection = new LinkedList<>();
     collection.add(firstInvertedList);
@@ -66,8 +66,8 @@ public final class AInvertedListTest {
     final AInvertedList intersectionResult =
         AInvertedList.intersect(collection);
     Assert.assertEquals(2, intersectionResult.getSize());
-    Assert.assertTrue(intersectionResult.containsRecord(0));
-    Assert.assertTrue(intersectionResult.containsRecord(3));
+    Assert.assertTrue(intersectionResult.containsPosting(0));
+    Assert.assertTrue(intersectionResult.containsPosting(3));
   }
 
   /**
@@ -76,24 +76,24 @@ public final class AInvertedListTest {
   @Test
   public void testUnionAInvertedListAInvertedList() {
     final InvertedList invertedList = new InvertedList();
-    invertedList.addRecord(0);
-    invertedList.addRecord(1);
-    invertedList.addRecord(2);
-    invertedList.addRecord(3);
+    invertedList.addPosting(0);
+    invertedList.addPosting(1);
+    invertedList.addPosting(2);
+    invertedList.addPosting(3);
 
     final InvertedList anotherInvertedList = new InvertedList();
-    anotherInvertedList.addRecord(0);
-    anotherInvertedList.addRecord(3);
-    anotherInvertedList.addRecord(4);
+    anotherInvertedList.addPosting(0);
+    anotherInvertedList.addPosting(3);
+    anotherInvertedList.addPosting(4);
 
     final AInvertedList unionResult =
         AInvertedList.union(invertedList, anotherInvertedList);
     Assert.assertEquals(5, unionResult.getSize());
-    Assert.assertTrue(unionResult.containsRecord(0));
-    Assert.assertTrue(unionResult.containsRecord(1));
-    Assert.assertTrue(unionResult.containsRecord(2));
-    Assert.assertTrue(unionResult.containsRecord(3));
-    Assert.assertTrue(unionResult.containsRecord(4));
+    Assert.assertTrue(unionResult.containsPosting(0));
+    Assert.assertTrue(unionResult.containsPosting(1));
+    Assert.assertTrue(unionResult.containsPosting(2));
+    Assert.assertTrue(unionResult.containsPosting(3));
+    Assert.assertTrue(unionResult.containsPosting(4));
   }
 
   /**
@@ -102,20 +102,20 @@ public final class AInvertedListTest {
   @Test
   public void testUnionCollectionOfAInvertedList() {
     final InvertedList firstInvertedList = new InvertedList();
-    firstInvertedList.addRecord(0);
-    firstInvertedList.addRecord(1);
-    firstInvertedList.addRecord(2);
-    firstInvertedList.addRecord(3);
+    firstInvertedList.addPosting(0);
+    firstInvertedList.addPosting(1);
+    firstInvertedList.addPosting(2);
+    firstInvertedList.addPosting(3);
 
     final InvertedList secondInvertedList = new InvertedList();
-    secondInvertedList.addRecord(0);
-    secondInvertedList.addRecord(3);
-    secondInvertedList.addRecord(4);
+    secondInvertedList.addPosting(0);
+    secondInvertedList.addPosting(3);
+    secondInvertedList.addPosting(4);
 
     final InvertedList thirdInvertedList = new InvertedList();
-    thirdInvertedList.addRecord(0);
-    thirdInvertedList.addRecord(3);
-    thirdInvertedList.addRecord(5);
+    thirdInvertedList.addPosting(0);
+    thirdInvertedList.addPosting(3);
+    thirdInvertedList.addPosting(5);
 
     Collection<AInvertedList> collection = new LinkedList<>();
     collection.add(firstInvertedList);
@@ -124,12 +124,12 @@ public final class AInvertedListTest {
 
     final AInvertedList unionResult = AInvertedList.union(collection);
     Assert.assertEquals(6, unionResult.getSize());
-    Assert.assertTrue(unionResult.containsRecord(0));
-    Assert.assertTrue(unionResult.containsRecord(1));
-    Assert.assertTrue(unionResult.containsRecord(2));
-    Assert.assertTrue(unionResult.containsRecord(3));
-    Assert.assertTrue(unionResult.containsRecord(4));
-    Assert.assertTrue(unionResult.containsRecord(5));
+    Assert.assertTrue(unionResult.containsPosting(0));
+    Assert.assertTrue(unionResult.containsPosting(1));
+    Assert.assertTrue(unionResult.containsPosting(2));
+    Assert.assertTrue(unionResult.containsPosting(3));
+    Assert.assertTrue(unionResult.containsPosting(4));
+    Assert.assertTrue(unionResult.containsPosting(5));
   }
 
 }

@@ -6,19 +6,6 @@ package de.zabuza.lexisearch.indexing;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public interface IWordRecord {
+public interface IWordRecord extends IKeyRecord<String> {
 
-  /**
-   * Gets the id of this record.
-   * 
-   * @return The id of this record
-   */
-  int getRecordId();
-
-  /**
-   * Gets all words contained by this record.
-   * 
-   * @return All words contained by this record
-   */
-  String[] getWords();
 }

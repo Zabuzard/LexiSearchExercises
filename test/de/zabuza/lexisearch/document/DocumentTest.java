@@ -110,6 +110,25 @@ public final class DocumentTest {
   }
 
   /**
+   * Test method for {@link Document#getKeys()}.
+   */
+  @Test
+  public void testGetKeys() {
+    final String name = "a b";
+    final String description = "c d";
+    final String anotherName = "1 2";
+    final String anotherDescription = "3 4";
+    final Document document = new Document(0, name, description);
+    final Document anotherDocument =
+        new Document(0, anotherName, anotherDescription);
+
+    final String[] words = document.getKeys();
+    final String[] anotherWords = anotherDocument.getKeys();
+    Assert.assertArrayEquals(new String[] { "a", "b", "c", "d" }, words);
+    Assert.assertArrayEquals(new String[] { "1", "2", "3", "4" }, anotherWords);
+  }
+
+  /**
    * Test method for {@link Document#getName()}.
    */
   @Test
@@ -137,25 +156,6 @@ public final class DocumentTest {
 
     Assert.assertEquals(id, document.getRecordId());
     Assert.assertEquals(anotherId, anotherDocument.getRecordId());
-  }
-
-  /**
-   * Test method for {@link Document#getWords()}.
-   */
-  @Test
-  public void testGetWords() {
-    final String name = "a b";
-    final String description = "c d";
-    final String anotherName = "1 2";
-    final String anotherDescription = "3 4";
-    final Document document = new Document(0, name, description);
-    final Document anotherDocument =
-        new Document(0, anotherName, anotherDescription);
-
-    final String[] words = document.getWords();
-    final String[] anotherWords = anotherDocument.getWords();
-    Assert.assertArrayEquals(new String[] { "a", "b", "c", "d" }, words);
-    Assert.assertArrayEquals(new String[] { "1", "2", "3", "4" }, anotherWords);
   }
 
 }

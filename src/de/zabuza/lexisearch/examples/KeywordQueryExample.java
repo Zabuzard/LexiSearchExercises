@@ -8,6 +8,8 @@ import java.util.Scanner;
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.document.IDocument;
 import de.zabuza.lexisearch.indexing.AInvertedList;
+import de.zabuza.lexisearch.indexing.IWordRecord;
+import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.queries.KeywordQuery;
 
 /**
@@ -83,7 +85,8 @@ public final class KeywordQueryExample {
     }
 
     System.out.println("Creating keyword query...");
-    final KeywordQuery<IDocument> keywordQuery = new KeywordQuery<>(documents);
+    final KeywordQuery<IWordRecord> keywordQuery =
+        new KeywordQuery<>(documents);
 
     System.out.println("Starting query service.");
     boolean stopService = false;
@@ -98,19 +101,21 @@ public final class KeywordQueryExample {
         String[] keywords = query.split(KEYWORD_SEPARATOR);
         AInvertedList queryResults =
             keywordQuery.searchAnd(Arrays.asList(keywords));
-        System.out.println("Matching records are: " + queryResults);
+        System.out.println("Matching postings are: " + queryResults);
 
         System.out.println("Some of them are:");
-        Iterable<Integer> records = queryResults.getRecords();
-        final int maximalRecordsForPreview = 3;
-        int recordsShown = 0;
-        for (final int recordId : records) {
-          final IDocument document = documents.getDocumentById(recordId);
+        Iterable<Posting> postings = queryResults.getPostings();
+        final int maximalPostingsForPreview = 3;
+        int postingsShown = 0;
+        for (final Posting posting : postings) {
+          final int recordId = posting.getId();
+          final IDocument document =
+              (IDocument) documents.getKeyRecordById(recordId);
           System.out.println(
               "\t" + document.getName() + "\t" + document.getDescription());
 
-          recordsShown++;
-          if (recordsShown >= maximalRecordsForPreview) {
+          postingsShown++;
+          if (postingsShown >= maximalPostingsForPreview) {
             break;
           }
         }

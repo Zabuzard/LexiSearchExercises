@@ -24,7 +24,7 @@ public final class InvertedIndexUtil {
 
     for (final T wordRecord : wordRecords) {
       final int recordId = wordRecord.getRecordId();
-      final String[] words = wordRecord.getWords();
+      final String[] words = wordRecord.getKeys();
 
       for (final String word : words) {
         invertedIndex.addRecord(word, recordId);

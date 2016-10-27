@@ -150,6 +150,17 @@ public class Document implements IDocument {
   /*
    * (non-Javadoc)
    * 
+   * @see de.zabuza.lexisearch.indexing.IWordRecord#getWords()
+   */
+  @Override
+  public String[] getKeys() {
+    return (getName().toLowerCase() + TAB_VALUE
+        + getDescription().toLowerCase()).split(WORD_BOUNDARY_PATTERN);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see de.zabuza.lexisearch.document.IDocument#getName()
    */
   @Override
@@ -170,11 +181,10 @@ public class Document implements IDocument {
   /*
    * (non-Javadoc)
    * 
-   * @see de.zabuza.lexisearch.indexing.IWordRecord#getWords()
+   * @see de.zabuza.lexisearch.indexing.IKeyRecord#getSize()
    */
   @Override
-  public String[] getWords() {
-    return (getName().toLowerCase() + TAB_VALUE + getDescription().toLowerCase())
-        .split(WORD_BOUNDARY_PATTERN);
+  public int getSize() {
+    return getKeys().length;
   }
 }

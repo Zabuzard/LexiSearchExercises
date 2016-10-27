@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IKeyRecordSet;
+import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 
 /**
@@ -26,7 +28,7 @@ import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public final class DocumentSet implements Set<IDocument> {
+public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
   /**
    * Whether the static {@link DocumentSet} building methods should always self
    * assign IDs to the documents or they should use the IDs the documents have
@@ -261,7 +263,7 @@ public final class DocumentSet implements Set<IDocument> {
   /**
    * Structure that allows a fast access to documents by their id.
    */
-  private final HashMap<Integer, IDocument> mIdToDocument;
+  private final HashMap<Integer, IWordRecord> mIdToDocument;
 
   /**
    * Creates a new empty document set.
@@ -276,9 +278,9 @@ public final class DocumentSet implements Set<IDocument> {
    * @see java.util.Set#add(java.lang.Object)
    */
   @Override
-  public boolean add(final IDocument e) {
-    final int id = e.getId();
-    final IDocument valueBefore = mIdToDocument.get(id);
+  public boolean add(final IWordRecord e) {
+    final int id = e.getRecordId();
+    final IWordRecord valueBefore = mIdToDocument.get(id);
     mIdToDocument.put(id, e);
 
     return valueBefore == null || !valueBefore.equals(e);
@@ -290,9 +292,9 @@ public final class DocumentSet implements Set<IDocument> {
    * @see java.util.Set#addAll(java.util.Collection)
    */
   @Override
-  public boolean addAll(final Collection<? extends IDocument> c) {
+  public boolean addAll(final Collection<? extends IWordRecord> c) {
     boolean hasChanged = false;
-    for (final IDocument document : c) {
+    for (final IWordRecord document : c) {
       if (add(document)) {
         hasChanged = true;
       }
@@ -318,7 +320,7 @@ public final class DocumentSet implements Set<IDocument> {
   @Override
   public boolean contains(final Object o) {
     if (o instanceof IDocument) {
-      IDocument currentValue = mIdToDocument.get(((IDocument) o).getId());
+      IWordRecord currentValue = mIdToDocument.get(((IDocument) o).getId());
       return currentValue != null && currentValue.equals(o);
     } else {
       return false;
@@ -350,15 +352,13 @@ public final class DocumentSet implements Set<IDocument> {
     return InvertedIndexUtil.createFromWords(mIdToDocument.values());
   }
 
-  /**
-   * Gets a document by its id. The access is in <tt>O(1)</tt>.
+  /*
+   * (non-Javadoc)
    * 
-   * @param documentId
-   *          The id of the document to get
-   * @return The document corresponding to the given id or <tt>null</tt> if
-   *         there is no
+   * @see de.zabuza.lexisearch.indexing.IKeyRecordSet#getKeyRecordById(int)
    */
-  public IDocument getDocumentById(final int documentId) {
+  @Override
+  public IWordRecord getKeyRecordById(final int documentId) {
     return mIdToDocument.get(documentId);
   }
 
@@ -378,7 +378,7 @@ public final class DocumentSet implements Set<IDocument> {
    * @see java.util.Set#iterator()
    */
   @Override
-  public Iterator<IDocument> iterator() {
+  public Iterator<IWordRecord> iterator() {
     return mIdToDocument.values().iterator();
   }
 

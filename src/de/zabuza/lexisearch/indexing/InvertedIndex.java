@@ -13,15 +13,15 @@ import java.util.HashMap;
  */
 public final class InvertedIndex<K> implements IInvertedIndex<K> {
   /**
-   * Data structure that maps content to their records.
+   * Data structure that maps content to their inverted lists.
    */
-  private final HashMap<K, AInvertedList> mKeyToRecordIds;
+  private final HashMap<K, AInvertedList> mKeyToInvertedLists;
 
   /**
    * Creates a new empty inverted index.
    */
   public InvertedIndex() {
-    mKeyToRecordIds = new HashMap<>();
+    mKeyToInvertedLists = new HashMap<>();
   }
 
   /*
@@ -33,12 +33,12 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean addRecord(final K key, final int recordId) {
-    AInvertedList records = mKeyToRecordIds.get(key);
+    AInvertedList records = mKeyToInvertedLists.get(key);
     if (records == null) {
       records = new InvertedList();
     }
-    boolean wasAdded = records.addRecord(recordId);
-    mKeyToRecordIds.put(key, records);
+    boolean wasAdded = records.addPosting(recordId);
+    mKeyToInvertedLists.put(key, records);
 
     return wasAdded;
   }
@@ -51,7 +51,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean containsKey(final K key) {
-    return mKeyToRecordIds.containsKey(key);
+    return mKeyToInvertedLists.containsKey(key);
   }
 
   /*
@@ -62,8 +62,8 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean containsRecord(final K key, final int recordId) {
-    final AInvertedList records = mKeyToRecordIds.get(key);
-    return records != null && records.containsRecord(recordId);
+    final AInvertedList records = mKeyToInvertedLists.get(key);
+    return records != null && records.containsPosting(recordId);
   }
 
   /*
@@ -73,7 +73,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public Iterable<K> getKeys() {
-    return Collections.unmodifiableSet(mKeyToRecordIds.keySet());
+    return Collections.unmodifiableSet(mKeyToInvertedLists.keySet());
   }
 
   /*
@@ -84,6 +84,6 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public AInvertedList getRecords(final K key) {
-    return mKeyToRecordIds.get(key);
+    return mKeyToInvertedLists.get(key);
   }
 }

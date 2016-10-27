@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IWordRecord;
 
 /**
  * Test for {@link DocumentSet}.
@@ -181,10 +182,10 @@ public final class DocumentSetTest {
   }
 
   /**
-   * Test method for {@link DocumentSet#getDocumentById(int)}.
+   * Test method for {@link DocumentSet#getKeyRecordById(int)}.
    */
   @Test
-  public void testGetDocumentById() {
+  public void testGetKeyRecordById() {
     final DocumentSet documentSet = new DocumentSet();
     Assert.assertEquals(0, documentSet.size());
 
@@ -196,9 +197,9 @@ public final class DocumentSetTest {
 
     Assert.assertEquals(2, documentSet.size());
 
-    Assert.assertEquals(document, documentSet.getDocumentById(1));
-    Assert.assertEquals(anotherDocument, documentSet.getDocumentById(2));
-    Assert.assertNull(documentSet.getDocumentById(3));
+    Assert.assertEquals(document, documentSet.getKeyRecordById(1));
+    Assert.assertEquals(anotherDocument, documentSet.getKeyRecordById(2));
+    Assert.assertNull(documentSet.getKeyRecordById(3));
   }
 
   /**
@@ -236,9 +237,9 @@ public final class DocumentSetTest {
     final Document anotherDocument = new Document(2, "1", "2");
     documentSet.add(anotherDocument);
 
-    Iterator<IDocument> iter = documentSet.iterator();
-    IDocument firstDocument = iter.next();
-    IDocument secondDocument = iter.next();
+    final Iterator<IWordRecord> iter = documentSet.iterator();
+    final IWordRecord firstDocument = iter.next();
+    final IWordRecord secondDocument = iter.next();
     Assert.assertEquals(document, firstDocument);
     Assert.assertEquals(anotherDocument, secondDocument);
     Assert.assertFalse(iter.hasNext());
@@ -302,7 +303,7 @@ public final class DocumentSetTest {
 
     final Document document = new Document(1, "a", "b");
     final Document anotherDocument = new Document(2, "1", "2");
-    List<Document> documents = new LinkedList<>();
+    final List<Document> documents = new LinkedList<>();
     documents.add(document);
     documents.add(document);
 
@@ -313,7 +314,7 @@ public final class DocumentSetTest {
 
     Assert.assertTrue(documentSet.retainAll(documents));
     Assert.assertEquals(1, documentSet.size());
-    Assert.assertEquals(document, documentSet.getDocumentById(1));
+    Assert.assertEquals(document, documentSet.getKeyRecordById(1));
   }
 
   /**

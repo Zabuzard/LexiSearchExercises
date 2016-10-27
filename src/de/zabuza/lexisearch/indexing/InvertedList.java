@@ -1,6 +1,8 @@
 package de.zabuza.lexisearch.indexing;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -11,47 +13,80 @@ import java.util.TreeSet;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public final class InvertedList extends AInvertedList {
+public class InvertedList extends AInvertedList {
   /**
-   * Sorted set containing all records contained by this list.
+   * Set containing all posting ids that are contained by this list.
    */
-  private final SortedSet<Integer> mRecords;
+  private final HashSet<Integer> mPostingIds;
+  /**
+   * Sorted set containing all postings contained by this list.
+   */
+  private final Set<Posting> mPostings;
 
   /**
    * Creates a new empty inverted list.
    */
   public InvertedList() {
-    mRecords = new TreeSet<Integer>();
+    this(new TreeSet<>());
+  }
+
+  /**
+   * Creates a new empty inverted list which stores postings in the given set.
+   * 
+   * @param postings
+   *          The set to store postings in which must be empty
+   */
+  protected InvertedList(final Set<Posting> postings) {
+    mPostings = postings;
+    mPostingIds = new HashSet<>();
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see de.zabuza.lexisearch.indexing.IInvertedList#addRecord(int)
+   * @see de.zabuza.lexisearch.indexing.AInvertedList#addRecord(int)
    */
   @Override
-  public boolean addRecord(final int recordId) {
-    return mRecords.add(recordId);
+  public boolean addPosting(final int recordId) {
+    final boolean wasAdded = mPostingIds.add(recordId);
+    if (wasAdded) {
+      mPostings.add(new Posting(recordId));
+    }
+    return wasAdded;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see de.zabuza.lexisearch.indexing.IInvertedList#containsRecord(int)
+   * @see de.zabuza.lexisearch.indexing.AInvertedList#addRecord(int, int)
    */
   @Override
-  public boolean containsRecord(final int recordId) {
-    return mRecords.contains(recordId);
+  public boolean addPosting(final int recordId, final int termFrequency) {
+    final boolean wasAdded = mPostingIds.add(recordId);
+    if (wasAdded) {
+      mPostings.add(new Posting(recordId, termFrequency));
+    }
+    return wasAdded;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see de.zabuza.lexisearch.indexing.IInvertedList#getRecords()
+   * @see de.zabuza.lexisearch.indexing.AInvertedList#containsRecord(int)
    */
   @Override
-  public Iterable<Integer> getRecords() {
-    return Collections.unmodifiableSortedSet(mRecords);
+  public boolean containsPosting(final int recordId) {
+    return mPostingIds.contains(recordId);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.indexing.AInvertedList#getRecords()
+   */
+  @Override
+  public Iterable<Posting> getPostings() {
+    return Collections.unmodifiableSet(mPostings);
   }
 
   /*
@@ -61,7 +96,7 @@ public final class InvertedList extends AInvertedList {
    */
   @Override
   public int getSize() {
-    return mRecords.size();
+    return mPostings.size();
   }
 
   /*
@@ -71,7 +106,7 @@ public final class InvertedList extends AInvertedList {
    */
   @Override
   public boolean isEmpty() {
-    return mRecords.isEmpty();
+    return mPostings.isEmpty();
   }
 
   /*
@@ -81,7 +116,7 @@ public final class InvertedList extends AInvertedList {
    */
   @Override
   public String toString() {
-    return mRecords.toString();
+    return mPostings.toString();
   }
 
 }

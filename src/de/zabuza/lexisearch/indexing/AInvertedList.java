@@ -91,12 +91,13 @@ public abstract class AInvertedList {
     }
 
     // Setup a priority queue containing all initial elements
-    PriorityQueue<RecToIterCont> queue = new PriorityQueue<>();
+    PriorityQueue<PostToIterCont> queue = new PriorityQueue<>();
     for (final AInvertedList list : lists) {
-      final Iterator<Integer> records = list.getRecords().iterator();
-      if (records.hasNext()) {
-        final int firstRecord = records.next();
-        final RecToIterCont container = new RecToIterCont(firstRecord, records);
+      final Iterator<Posting> postings = list.getPostings().iterator();
+      if (postings.hasNext()) {
+        final Posting firstPosting = postings.next();
+        final PostToIterCont container =
+            new PostToIterCont(firstPosting, postings);
         queue.add(container);
       }
     }
@@ -109,19 +110,19 @@ public abstract class AInvertedList {
     // Process all queue elements
     while (!queue.isEmpty()) {
       // Poll the smallest value of all lists
-      RecToIterCont smallestContainer = queue.poll();
+      PostToIterCont smallestContainer = queue.poll();
       final int smallestRecordId = smallestContainer.getRecordId();
       // Put the next value of this list in the queue
-      final Iterator<Integer> smallestIter =
-          smallestContainer.getRemainingRecordIds();
+      final Iterator<Posting> smallestIter =
+          smallestContainer.getRemainingPostings();
       if (smallestIter.hasNext()) {
-        queue.add(new RecToIterCont(smallestIter.next(), smallestIter));
+        queue.add(new PostToIterCont(smallestIter.next(), smallestIter));
       }
 
       // Check if all other lists currently also hold this record
       int amountOfListsMatching = 1;
       while (amountOfListsMatching != amountOfLists) {
-        RecToIterCont nextSmallestContainer = queue.peek();
+        PostToIterCont nextSmallestContainer = queue.peek();
         if (nextSmallestContainer == null) {
           // The queue is empty, break
           break;
@@ -131,11 +132,11 @@ public abstract class AInvertedList {
           // The list also holds this record, advance it
           amountOfListsMatching++;
           queue.poll();
-          final Iterator<Integer> nextSmallestIter =
-              nextSmallestContainer.getRemainingRecordIds();
+          final Iterator<Posting> nextSmallestIter =
+              nextSmallestContainer.getRemainingPostings();
           if (nextSmallestIter.hasNext()) {
             queue.add(
-                new RecToIterCont(nextSmallestIter.next(), nextSmallestIter));
+                new PostToIterCont(nextSmallestIter.next(), nextSmallestIter));
           }
         } else {
           // The list does not hold the record, break the loop as
@@ -146,11 +147,15 @@ public abstract class AInvertedList {
 
       if (amountOfListsMatching == amountOfLists) {
         // The record is hold by every list
-        resultingList.addRecord(smallestRecordId);
+        // TODO Aggregate the term frequency for the new record by adding from
+        // all other containers
+        resultingList.addPosting(smallestRecordId);
       } else {
         // The record is not hold by every list
         if (mode == EAggregateMode.UNION) {
-          resultingList.addRecord(smallestRecordId);
+          // TODO Aggregate the term frequency for the new record by adding from
+          // all other containers
+          resultingList.addPosting(smallestRecordId);
         }
       }
     }
@@ -159,40 +164,55 @@ public abstract class AInvertedList {
   }
 
   /**
-   * Adds a record to the inverted list.
+   * Adds a posting to the inverted list.
    * 
    * @param recordId
    *          Record to add
-   * @return If the record was added, i.e. not already contained
+   * @return <tt>True</tt> if the posting was not already contained,
+   *         <tt>false</tt> otherwise
    */
-  public abstract boolean addRecord(final int recordId);
+  public abstract boolean addPosting(final int recordId);
 
   /**
-   * Returns whether the inverted list contains the given record or not.
+   * Adds a posting to the inverted list.
+   * 
+   * @param recordId
+   *          Record to add
+   * @param termFrequency
+   *          The term frequency of the record
+   * @return <tt>True</tt> if the posting was not already contained,
+   *         <tt>false</tt> otherwise
+   */
+  public abstract boolean addPosting(final int recordId,
+    final int termFrequency);
+
+  /**
+   * Returns whether the inverted list contains the given posting or not.
    * 
    * @param recordId
    *          The record in question
-   * @return <tt>True</tt> if the record is contained, <tt>false</tt> otherwise
+   * @return <tt>True</tt> if the posting is contained, <tt>false</tt> otherwise
    */
-  public abstract boolean containsRecord(final int recordId);
+  public abstract boolean containsPosting(final int recordId);
 
   /**
-   * Gets all records of this inverted list. The order of how the records are
-   * returned is ascending at all time.
+   * Gets all postings of this inverted list. The order of how the records are
+   * returned is ascending in their IDs at all time.
    * 
-   * @return All records of this inverted list in ascending order
+   * @return All postings of this inverted list in ascending order of their IDs
    */
-  public abstract Iterable<Integer> getRecords();
+  public abstract Iterable<Posting> getPostings();
 
   /**
-   * Gets the size of this inverted list, i.e. the amount of records it holds.
+   * Gets the size of this inverted list, i.e. the amount of postings it holds.
    * 
-   * @return The size of this inverted list, i.e. the amount of records it holds
+   * @return The size of this inverted list, i.e. the amount of postings it
+   *         holds
    */
   public abstract int getSize();
 
   /**
-   * Returns whether this inverted list is empty, i.e. the amount of records it
+   * Returns whether this inverted list is empty, i.e. the amount of postings it
    * holds is zero.
    * 
    * @return <tt>True</tt> if the list is empty, <tt>false</tt> otherwise

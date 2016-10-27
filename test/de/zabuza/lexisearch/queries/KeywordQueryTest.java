@@ -36,21 +36,21 @@ public class KeywordQueryTest {
     firstQuery.add(firstWord);
     final AInvertedList firstResult = keywordQuery.searchAnd(firstQuery);
     Assert.assertEquals(1, firstResult.getSize());
-    Assert.assertTrue(firstResult.containsRecord(0));
+    Assert.assertTrue(firstResult.containsPosting(0));
 
     LinkedList<String> secondQuery = new LinkedList<>();
     secondQuery.add(secondWord);
     final AInvertedList secondResult = keywordQuery.searchAnd(secondQuery);
     Assert.assertEquals(2, secondResult.getSize());
-    Assert.assertTrue(secondResult.containsRecord(0));
-    Assert.assertTrue(secondResult.containsRecord(1));
+    Assert.assertTrue(secondResult.containsPosting(0));
+    Assert.assertTrue(secondResult.containsPosting(1));
 
     LinkedList<String> thirdQuery = new LinkedList<>();
     thirdQuery.add(firstWord);
     thirdQuery.add(secondWord);
     final AInvertedList thirdResult = keywordQuery.searchAnd(thirdQuery);
     Assert.assertEquals(1, thirdResult.getSize());
-    Assert.assertTrue(secondResult.containsRecord(0));
+    Assert.assertTrue(secondResult.containsPosting(0));
   }
 
   /**
@@ -73,21 +73,21 @@ public class KeywordQueryTest {
     firstQuery.add(firstWord);
     final AInvertedList firstResult = keywordQuery.searchAnd(firstQuery);
     Assert.assertEquals(1, firstResult.getSize());
-    Assert.assertTrue(firstResult.containsRecord(0));
+    Assert.assertTrue(firstResult.containsPosting(0));
 
     LinkedList<String> secondQuery = new LinkedList<>();
     secondQuery.add(secondWord);
     final AInvertedList secondResult = keywordQuery.searchAnd(secondQuery);
     Assert.assertEquals(2, secondResult.getSize());
-    Assert.assertTrue(secondResult.containsRecord(0));
-    Assert.assertTrue(secondResult.containsRecord(1));
+    Assert.assertTrue(secondResult.containsPosting(0));
+    Assert.assertTrue(secondResult.containsPosting(1));
 
     LinkedList<String> thirdQuery = new LinkedList<>();
     thirdQuery.add(firstWord);
     thirdQuery.add(secondWord);
     final AInvertedList thirdResult = keywordQuery.searchAnd(thirdQuery);
     Assert.assertEquals(1, thirdResult.getSize());
-    Assert.assertTrue(secondResult.containsRecord(0));
+    Assert.assertTrue(secondResult.containsPosting(0));
   }
 
   /**
@@ -110,22 +110,22 @@ public class KeywordQueryTest {
     firstQuery.add(firstWord);
     final AInvertedList firstResult = keywordQuery.searchOr(firstQuery);
     Assert.assertEquals(1, firstResult.getSize());
-    Assert.assertTrue(firstResult.containsRecord(0));
+    Assert.assertTrue(firstResult.containsPosting(0));
 
     LinkedList<String> secondQuery = new LinkedList<>();
     secondQuery.add(secondWord);
     final AInvertedList secondResult = keywordQuery.searchOr(secondQuery);
     Assert.assertEquals(2, secondResult.getSize());
-    Assert.assertTrue(secondResult.containsRecord(0));
-    Assert.assertTrue(secondResult.containsRecord(1));
+    Assert.assertTrue(secondResult.containsPosting(0));
+    Assert.assertTrue(secondResult.containsPosting(1));
 
     LinkedList<String> thirdQuery = new LinkedList<>();
     thirdQuery.add(firstWord);
     thirdQuery.add(secondWord);
     final AInvertedList thirdResult = keywordQuery.searchOr(thirdQuery);
     Assert.assertEquals(2, thirdResult.getSize());
-    Assert.assertTrue(secondResult.containsRecord(0));
-    Assert.assertTrue(secondResult.containsRecord(1));
+    Assert.assertTrue(secondResult.containsPosting(0));
+    Assert.assertTrue(secondResult.containsPosting(1));
   }
 
 }
