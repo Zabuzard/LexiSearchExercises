@@ -1,7 +1,7 @@
 package de.zabuza.lexisearch.indexing;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -15,9 +15,10 @@ import java.util.TreeSet;
  */
 public class InvertedList extends AInvertedList {
   /**
-   * Set containing all posting ids that are contained by this list.
+   * Map containing all posting ids that are contained by this list which
+   * provides fast direct access to its elements by id.
    */
-  private final HashSet<Integer> mPostingIds;
+  private final HashMap<Integer, Posting> mIdToPosting;
   /**
    * Sorted set containing all postings contained by this list.
    */
@@ -38,7 +39,7 @@ public class InvertedList extends AInvertedList {
    */
   protected InvertedList(final Set<Posting> postings) {
     mPostings = postings;
-    mPostingIds = new HashSet<>();
+    mIdToPosting = new HashMap<>();
   }
 
   /*
@@ -48,11 +49,17 @@ public class InvertedList extends AInvertedList {
    */
   @Override
   public boolean addPosting(final int recordId) {
-    final boolean wasAdded = mPostingIds.add(recordId);
-    if (wasAdded) {
-      mPostings.add(new Posting(recordId));
+    final boolean isContained = mIdToPosting.containsKey(recordId);
+    if (!isContained) {
+      final Posting posting = new Posting(recordId);
+      mPostings.add(posting);
+      mIdToPosting.put(recordId, posting);
+    } else {
+      // Increase the term frequency as this element is already contained
+      final Posting posting = mIdToPosting.get(recordId);
+      posting.increaseTermFrequency();
     }
-    return wasAdded;
+    return !isContained;
   }
 
   /*
@@ -62,11 +69,39 @@ public class InvertedList extends AInvertedList {
    */
   @Override
   public boolean addPosting(final int recordId, final int termFrequency) {
-    final boolean wasAdded = mPostingIds.add(recordId);
-    if (wasAdded) {
-      mPostings.add(new Posting(recordId, termFrequency));
+    final boolean isContained = mIdToPosting.containsKey(recordId);
+    if (!isContained) {
+      final Posting posting = new Posting(recordId, termFrequency);
+      mPostings.add(posting);
+      mIdToPosting.put(recordId, posting);
+    } else {
+      // Increase the term frequency as this element is already contained
+      final Posting posting = mIdToPosting.get(recordId);
+      posting.increaseTermFrequency();
     }
-    return wasAdded;
+    return !isContained;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.indexing.AInvertedList#addPosting(int, int,
+   * double)
+   */
+  @Override
+  public boolean addPosting(final int recordId, final int termFrequency,
+    final double score) {
+    final boolean isContained = mIdToPosting.containsKey(recordId);
+    if (!isContained) {
+      final Posting posting = new Posting(recordId, termFrequency, score);
+      mPostings.add(posting);
+      mIdToPosting.put(recordId, posting);
+    } else {
+      // Increase the term frequency as this element is already contained
+      final Posting posting = mIdToPosting.get(recordId);
+      posting.increaseTermFrequency();
+    }
+    return !isContained;
   }
 
   /*
@@ -76,7 +111,7 @@ public class InvertedList extends AInvertedList {
    */
   @Override
   public boolean containsPosting(final int recordId) {
-    return mPostingIds.contains(recordId);
+    return mIdToPosting.containsKey(recordId);
   }
 
   /*

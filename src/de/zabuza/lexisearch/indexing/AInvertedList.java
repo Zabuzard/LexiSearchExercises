@@ -119,6 +119,10 @@ public abstract class AInvertedList {
         queue.add(new PostToIterCont(smallestIter.next(), smallestIter));
       }
 
+      int totalTermFrequency =
+          smallestContainer.getPosting().getTermFrequency();
+      double totalScore = smallestContainer.getPosting().getScore();
+
       // Check if all other lists currently also hold this record
       int amountOfListsMatching = 1;
       while (amountOfListsMatching != amountOfLists) {
@@ -138,6 +142,10 @@ public abstract class AInvertedList {
             queue.add(
                 new PostToIterCont(nextSmallestIter.next(), nextSmallestIter));
           }
+
+          totalTermFrequency +=
+              nextSmallestContainer.getPosting().getTermFrequency();
+          totalScore += nextSmallestContainer.getPosting().getScore();
         } else {
           // The list does not hold the record, break the loop as
           // the outcome is known
@@ -147,15 +155,13 @@ public abstract class AInvertedList {
 
       if (amountOfListsMatching == amountOfLists) {
         // The record is hold by every list
-        // TODO Aggregate the term frequency for the new record by adding from
-        // all other containers
-        resultingList.addPosting(smallestRecordId);
+        resultingList.addPosting(smallestRecordId, totalTermFrequency,
+            totalScore);
       } else {
         // The record is not hold by every list
         if (mode == EAggregateMode.UNION) {
-          // TODO Aggregate the term frequency for the new record by adding from
-          // all other containers
-          resultingList.addPosting(smallestRecordId);
+          resultingList.addPosting(smallestRecordId, totalTermFrequency,
+              totalScore);
         }
       }
     }
@@ -185,6 +191,21 @@ public abstract class AInvertedList {
    */
   public abstract boolean addPosting(final int recordId,
     final int termFrequency);
+
+  /**
+   * Adds a posting to the inverted list.
+   * 
+   * @param recordId
+   *          Record to add
+   * @param termFrequency
+   *          The term frequency of the record
+   * @param score
+   *          The score of the posting
+   * @return <tt>True</tt> if the posting was not already contained,
+   *         <tt>false</tt> otherwise
+   */
+  public abstract boolean addPosting(final int recordId,
+    final int termFrequency, final double score);
 
   /**
    * Returns whether the inverted list contains the given posting or not.

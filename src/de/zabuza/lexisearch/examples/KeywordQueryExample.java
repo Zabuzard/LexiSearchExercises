@@ -3,11 +3,11 @@ package de.zabuza.lexisearch.examples;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.document.IDocument;
-import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.queries.KeywordQuery;
@@ -87,6 +87,7 @@ public final class KeywordQueryExample {
     System.out.println("Creating keyword query...");
     final KeywordQuery<IWordRecord> keywordQuery =
         new KeywordQuery<>(documents);
+    System.out.println();
 
     System.out.println("Starting query service.");
     boolean stopService = false;
@@ -99,15 +100,14 @@ public final class KeywordQueryExample {
         stopService = true;
       } else {
         String[] keywords = query.split(KEYWORD_SEPARATOR);
-        AInvertedList queryResults =
+        List<Posting> queryResults =
             keywordQuery.searchAnd(Arrays.asList(keywords));
         System.out.println("Matching postings are: " + queryResults);
 
         System.out.println("Some of them are:");
-        Iterable<Posting> postings = queryResults.getPostings();
         final int maximalPostingsForPreview = 3;
         int postingsShown = 0;
-        for (final Posting posting : postings) {
+        for (final Posting posting : queryResults) {
           final int recordId = posting.getId();
           final IDocument document =
               (IDocument) documents.getKeyRecordById(recordId);

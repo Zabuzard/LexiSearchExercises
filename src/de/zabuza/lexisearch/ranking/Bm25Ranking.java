@@ -1,10 +1,10 @@
 package de.zabuza.lexisearch.ranking;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
@@ -23,6 +23,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
   private final HashMap<IKeyRecord<K>, Integer> mKeyRecordToSize;
   private final HashMap<K, Integer> mKeyToKeyRecordFrequency;
   private double mKParameter;
+  private final ScoreComparator mScoreComparator;
   private int mTotalSizeOfAllKeyRecords;
 
   public Bm25Ranking(final IInvertedIndex<K> invertedIndex,
@@ -33,6 +34,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
     mKeyToKeyRecordFrequency = new HashMap<>();
     mKParameter = DEFAULT_K_PARAMETER;
     mBParameter = DEFAULT_B_PARAMETER;
+    mScoreComparator = new ScoreComparator();
 
     takeSnapshot();
   }
@@ -42,8 +44,18 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    * 
    * @return The b parameter to get
    */
-  public double getbParameter() {
+  public double getBParameter() {
     return mBParameter;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.ranking.IRankingProvider#getInvertedIndex()
+   */
+  @Override
+  public IInvertedIndex<K> getInvertedIndex() {
+    return mInvertedIndex;
   }
 
   /**
@@ -88,7 +100,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    * @param bParameter
    *          The b parameter to set
    */
-  public void setbParameter(final double bParameter) {
+  public void setBParameter(final double bParameter) {
     mBParameter = bParameter;
   }
 
@@ -98,8 +110,24 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    * @param kParameter
    *          The k parameter to set
    */
-  public void setkParameter(final double kParameter) {
+  public void setKParameter(final double kParameter) {
     mKParameter = kParameter;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.ranking.IRankingProvider#setRankingScoreToIndex()
+   */
+  @Override
+  public void setRankingScoreToIndex() {
+    // Iterate over the inverted index and set all ranking scores
+    for (final K key : mInvertedIndex.getKeys()) {
+      final AInvertedList invertedList = mInvertedIndex.getRecords(key);
+      for (final Posting posting : invertedList.getPostings()) {
+        posting.setScore(getRankingScore(key, posting));
+      }
+    }
   }
 
   /*
@@ -111,13 +139,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    */
   @Override
   public void sortPostingsByRank(final List<Posting> postings) {
-    // TODO Where to get key?
-    Collections.sort(postings, new Comparator<Posting>() {
-      @Override
-      public int compare(final Posting o1, final Posting o2) {
-        return 0;
-      }
-    });
+    Collections.sort(postings, mScoreComparator);
   }
 
   public void takeSnapshot() {
