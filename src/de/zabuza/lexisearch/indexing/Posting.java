@@ -1,5 +1,7 @@
 package de.zabuza.lexisearch.indexing;
 
+import de.zabuza.lexisearch.util.MathUtil;
+
 /**
  * Class for postings. They contain the id of the record object they correspond
  * to. They can also have scores which determine their relevance to other
@@ -185,6 +187,7 @@ public final class Posting implements Comparable<Posting> {
    */
   @Override
   public String toString() {
-    return "[id=" + mId + ", tf=" + mTermFrequency + ",sc=" + mScore + "]";
+    return "[id=" + mId + ", tf=" + mTermFrequency + ",sc="
+        + MathUtil.formatDecimalTwo(mScore) + "]";
   }
 }

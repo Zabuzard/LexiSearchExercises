@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import de.zabuza.lexisearch.indexing.EAggregateMode;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.IWordRecord;
@@ -53,10 +54,18 @@ public final class KeywordQuery<T extends IWordRecord>
     this(wordRecords, Optional.of(rankingProvider));
   }
 
+  @SuppressWarnings("unchecked")
   private KeywordQuery(final IKeyRecordSet<T, String> wordRecords,
       final Optional<IRankingProvider<String>> rankingProvider) {
     mInvertedIndex = InvertedIndexUtil.createFromWords(wordRecords);
     mRankingProvider = rankingProvider;
+    
+    if (mRankingProvider.isPresent()) {
+      final IRankingProvider<String> ranking = mRankingProvider.get();
+      // TODO Is there a better way?
+      ranking.takeSnapshot(mInvertedIndex, (IKeyRecordSet<IKeyRecord<String>, String>) wordRecords);
+      ranking.setRankingScoreToIndex();
+    }
   }
 
   /*

@@ -1,6 +1,7 @@
 package de.zabuza.lexisearch.ranking;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,25 +19,24 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
 
   private int mAmountOfKeyRecords;
   private double mBParameter;
-  private final IInvertedIndex<K> mInvertedIndex;
-  private final IKeyRecordSet<IKeyRecord<K>, K> mKeyRecords;
+  private IInvertedIndex<K> mInvertedIndex;
+  private IKeyRecordSet<IKeyRecord<K>, K> mKeyRecords;
   private final HashMap<IKeyRecord<K>, Integer> mKeyRecordToSize;
   private final HashMap<K, Integer> mKeyToKeyRecordFrequency;
   private double mKParameter;
-  private final ScoreComparator mScoreComparator;
+  private final Comparator<Posting> mScoreComparator;
   private int mTotalSizeOfAllKeyRecords;
 
-  public Bm25Ranking(final IInvertedIndex<K> invertedIndex,
-      final IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
-    mInvertedIndex = invertedIndex;
-    mKeyRecords = keyRecords;
+  public Bm25Ranking() {
+    this(DEFAULT_K_PARAMETER, DEFAULT_B_PARAMETER);
+  }
+
+  public Bm25Ranking(final double kParameter, final double bParameter) {
     mKeyRecordToSize = new HashMap<>();
     mKeyToKeyRecordFrequency = new HashMap<>();
-    mKParameter = DEFAULT_K_PARAMETER;
-    mBParameter = DEFAULT_B_PARAMETER;
-    mScoreComparator = new ScoreComparator();
-
-    takeSnapshot();
+    mKParameter = kParameter;
+    mBParameter = bParameter;
+    mScoreComparator = new ScoreComparator().reversed();
   }
 
   /**
@@ -56,6 +56,16 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
   @Override
   public IInvertedIndex<K> getInvertedIndex() {
     return mInvertedIndex;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.ranking.IRankingProvider#getKeyRecords()
+   */
+  @Override
+  public IKeyRecordSet<IKeyRecord<K>, K> getKeyRecords() {
+    return mKeyRecords;
   }
 
   /**
@@ -142,9 +152,20 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
     Collections.sort(postings, mScoreComparator);
   }
 
-  public void takeSnapshot() {
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.ranking.IRankingProvider#takeSnapshot(de.zabuza.
+   * lexisearch.indexing.IInvertedIndex,
+   * de.zabuza.lexisearch.indexing.IKeyRecordSet)
+   */
+  @Override
+  public void takeSnapshot(final IInvertedIndex<K> invertedIndex,
+    final IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
     mKeyRecordToSize.clear();
     mKeyToKeyRecordFrequency.clear();
+    mInvertedIndex = invertedIndex;
+    mKeyRecords = keyRecords;
 
     // Iterate over the key records and compute meta data
     int amountOfKeyRecords = 0;

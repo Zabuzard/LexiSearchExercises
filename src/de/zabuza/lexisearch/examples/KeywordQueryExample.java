@@ -11,6 +11,7 @@ import de.zabuza.lexisearch.document.IDocument;
 import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.queries.KeywordQuery;
+import de.zabuza.lexisearch.ranking.Bm25Ranking;
 
 /**
  * Example which demonstrates the usage of {@link DocumentSet}s,
@@ -84,10 +85,10 @@ public final class KeywordQueryExample {
       documents = DocumentSet.buildFromTextFileUtf8Tab(file);
     }
 
-    System.out.println("Creating keyword query...");
+    System.out.println("Creating keyword query and ranking...");
+    final Bm25Ranking<String> ranking = new Bm25Ranking<>();
     final KeywordQuery<IWordRecord> keywordQuery =
-        new KeywordQuery<>(documents);
-    System.out.println();
+        new KeywordQuery<>(documents, ranking);
 
     System.out.println("Starting query service.");
     boolean stopService = false;
