@@ -2,6 +2,12 @@ package de.zabuza.lexisearch.util;
 
 import java.text.DecimalFormat;
 
+/**
+ * Offers mathematical utility methods.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ */
 public final class MathUtil {
   /**
    * Formatter to use for decimal numbers that should get truncated up to two
@@ -23,6 +29,13 @@ public final class MathUtil {
     return mDecimalFormatterTwo.format(decimalNumber);
   }
 
+  /**
+   * Computes and returns the logarithmic of the given value to the base of two.
+   * 
+   * @param a
+   *          The value to compute its logarithmic for
+   * @return The logarithmic of the given value to the base of two
+   */
   public static double log2(final double a) {
     return Math.log(a) / Math.log(2);
   }

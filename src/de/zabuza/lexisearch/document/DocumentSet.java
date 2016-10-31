@@ -12,12 +12,13 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
-import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 
 /**
@@ -28,7 +29,8 @@ import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
+public final class DocumentSet
+    implements IKeyRecordSet<IKeyRecord<String>, String> {
   /**
    * Whether the static {@link DocumentSet} building methods should always self
    * assign IDs to the documents or they should use the IDs the documents have
@@ -263,7 +265,7 @@ public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
   /**
    * Structure that allows a fast access to documents by their id.
    */
-  private final HashMap<Integer, IWordRecord> mIdToDocument;
+  private final HashMap<Integer, IKeyRecord<String>> mIdToDocument;
 
   /**
    * Creates a new empty document set.
@@ -278,9 +280,9 @@ public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
    * @see java.util.Set#add(java.lang.Object)
    */
   @Override
-  public boolean add(final IWordRecord e) {
+  public boolean add(final IKeyRecord<String> e) {
     final int id = e.getRecordId();
-    final IWordRecord valueBefore = mIdToDocument.get(id);
+    final IKeyRecord<String> valueBefore = mIdToDocument.get(id);
     mIdToDocument.put(id, e);
 
     return valueBefore == null || !valueBefore.equals(e);
@@ -292,9 +294,9 @@ public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
    * @see java.util.Set#addAll(java.util.Collection)
    */
   @Override
-  public boolean addAll(final Collection<? extends IWordRecord> c) {
+  public boolean addAll(final Collection<? extends IKeyRecord<String>> c) {
     boolean hasChanged = false;
-    for (final IWordRecord document : c) {
+    for (final IKeyRecord<String> document : c) {
       if (add(document)) {
         hasChanged = true;
       }
@@ -320,7 +322,8 @@ public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
   @Override
   public boolean contains(final Object o) {
     if (o instanceof IDocument) {
-      IWordRecord currentValue = mIdToDocument.get(((IDocument) o).getId());
+      IKeyRecord<String> currentValue =
+          mIdToDocument.get(((IDocument) o).getId());
       return currentValue != null && currentValue.equals(o);
     } else {
       return false;
@@ -358,7 +361,7 @@ public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
    * @see de.zabuza.lexisearch.indexing.IKeyRecordSet#getKeyRecordById(int)
    */
   @Override
-  public IWordRecord getKeyRecordById(final int documentId) {
+  public IKeyRecord<String> getKeyRecordById(final int documentId) {
     return mIdToDocument.get(documentId);
   }
 
@@ -378,7 +381,7 @@ public final class DocumentSet implements IKeyRecordSet<IWordRecord, String> {
    * @see java.util.Set#iterator()
    */
   @Override
-  public Iterator<IWordRecord> iterator() {
+  public Iterator<IKeyRecord<String>> iterator() {
     return mIdToDocument.values().iterator();
   }
 

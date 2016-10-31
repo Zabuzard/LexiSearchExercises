@@ -1,5 +1,6 @@
 package de.zabuza.lexisearch.document;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
-import de.zabuza.lexisearch.indexing.IWordRecord;
+import de.zabuza.lexisearch.indexing.IKeyRecord;
 
 /**
  * Test for {@link DocumentSet}.
@@ -237,9 +238,9 @@ public final class DocumentSetTest {
     final Document anotherDocument = new Document(2, "1", "2");
     documentSet.add(anotherDocument);
 
-    final Iterator<IWordRecord> iter = documentSet.iterator();
-    final IWordRecord firstDocument = iter.next();
-    final IWordRecord secondDocument = iter.next();
+    final Iterator<IKeyRecord<String>> iter = documentSet.iterator();
+    final IKeyRecord<String> firstDocument = iter.next();
+    final IKeyRecord<String> secondDocument = iter.next();
     Assert.assertEquals(document, firstDocument);
     Assert.assertEquals(anotherDocument, secondDocument);
     Assert.assertFalse(iter.hasNext());

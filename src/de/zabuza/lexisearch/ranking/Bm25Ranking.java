@@ -12,25 +12,83 @@ import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.util.MathUtil;
 
+/**
+ * Ranking algorithm which implements the BM25 ranking algorithm.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ * @param <K>
+ *          Type of the key
+ */
 public final class Bm25Ranking<K> implements IRankingProvider<K> {
+  /**
+   * The default value for the b parameter of the BM25 algorithm to use.
+   */
+  public static final double DEFAULT_B_PARAMETER = 0.75;
+  /**
+   * The default value for the k parameter of the BM25 algorithm to use.
+   */
+  public static final double DEFAULT_K_PARAMETER = 1.75;
 
-  private static final double DEFAULT_B_PARAMETER = 0.75;
-  private static final double DEFAULT_K_PARAMETER = 1.75;
-
+  /**
+   * The amount of key records in total.
+   */
   private int mAmountOfKeyRecords;
+  /**
+   * The b parameter of the BM25 algorithm.
+   */
   private double mBParameter;
+  /**
+   * The current inverted index to use.
+   */
   private IInvertedIndex<K> mInvertedIndex;
+  /**
+   * The current set of key records to use.
+   */
   private IKeyRecordSet<IKeyRecord<K>, K> mKeyRecords;
+  /**
+   * Map which allows a fast access to the size of key records.
+   */
   private final HashMap<IKeyRecord<K>, Integer> mKeyRecordToSize;
+  /**
+   * Map which allows a fast access to the key record frequency of keys.
+   */
   private final HashMap<K, Integer> mKeyToKeyRecordFrequency;
+  /**
+   * The k parameter of the BM25 algorithm.
+   */
   private double mKParameter;
+  /**
+   * The comparator to use which sorts postings by their ranking score in
+   * descending order.
+   */
   private final Comparator<Posting> mScoreComparator;
+  /**
+   * The total size of all key records.
+   */
   private int mTotalSizeOfAllKeyRecords;
 
+  /**
+   * Creates a new BM25 ranking with default parameters. Use
+   * {@link #takeSnapshot(IInvertedIndex, IKeyRecordSet)} as initialization and
+   * then get rankings by {@link #getRankingScore(Object, Posting)} or
+   * {@link #setRankingScoreToIndex()}.
+   */
   public Bm25Ranking() {
     this(DEFAULT_K_PARAMETER, DEFAULT_B_PARAMETER);
   }
 
+  /**
+   * Creates a new BM25 ranking with given parameters. Use
+   * {@link #takeSnapshot(IInvertedIndex, IKeyRecordSet)} as initialization and
+   * then get rankings by {@link #getRankingScore(Object, Posting)} or
+   * {@link #setRankingScoreToIndex()}.
+   * 
+   * @param kParameter
+   *          The k parameter of the BM25 algorithm to use
+   * @param bParameter
+   *          The b parameter of the BM25 algorithm to use
+   */
   public Bm25Ranking(final double kParameter, final double bParameter) {
     mKeyRecordToSize = new HashMap<>();
     mKeyToKeyRecordFrequency = new HashMap<>();

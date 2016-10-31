@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.document.IDocument;
-import de.zabuza.lexisearch.indexing.IWordRecord;
+import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.queries.KeywordQuery;
 import de.zabuza.lexisearch.ranking.Bm25Ranking;
@@ -20,7 +21,8 @@ import de.zabuza.lexisearch.ranking.Bm25Ranking;
  * {@link DocumentSet} which represents the content and builds a corresponding
  * {@link IInvertedIndex} by building a {@link KeywordQuery} object. After that
  * it starts a search service where the user types in keywords. The service then
- * lists all documents that contain all given keywords.
+ * lists all documents that contain all given keywords in the order of their
+ * BM25 ranking.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
@@ -50,7 +52,8 @@ public final class KeywordQueryExample {
    * {@link DocumentSet} which represents the content and builds a corresponding
    * {@link IInvertedIndex} by building a {@link KeywordQuery} object. After
    * that it starts a search service where the user types in keywords. The
-   * service then lists all documents that contain all given keywords.
+   * service then lists all documents that contain all given keywords in the
+   * order of their BM25 ranking.
    * 
    * @param args
    *          The first argument specifies the path to the file
@@ -87,7 +90,7 @@ public final class KeywordQueryExample {
 
     System.out.println("Creating keyword query and ranking...");
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
-    final KeywordQuery<IWordRecord> keywordQuery =
+    final KeywordQuery<IKeyRecord<String>> keywordQuery =
         new KeywordQuery<>(documents, ranking);
 
     System.out.println("Starting query service.");
@@ -102,7 +105,7 @@ public final class KeywordQueryExample {
       } else {
         String[] keywords = query.split(KEYWORD_SEPARATOR);
         List<Posting> queryResults =
-            keywordQuery.searchAnd(Arrays.asList(keywords));
+            keywordQuery.searchOr(Arrays.asList(keywords));
         System.out.println("Matching postings are: " + queryResults);
 
         System.out.println("Some of them are:");

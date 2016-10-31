@@ -75,25 +75,30 @@ public final class AInvertedListTest {
    */
   @Test
   public void testUnionAInvertedListAInvertedList() {
+    // Test required by lecture
     final InvertedList invertedList = new InvertedList();
-    invertedList.addPosting(0);
-    invertedList.addPosting(1);
     invertedList.addPosting(2);
-    invertedList.addPosting(3);
+    invertedList.addPosting(5);
+    invertedList.addPosting(7);
+    invertedList.addPosting(8);
 
     final InvertedList anotherInvertedList = new InvertedList();
-    anotherInvertedList.addPosting(0);
-    anotherInvertedList.addPosting(3);
     anotherInvertedList.addPosting(4);
+    anotherInvertedList.addPosting(5);
+    anotherInvertedList.addPosting(6);
+    anotherInvertedList.addPosting(8);
+    anotherInvertedList.addPosting(9);
 
     final AInvertedList unionResult =
         AInvertedList.union(invertedList, anotherInvertedList);
-    Assert.assertEquals(5, unionResult.getSize());
-    Assert.assertTrue(unionResult.containsPosting(0));
-    Assert.assertTrue(unionResult.containsPosting(1));
+    Assert.assertEquals(7, unionResult.getSize());
     Assert.assertTrue(unionResult.containsPosting(2));
-    Assert.assertTrue(unionResult.containsPosting(3));
     Assert.assertTrue(unionResult.containsPosting(4));
+    Assert.assertTrue(unionResult.containsPosting(5));
+    Assert.assertTrue(unionResult.containsPosting(6));
+    Assert.assertTrue(unionResult.containsPosting(7));
+    Assert.assertTrue(unionResult.containsPosting(8));
+    Assert.assertTrue(unionResult.containsPosting(9));
   }
 
   /**

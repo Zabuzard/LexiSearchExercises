@@ -1,6 +1,6 @@
 package de.zabuza.lexisearch.document;
 
-import de.zabuza.lexisearch.indexing.IWordRecord;
+import de.zabuza.lexisearch.indexing.IKeyRecord;
 
 /**
  * Interface for documents.
@@ -8,7 +8,7 @@ import de.zabuza.lexisearch.indexing.IWordRecord;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public interface IDocument extends IWordRecord {
+public interface IDocument extends IKeyRecord<String> {
   /**
    * Gets the description of the document.
    * 

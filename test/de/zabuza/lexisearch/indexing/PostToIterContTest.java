@@ -38,6 +38,30 @@ public final class PostToIterContTest {
   }
 
   /**
+   * Test method for {@link PostToIterCont#getPosting()}.
+   */
+  @Test
+  public void testGetPosting() {
+    final int recordId = 0;
+    final int anotherRecordId = 1;
+    final LinkedList<Posting> remainingPostings = new LinkedList<>();
+    remainingPostings.add(new Posting(2));
+    remainingPostings.add(new Posting(3));
+    final Iterator<Posting> remainignPostingsIter =
+        remainingPostings.iterator();
+    final Posting posting = new Posting(recordId);
+    final Posting anotherPosting = new Posting(anotherRecordId);
+
+    final PostToIterCont container =
+        new PostToIterCont(posting, remainignPostingsIter);
+    final PostToIterCont anotherContainer =
+        new PostToIterCont(anotherPosting, remainignPostingsIter);
+
+    Assert.assertEquals(posting, container.getPosting());
+    Assert.assertEquals(anotherPosting, anotherContainer.getPosting());
+  }
+
+  /**
    * Test method for {@link PostToIterCont#getRecordId()}.
    */
   @Test

@@ -6,12 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import de.zabuza.lexisearch.document.IDocument;
+import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.EAggregateMode;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
-import de.zabuza.lexisearch.indexing.AInvertedList;
-import de.zabuza.lexisearch.indexing.IWordRecord;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.ranking.IRankingProvider;
@@ -27,7 +27,7 @@ import de.zabuza.lexisearch.ranking.IRankingProvider;
  *          The class of documents to operate on which must extend
  *          {@link IWordRecord}
  */
-public final class KeywordQuery<T extends IWordRecord>
+public final class KeywordQuery<T extends IKeyRecord<String>>
     implements IQuery<String> {
   /**
    * The inverted index representing the processed data to operate on.
@@ -59,11 +59,11 @@ public final class KeywordQuery<T extends IWordRecord>
       final Optional<IRankingProvider<String>> rankingProvider) {
     mInvertedIndex = InvertedIndexUtil.createFromWords(wordRecords);
     mRankingProvider = rankingProvider;
-    
+
     if (mRankingProvider.isPresent()) {
       final IRankingProvider<String> ranking = mRankingProvider.get();
-      // TODO Is there a better way?
-      ranking.takeSnapshot(mInvertedIndex, (IKeyRecordSet<IKeyRecord<String>, String>) wordRecords);
+      ranking.takeSnapshot(mInvertedIndex,
+          (IKeyRecordSet<IKeyRecord<String>, String>) wordRecords);
       ranking.setRankingScoreToIndex();
     }
   }

@@ -50,6 +50,24 @@ public final class InvertedListTest {
   }
 
   /**
+   * Test method for {@link InvertedList#addPosting(int, int, double)}.
+   */
+  @Test
+  public void testAddPostingIntIntDouble() {
+    final InvertedList invertedList = new InvertedList();
+    Assert.assertTrue(invertedList.isEmpty());
+
+    invertedList.addPosting(1, 1, 1);
+    Assert.assertEquals(1, invertedList.getSize());
+    invertedList.addPosting(2, 2, 2);
+    Assert.assertEquals(2, invertedList.getSize());
+    invertedList.addPosting(2, 3, 3);
+    Assert.assertEquals(2, invertedList.getSize());
+    invertedList.addPosting(4, 4, 4);
+    Assert.assertEquals(3, invertedList.getSize());
+  }
+
+  /**
    * Test method for {@link InvertedList#containsPosting(int)}.
    */
   @Test
