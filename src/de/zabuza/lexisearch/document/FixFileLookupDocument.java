@@ -41,8 +41,8 @@ public final class FixFileLookupDocument extends Document {
    * @return The representing document object
    */
   public static FixFileLookupDocument buildFromFixFileLineText(
-    final Optional<Integer> id, final File file, final long lineStartPos,
-    final String contentSeparator) {
+      final Optional<Integer> id, final File file, final long lineStartPos,
+      final String contentSeparator) {
     if (id.isPresent()) {
       return new FixFileLookupDocument(id.get(), file, lineStartPos,
           contentSeparator);

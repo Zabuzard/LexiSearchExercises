@@ -3,7 +3,6 @@ package de.zabuza.lexisearch.queries;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -155,7 +154,6 @@ public class KeywordQueryTest {
     testQuery.add("docum");
     testQuery.add("third");
     final List<Posting> testResult = testKeywordQuery.searchOr(testQuery);
-    System.out.println(testResult);
 
     Assert.assertEquals(3, testResult.size());
 

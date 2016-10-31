@@ -37,7 +37,7 @@ public final class PostingTest {
     final Posting similarPosting = new Posting(recordId);
 
     Assert.assertEquals(posting, posting);
-    Assert.assertNotEquals(posting, anotherPosting);
+    Assert.assertFalse(posting.equals(anotherPosting));
     Assert.assertEquals(posting, similarPosting);
   }
 
@@ -104,7 +104,7 @@ public final class PostingTest {
     final Posting similarPosting = new Posting(recordId);
 
     Assert.assertEquals(posting.hashCode(), posting.hashCode());
-    Assert.assertNotEquals(posting.hashCode(), anotherPosting.hashCode());
+    Assert.assertFalse(posting.hashCode() == anotherPosting.hashCode());
     Assert.assertEquals(posting.hashCode(), similarPosting.hashCode());
   }
 
@@ -119,7 +119,7 @@ public final class PostingTest {
 
     Assert.assertEquals(termFrequency, posting.getTermFrequency());
     termFrequency += 2;
-    Assert.assertNotEquals(termFrequency, posting.getTermFrequency());
+    Assert.assertFalse(termFrequency == posting.getTermFrequency());
 
     posting.increaseTermFrequency();
     posting.increaseTermFrequency();
@@ -210,7 +210,7 @@ public final class PostingTest {
 
     Assert.assertEquals(score, posting.getScore(), 0);
     score += 2;
-    Assert.assertNotEquals(score, posting.getScore(), 0);
+    Assert.assertFalse(score == posting.getScore());
 
     posting.setScore(score);
     Assert.assertEquals(score, posting.getScore(), 0);
@@ -227,7 +227,7 @@ public final class PostingTest {
 
     Assert.assertEquals(termFrequency, posting.getTermFrequency());
     termFrequency += 2;
-    Assert.assertNotEquals(termFrequency, posting.getTermFrequency());
+    Assert.assertFalse(termFrequency == posting.getTermFrequency());
 
     posting.setTermFrequency(termFrequency);
     Assert.assertEquals(termFrequency, posting.getTermFrequency());

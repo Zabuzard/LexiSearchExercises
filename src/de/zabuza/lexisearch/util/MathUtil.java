@@ -13,7 +13,7 @@ public final class MathUtil {
    * Formatter to use for decimal numbers that should get truncated up to two
    * digits after the decimal.
    */
-  private static final DecimalFormat mDecimalFormatterTwo =
+  private static final DecimalFormat DECIMAL_FORMATTER_TWO =
       new DecimalFormat("0.00");
 
   /**
@@ -26,7 +26,7 @@ public final class MathUtil {
    *         decimal using no rounding
    */
   public static String formatDecimalTwo(final double decimalNumber) {
-    return mDecimalFormatterTwo.format(decimalNumber);
+    return DECIMAL_FORMATTER_TWO.format(decimalNumber);
   }
 
   /**

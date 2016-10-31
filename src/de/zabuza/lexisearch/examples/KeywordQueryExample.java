@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.document.IDocument;
-import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.queries.KeywordQuery;

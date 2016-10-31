@@ -60,7 +60,7 @@ public class Document implements IDocument {
    *           If the document is in the wrong format
    */
   public static Document buildFromText(final String documentAsText,
-    final String contentSeparator) {
+      final String contentSeparator) {
     final String[] content = documentAsText.split(contentSeparator);
 
     if (content.length == 2) {

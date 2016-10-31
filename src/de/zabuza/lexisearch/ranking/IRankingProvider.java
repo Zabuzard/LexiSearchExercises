@@ -45,7 +45,7 @@ public interface IRankingProvider<K> {
    * @return The ranking score of the given key-Posting pair according to the
    *         implementing ranking algorithm
    */
-  double getRankingScore(final K key, final Posting posting);
+  double getRankingScore(K key, Posting posting);
 
   /**
    * Computes and sets the ranking score to each key-Posting pair in the current
@@ -63,7 +63,7 @@ public interface IRankingProvider<K> {
    * @param postings
    *          The list of postings to sort
    */
-  void sortPostingsByRank(final List<Posting> postings);
+  void sortPostingsByRank(List<Posting> postings);
 
   /**
    * Takes a snapshot of the current given objects and initializes ranking
@@ -77,6 +77,6 @@ public interface IRankingProvider<K> {
    * @param keyRecords
    *          The set of key records to take a snapshot of
    */
-  void takeSnapshot(final IInvertedIndex<K> invertedIndex,
-    final IKeyRecordSet<IKeyRecord<K>, K> keyRecords);
+  void takeSnapshot(IInvertedIndex<K> invertedIndex,
+      IKeyRecordSet<IKeyRecord<K>, K> keyRecords);
 }

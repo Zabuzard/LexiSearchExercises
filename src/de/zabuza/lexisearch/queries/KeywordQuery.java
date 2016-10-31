@@ -6,10 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import de.zabuza.lexisearch.document.IDocument;
-import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.EAggregateMode;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IInvertedList;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
@@ -102,8 +101,8 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
    *         occur depending on the given {@link EAggregateMode}.
    */
   private List<Posting> searchAggregate(final Iterable<String> keys,
-    final EAggregateMode mode) {
-    LinkedList<AInvertedList> recordsForKeys = new LinkedList<>();
+      final EAggregateMode mode) {
+    LinkedList<IInvertedList> recordsForKeys = new LinkedList<>();
 
     // Fetch all corresponding inverted indices
     for (final String key : keys) {
@@ -118,7 +117,7 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
     }
 
     // Care for the aggregation mode
-    final AInvertedList resultingInvertedList;
+    final IInvertedList resultingInvertedList;
     final int amountOfEntries = recordsForKeys.size();
     if (amountOfEntries == 0) {
       return Collections.emptyList();
@@ -126,9 +125,9 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
       resultingInvertedList = recordsForKeys.getFirst();
     } else {
       if (mode == EAggregateMode.INTERSECT) {
-        resultingInvertedList = AInvertedList.intersect(recordsForKeys);
+        resultingInvertedList = IInvertedList.intersect(recordsForKeys);
       } else if (mode == EAggregateMode.UNION) {
-        resultingInvertedList = AInvertedList.union(recordsForKeys);
+        resultingInvertedList = IInvertedList.union(recordsForKeys);
       } else {
         throw new AssertionError();
       }

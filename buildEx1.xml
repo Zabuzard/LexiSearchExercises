@@ -11,7 +11,7 @@
     <property name="bin-dir" location="${projectdir}/bin" />
     <property name="dist-dir" location="${projectdir}" />
     <property name="junit-jar" location="${libdir}/junit-4.9b2.jar" />
-    <property name="checkstyle-jar" location="${libdir}/checkstyle-5.6-all.jar" />
+    <property name="checkstyle-jar" location="${libdir}/checkstyle-7.2-all.jar" />
     <property name="checkstyle-config" location="${libdir}/checkstyle_config.xml" />
     
     <!-- If you use third party libraries, you'll have to modify the classpath. -->
@@ -36,10 +36,10 @@
     </path>
 
     <target name="checkstyle">
-        <taskdef resource="checkstyletask.properties"
+        <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
                  classpath="${checkstyle-jar}"/>
         <checkstyle config = "${checkstyle-config}"
-                    failOnViolation="false" >
+                    failOnViolation="true" maxWarnings="0" maxErrors="0">
             <fileset dir="${src-dir}" includes="**/*.java"/>
         	<fileset dir="${test-dir}" includes="**/*.java"/>
             <formatter type="plain" usefile="false"/>
@@ -81,17 +81,17 @@
         <delete dir="${bin-dir}" />
     </target>   
     
-    <target name="test" depends="compile">
-        <junit>
-            <classpath refid="classpath.test" />
-            <batchtest fork="yes">
-                <formatter type="plain" usefile="false"/>
-                <fileset dir="${test-dir}">
-                    <include name="**/*Test.java" />
-                </fileset>
-            </batchtest>
-        </junit>
-    </target>
+	<target name="test" depends="compile">
+		<junit haltonfailure="yes" haltonerror="yes">
+			<classpath refid="classpath.test" />
+			<batchtest fork="yes">
+				<formatter type="plain" usefile="false"/>
+				<fileset dir="${test-dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
 
     <target name="all" depends="test, checkstyle, jar" />
 </project>

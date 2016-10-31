@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IInvertedList;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.Posting;
@@ -191,7 +191,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
   public void setRankingScoreToIndex() {
     // Iterate over the inverted index and set all ranking scores
     for (final K key : mInvertedIndex.getKeys()) {
-      final AInvertedList invertedList = mInvertedIndex.getRecords(key);
+      final IInvertedList invertedList = mInvertedIndex.getRecords(key);
       for (final Posting posting : invertedList.getPostings()) {
         posting.setScore(getRankingScore(key, posting));
       }
@@ -219,7 +219,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    */
   @Override
   public void takeSnapshot(final IInvertedIndex<K> invertedIndex,
-    final IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
+      final IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
     mKeyRecordToSize.clear();
     mKeyToKeyRecordFrequency.clear();
     mInvertedIndex = invertedIndex;

@@ -21,7 +21,7 @@ public interface IQuery<K> {
    *          The keywords to search for
    * @return A list containing all records where all of the given keywords occur
    */
-  List<Posting> searchAnd(final Iterable<K> keys);
+  List<Posting> searchAnd(Iterable<K> keys);
 
   /**
    * Searches by combining each given keyword with an logical <tt>or</tt>.
@@ -31,5 +31,5 @@ public interface IQuery<K> {
    * @return A list containing all records where at least one of the given
    *         keywords occurs
    */
-  List<Posting> searchOr(final Iterable<K> keys);
+  List<Posting> searchOr(Iterable<K> keys);
 }

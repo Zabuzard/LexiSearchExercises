@@ -3,7 +3,6 @@ package de.zabuza.lexisearch.indexing;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
@@ -13,7 +12,7 @@ import java.util.TreeSet;
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  */
-public class InvertedList extends AInvertedList {
+public class InvertedList implements IInvertedList {
   /**
    * Map containing all posting ids that are contained by this list which
    * provides fast direct access to its elements by id.
@@ -90,7 +89,7 @@ public class InvertedList extends AInvertedList {
    */
   @Override
   public boolean addPosting(final int recordId, final int termFrequency,
-    final double score) {
+      final double score) {
     final boolean isContained = mIdToPosting.containsKey(recordId);
     if (!isContained) {
       final Posting posting = new Posting(recordId, termFrequency, score);

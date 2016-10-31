@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.document.Document;
 import de.zabuza.lexisearch.document.DocumentSet;
-import de.zabuza.lexisearch.indexing.AInvertedList;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IInvertedList;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
@@ -146,20 +145,20 @@ public final class Bm25RankingTest {
 
     ranking.takeSnapshot(invertedIndex, documents);
 
-    final AInvertedList firstList = invertedIndex.getRecords(firstKey);
+    final IInvertedList firstList = invertedIndex.getRecords(firstKey);
     final Iterator<Posting> firstPostings = firstList.getPostings().iterator();
     final Posting firstPosting = firstPostings.next();
     Assert.assertEquals(1.1354, ranking.getRankingScore(firstKey, firstPosting),
         0.0001);
 
-    final AInvertedList secondList = invertedIndex.getRecords(secondKey);
+    final IInvertedList secondList = invertedIndex.getRecords(secondKey);
     final Iterator<Posting> secondPostings =
         secondList.getPostings().iterator();
     final Posting secondPosting = secondPostings.next();
     Assert.assertEquals(0.8934,
         ranking.getRankingScore(secondKey, secondPosting), 0.0001);
 
-    final AInvertedList thirdList = invertedIndex.getRecords(thirdKey);
+    final IInvertedList thirdList = invertedIndex.getRecords(thirdKey);
     final Iterator<Posting> thirdPostings = thirdList.getPostings().iterator();
     final Posting thirdPosting = thirdPostings.next();
     Assert.assertEquals(1.3486, ranking.getRankingScore(thirdKey, thirdPosting),
@@ -181,8 +180,8 @@ public final class Bm25RankingTest {
 
     kParameter++;
     bParameter++;
-    Assert.assertNotEquals(bParameter, ranking.getBParameter(), 0);
-    Assert.assertNotEquals(kParameter, ranking.getKParameter(), 0);
+    Assert.assertFalse(bParameter == ranking.getBParameter());
+    Assert.assertFalse(kParameter == ranking.getKParameter());
 
     ranking.setBParameter(bParameter);
     ranking.setKParameter(kParameter);
@@ -205,8 +204,8 @@ public final class Bm25RankingTest {
 
     kParameter++;
     bParameter++;
-    Assert.assertNotEquals(bParameter, ranking.getBParameter(), 0);
-    Assert.assertNotEquals(kParameter, ranking.getKParameter(), 0);
+    Assert.assertFalse(bParameter == ranking.getBParameter());
+    Assert.assertFalse(kParameter == ranking.getKParameter());
 
     ranking.setBParameter(bParameter);
     ranking.setKParameter(kParameter);
@@ -234,13 +233,13 @@ public final class Bm25RankingTest {
     ranking.takeSnapshot(invertedIndex, documents);
     ranking.setRankingScoreToIndex();
 
-    LinkedList<AInvertedList> lists = new LinkedList<>();
+    LinkedList<IInvertedList> lists = new LinkedList<>();
     for (final String key : invertedIndex.getKeys()) {
-      final AInvertedList list = invertedIndex.getRecords(key);
+      final IInvertedList list = invertedIndex.getRecords(key);
       lists.add(list);
     }
 
-    final AInvertedList unionOfAll = AInvertedList.union(lists);
+    final IInvertedList unionOfAll = IInvertedList.union(lists);
     // Transform the result into a list
     ArrayList<Posting> resultingList =
         new ArrayList<Posting>(unionOfAll.getSize());
@@ -318,13 +317,13 @@ public final class Bm25RankingTest {
     ranking.takeSnapshot(invertedIndex, documents);
     ranking.setRankingScoreToIndex();
 
-    LinkedList<AInvertedList> lists = new LinkedList<>();
+    LinkedList<IInvertedList> lists = new LinkedList<>();
     for (final String key : invertedIndex.getKeys()) {
-      final AInvertedList list = invertedIndex.getRecords(key);
+      final IInvertedList list = invertedIndex.getRecords(key);
       lists.add(list);
     }
 
-    final AInvertedList unionOfAll = AInvertedList.union(lists);
+    final IInvertedList unionOfAll = IInvertedList.union(lists);
     // Transform the result into a list
     ArrayList<Posting> resultingList =
         new ArrayList<Posting>(unionOfAll.getSize());

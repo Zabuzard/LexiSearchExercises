@@ -22,5 +22,5 @@ public interface IKeyRecordSet<E extends IKeyRecord<K>, K> extends Set<E> {
    * @return The key record which has the given id or <tt>null</tt> if such a
    *         record is not contained in the set
    */
-  E getKeyRecordById(final int recordId);
+  E getKeyRecordById(int recordId);
 }

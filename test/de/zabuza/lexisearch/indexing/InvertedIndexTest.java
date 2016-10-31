@@ -122,10 +122,10 @@ public final class InvertedIndexTest {
     Assert.assertTrue(invertedIndex.containsKey(key));
     Assert.assertTrue(invertedIndex.containsKey(anotherKey));
 
-    final AInvertedList invertedList = invertedIndex.getRecords(key);
+    final IInvertedList invertedList = invertedIndex.getRecords(key);
     Assert.assertEquals(2, invertedList.getSize());
 
-    final AInvertedList anotherInvertedList =
+    final IInvertedList anotherInvertedList =
         invertedIndex.getRecords(anotherKey);
     Assert.assertEquals(1, anotherInvertedList.getSize());
   }

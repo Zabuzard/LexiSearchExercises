@@ -12,8 +12,6 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
@@ -64,7 +62,7 @@ public final class DocumentSet
    *           If an I/O-Exception occurred.
    */
   public static DocumentSet buildFromTextFile(final File textFile,
-    final Charset charset, final String contentSeparator) throws IOException {
+      final Charset charset, final String contentSeparator) throws IOException {
     Stream<String> stream = Files.lines(textFile.toPath(), charset);
     DocumentSet documents =
         buildFromTextIterator(stream.iterator(), contentSeparator);
@@ -90,7 +88,7 @@ public final class DocumentSet
    *           If an I/O-Exception occurred.
    */
   public static DocumentSet buildFromTextFileUtf8(final File textFile,
-    final String contentSeparator) throws IOException {
+      final String contentSeparator) throws IOException {
     return buildFromTextFile(textFile, StandardCharsets.UTF_8,
         contentSeparator);
   }
@@ -110,7 +108,7 @@ public final class DocumentSet
    *           IOException If an I/O-Exception occurred.
    */
   public static DocumentSet buildFromTextFileUtf8Tab(final File textFile)
-    throws IOException {
+      throws IOException {
     return buildFromTextFileUtf8(textFile, TAB_VALUE);
   }
 
@@ -128,7 +126,7 @@ public final class DocumentSet
    * @return The set of documents build from the given iterator
    */
   public static DocumentSet buildFromTextIterator(
-    final Iterator<String> textIterator, final String contentSeparator) {
+      final Iterator<String> textIterator, final String contentSeparator) {
     final DocumentSet documents = new DocumentSet();
 
     int nextDocumentId = 0;
@@ -171,8 +169,8 @@ public final class DocumentSet
    *           If an I/O-Exception occurred.
    */
   public static DocumentSet buildLookupsFromFixTextFile(final File textFile,
-    final Charset charset, final String contentSeparator,
-    final int newLineLength) throws IOException {
+      final Charset charset, final String contentSeparator,
+      final int newLineLength) throws IOException {
     final DocumentSet documents = new DocumentSet();
 
     final FileInputStream fileInputStream = new FileInputStream(textFile);
@@ -234,7 +232,8 @@ public final class DocumentSet
    *           If an I/O-Exception occurred.
    */
   public static DocumentSet buildLookupsFromFixTextFileUtf8(final File textFile,
-    final String contentSeparator, final int newLineLength) throws IOException {
+      final String contentSeparator, final int newLineLength)
+          throws IOException {
     return buildLookupsFromFixTextFile(textFile, StandardCharsets.UTF_8,
         contentSeparator, newLineLength);
   }
@@ -258,7 +257,7 @@ public final class DocumentSet
    *           If an I/O-Exception occurred.
    */
   public static DocumentSet buildLookupsFromFixTextFileUtf8Tab(
-    final File textFile, final int newLineLength) throws IOException {
+      final File textFile, final int newLineLength) throws IOException {
     return buildLookupsFromFixTextFileUtf8(textFile, TAB_VALUE, newLineLength);
   }
 
