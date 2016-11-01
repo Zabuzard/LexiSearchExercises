@@ -63,8 +63,8 @@ public final class DocumentSet
    */
   public static DocumentSet buildFromTextFile(final File textFile,
       final Charset charset, final String contentSeparator) throws IOException {
-    Stream<String> stream = Files.lines(textFile.toPath(), charset);
-    DocumentSet documents =
+    final Stream<String> stream = Files.lines(textFile.toPath(), charset);
+    final DocumentSet documents =
         buildFromTextIterator(stream.iterator(), contentSeparator);
     stream.close();
     return documents;
@@ -134,7 +134,7 @@ public final class DocumentSet
       String documentAsText = textIterator.next();
       final int idBegin = 0;
       final int idEnd = documentAsText.indexOf(contentSeparator);
-      String potentialId = documentAsText.substring(idBegin, idEnd);
+      final String potentialId = documentAsText.substring(idBegin, idEnd);
       if (alwaysSelfAssignIds || !potentialId.matches(DOCUMENT_ID_PATTERN)) {
         documentAsText = nextDocumentId + contentSeparator + documentAsText;
         nextDocumentId++;
