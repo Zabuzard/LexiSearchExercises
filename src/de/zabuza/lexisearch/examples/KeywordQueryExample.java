@@ -88,7 +88,7 @@ public final class KeywordQueryExample {
     }
 
     System.out.println("Creating keyword query and ranking...");
-    final Bm25Ranking<String> ranking = new Bm25Ranking<>();
+    final Bm25Ranking<String> ranking = new Bm25Ranking<>(1.75, 0.1);
     final KeywordQuery<IKeyRecord<String>> keywordQuery =
         new KeywordQuery<>(documents, ranking);
 
@@ -108,7 +108,7 @@ public final class KeywordQueryExample {
         System.out.println("Matching postings are: " + queryResults);
 
         System.out.println("Some of them are:");
-        final int maximalPostingsForPreview = 3;
+        final int maximalPostingsForPreview = 10;
         int postingsShown = 0;
         for (final Posting posting : queryResults) {
           final int recordId = posting.getId();

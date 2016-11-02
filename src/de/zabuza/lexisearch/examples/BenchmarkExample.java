@@ -58,7 +58,7 @@ public final class BenchmarkExample {
    * Path to the default data file.
    */
   private static final String PATH_DEFAULT_DATA_FILE =
-      "res/examples/movies.txt";
+      "res/examples/movies_small.tsv";
   /**
    * Path to the default ground truth file.
    */
