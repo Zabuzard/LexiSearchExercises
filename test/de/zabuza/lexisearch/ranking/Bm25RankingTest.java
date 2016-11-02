@@ -240,7 +240,6 @@ public final class Bm25RankingTest {
     }
 
     final IInvertedList unionOfAll = IInvertedList.union(lists);
-    // Transform the result into a list
     ArrayList<Posting> resultingList =
         new ArrayList<Posting>(unionOfAll.getSize());
     for (final Posting posting : unionOfAll.getPostings()) {
