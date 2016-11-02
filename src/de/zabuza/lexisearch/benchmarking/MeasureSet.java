@@ -9,9 +9,24 @@ import java.util.Map;
 
 import de.zabuza.lexisearch.indexing.Posting;
 
+/**
+ * Generic implementation of {@link IMeasureSet} which holds the elements with a
+ * hash-structure.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ * @param <K>
+ *          Type of the key
+ */
 public final class MeasureSet<K> implements IMeasureSet<K> {
+  /**
+   * A set containing all measures of this object.
+   */
   private final HashSet<IMeasure<K>> mMeasures;
 
+  /**
+   * Creates a new empty set of measures.
+   */
   public MeasureSet() {
     mMeasures = new HashSet<>();
   }

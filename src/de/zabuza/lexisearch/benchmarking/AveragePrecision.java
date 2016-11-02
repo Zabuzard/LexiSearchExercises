@@ -6,6 +6,18 @@ import java.util.List;
 
 import de.zabuza.lexisearch.indexing.Posting;
 
+/**
+ * Implementation of {@link IMeasure} which measures the average precision of
+ * the given results compared to the given ground truth. Therefore the
+ * {@link PrecisionAtK} is measured for all relevant records by using their
+ * position in the resulting list. Last the average of all those values is
+ * taken.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ * @param <K>
+ *          Type of the key
+ */
 public final class AveragePrecision<K> implements IMeasure<K> {
 
   /*
@@ -47,6 +59,16 @@ public final class AveragePrecision<K> implements IMeasure<K> {
     }
 
     return averagePrecision;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see de.zabuza.lexisearch.benchmarking.IMeasure#getMeasureName()
+   */
+  @Override
+  public String getMeasureName() {
+    return "AP";
   }
 
 }

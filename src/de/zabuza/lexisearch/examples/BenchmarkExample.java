@@ -24,6 +24,21 @@ import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.queries.KeywordQuery;
 import de.zabuza.lexisearch.ranking.Bm25Ranking;
 
+/**
+ * Example which demonstrates the usage of {@link IMeasure}s,
+ * {@link IGroundTruth} and {@link KeywordQuery}. It accepts a content file in a
+ * given format or uses a small sample file and a ground truth file, or another
+ * sample file. Then it constructs a @link DocumentSet} which represents the
+ * content and builds a corresponding {@link IInvertedIndex} by building a
+ * {@link KeywordQuery} object. After that it builds a {@link IGroundTruth}
+ * object from the given data. It then starts starts all keyword queries from
+ * which there is ground truth data and measures its precision using several
+ * {@link IMeasure}s. Finally it computes and outputs the average precision for
+ * all those {@link IMeasure}s.
+ * 
+ * @author Zabuza {@literal <zabuza.dev@gmail.com>}
+ *
+ */
 public final class BenchmarkExample {
   /**
    * Text used to separate content.
@@ -51,10 +66,22 @@ public final class BenchmarkExample {
       "res/examples/movies-benchmark.txt";
 
   /**
+   * Example which demonstrates the usage of {@link IMeasure}s,
+   * {@link IGroundTruth} and {@link KeywordQuery}. It accepts a content file in
+   * a given format or uses a small sample file and a ground truth file, or
+   * another sample file. Then it constructs a @link DocumentSet} which
+   * represents the content and builds a corresponding {@link IInvertedIndex} by
+   * building a {@link KeywordQuery} object. After that it builds a
+   * {@link IGroundTruth} object from the given data. It then starts starts all
+   * keyword queries from which there is ground truth data and measures its
+   * precision using several {@link IMeasure}s. Finally it computes and outputs
+   * the average precision for all those {@link IMeasure}s.
    * 
    * @param args
-   *          Not supported
+   *          The first argument specifies the path to the data file, the second
+   *          represents the path to the ground truth file
    * @throws IOException
+   *           If an I/O-Exception occurred
    */
   public static void main(final String[] args) throws IOException {
     final boolean isWindowsFile = true;
@@ -145,7 +172,7 @@ public final class BenchmarkExample {
             resultsForMeasureTotal / amountOfResultsForMeasure;
       }
 
-      System.out.println("\t" + measure.getClass().getSimpleName() + ": "
+      System.out.println("\t" + measure.getMeasureName() + ": "
           + percentFormat.format(meanResultsForMeasure));
     }
   }
