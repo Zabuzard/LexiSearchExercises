@@ -108,7 +108,7 @@ public final class KeywordQueryExample {
         System.out.println("Matching postings are: " + queryResults);
 
         System.out.println("Some of them are:");
-        final int maximalPostingsForPreview = 10;
+        final int maximalPostingsForPreview = 3;
         int postingsShown = 0;
         for (final Posting posting : queryResults) {
           final int recordId = posting.getId();
