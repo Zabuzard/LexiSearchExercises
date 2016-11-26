@@ -118,7 +118,7 @@ public final class BenchmarkExample {
     }
 
     System.out.println("Creating keyword query and ranking...");
-    final Bm25Ranking<String> ranking = new Bm25Ranking<>();
+    final Bm25Ranking<String> ranking = new Bm25Ranking<>(1.75, 0.1);
     final KeywordQuery<IKeyRecord<String>> keywordQuery =
         new KeywordQuery<>(documents, ranking);
 

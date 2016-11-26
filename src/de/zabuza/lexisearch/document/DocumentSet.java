@@ -22,7 +22,7 @@ import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 /**
  * Implementation of {@link Set} which holds {@link IDocument}s. It provides
  * fast access to its elements via their id, much like a {@link Map}. It also
- * provides static methods for getting build from files in different formats.
+ * provides static methods for building it from files in different formats.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
@@ -72,7 +72,7 @@ public final class DocumentSet
 
   /**
    * Builds a {@link DocumentSet} from a text file. The method assumes the text
-   * file as encoded in UTF-8. It needs to list documents line per line where
+   * file is encoded in UTF-8. It needs to list documents line per line where
    * the format for a document is:<br/>
    * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
    * description</tt><br/>
@@ -95,7 +95,7 @@ public final class DocumentSet
 
   /**
    * Builds a {@link DocumentSet} from a text file. The method assumes the text
-   * file as encoded in UTF-8. It needs to list documents line per line where
+   * file is encoded in UTF-8. It needs to list documents line per line where
    * the format for a document is:<br/>
    * <tt>id{@literal <\t>}name{@literal <\t>}description</tt><br/>
    * where <tt>id</tt> is optional.

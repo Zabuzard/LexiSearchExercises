@@ -45,11 +45,11 @@ public class Document implements IDocument {
   protected static final int TEXT_FORMAT_NAME_INDEX = 1;
 
   /**
-   * Builds an document representing the content given as text format.<br/>
+   * Builds a document representing the content given as text format.<br/>
    * The format is:
    * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
    * description</tt><br/>
-   * where <tt>id</tt> is optional.
+   * where <tt>description</tt> is optional.
    * 
    * @param documentAsText
    *          The document to represent given in a text format
