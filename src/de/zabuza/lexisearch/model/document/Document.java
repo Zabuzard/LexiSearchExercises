@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.document;
+package de.zabuza.lexisearch.model.document;
 
 /**
  * Implementation for {@link IDocument} which holds parameters like id, name and
@@ -161,7 +161,7 @@ public class Document implements IDocument {
   /*
    * (non-Javadoc)
    * 
-   * @see de.zabuza.lexisearch.document.IDocument#getName()
+   * @see de.zabuza.lexisearch.indexing.IKeyRecord#getName()
    */
   @Override
   public String getName() {

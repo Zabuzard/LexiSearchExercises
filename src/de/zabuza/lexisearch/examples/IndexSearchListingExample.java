@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.model.document.DocumentSet;
 
 /**
  * Example which demonstrates the usage of {@link DocumentSet}s and

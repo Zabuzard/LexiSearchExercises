@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.document;
+package de.zabuza.lexisearch.model.document;
 
 import java.io.BufferedReader;
 import java.io.File;

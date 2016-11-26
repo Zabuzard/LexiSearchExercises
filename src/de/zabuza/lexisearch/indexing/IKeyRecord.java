@@ -18,6 +18,13 @@ public interface IKeyRecord<K> {
   K[] getKeys();
 
   /**
+   * Gets the name of this record.
+   * 
+   * @return The name of this record
+   */
+  String getName();
+
+  /**
    * Gets the id of this record.
    * 
    * @return The id of this record

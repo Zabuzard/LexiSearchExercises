@@ -1,7 +1,9 @@
-package de.zabuza.lexisearch.document;
+package de.zabuza.lexisearch.model.document;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import de.zabuza.lexisearch.model.document.Document;
 
 /**
  * Test for {@link Document}.

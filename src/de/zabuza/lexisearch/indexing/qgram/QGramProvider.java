@@ -100,6 +100,15 @@ public final class QGramProvider implements IKeyProvider<String, String> {
     return keys;
   }
 
+  /**
+   * Gets the qParameter.
+   * 
+   * @return The qParameter to get
+   */
+  public int getQParameter() {
+    return mQParameter;
+  }
+
   /*
    * (non-Javadoc)
    * 

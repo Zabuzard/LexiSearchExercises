@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.document;
+package de.zabuza.lexisearch.model.document;
 
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 
@@ -22,11 +22,4 @@ public interface IDocument extends IKeyRecord<String> {
    * @return The id of the document to get
    */
   int getId();
-
-  /**
-   * Gets the name of the document.
-   * 
-   * @return The name of the document to get
-   */
-  String getName();
 }

@@ -18,9 +18,9 @@ import de.zabuza.lexisearch.benchmarking.IMeasureSet;
 import de.zabuza.lexisearch.benchmarking.MeasureSet;
 import de.zabuza.lexisearch.benchmarking.PrecisionAtK;
 import de.zabuza.lexisearch.benchmarking.PrecisionAtR;
-import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.Posting;
+import de.zabuza.lexisearch.model.document.DocumentSet;
 import de.zabuza.lexisearch.queries.KeywordQuery;
 import de.zabuza.lexisearch.ranking.Bm25Ranking;
 

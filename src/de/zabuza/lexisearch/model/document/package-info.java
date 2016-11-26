@@ -1,4 +1,4 @@
 /**
  * This is the core package for document representation of the API.
  */
-package de.zabuza.lexisearch.document;
+package de.zabuza.lexisearch.model.document;

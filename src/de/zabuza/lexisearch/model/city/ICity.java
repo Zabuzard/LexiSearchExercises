@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.city;
+package de.zabuza.lexisearch.model.city;
 
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 
@@ -31,24 +31,10 @@ public interface ICity extends IKeyRecord<String> {
   float getLongitude();
 
   /**
-   * Gets the name of the city.
-   * 
-   * @return The name of the city to get
-   */
-  String getName();
-
-  /**
    * Gets the relevance score of this city. The higher the more relevant is this
    * city.
    * 
    * @return The relevance score of this city
    */
   int getRelevanceScore();
-
-  /**
-   * Gets the state of the city.
-   * 
-   * @return The state of the city to get
-   */
-  String getState();
 }

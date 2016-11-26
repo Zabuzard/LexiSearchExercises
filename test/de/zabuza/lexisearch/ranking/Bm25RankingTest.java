@@ -8,14 +8,14 @@ import java.util.LinkedList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.zabuza.lexisearch.document.Document;
-import de.zabuza.lexisearch.document.DocumentSet;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IInvertedList;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.Posting;
+import de.zabuza.lexisearch.model.document.Document;
+import de.zabuza.lexisearch.model.document.DocumentSet;
 
 /**
  * Test for {@link Bm25Ranking}.

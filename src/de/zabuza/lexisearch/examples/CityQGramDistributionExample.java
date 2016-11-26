@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.zabuza.lexisearch.city.CitySet;
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
+import de.zabuza.lexisearch.model.city.CitySet;
 
 /**
  * Example which demonstrates the usage of {@link CitySet}s,
@@ -37,7 +37,7 @@ public final class CityQGramDistributionExample {
    * Path to the default sample file.
    */
   private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/cities_small.tsv";
+      "res/examples/cities.txt";
 
   /**
    * Example which demonstrates the usage of {@link CitySet}s,

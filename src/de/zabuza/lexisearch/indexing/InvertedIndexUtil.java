@@ -11,7 +11,8 @@ public final class InvertedIndexUtil {
 
   /**
    * Creates an {@link IInvertedIndex} which operates on a given collection of
-   * {@link IKeyRecord}<tt>{@literal <String>}</tt> which can, for example, be {@link IDocument}s.
+   * {@link IKeyRecord}<tt>{@literal <String>}</tt> which can, for example, be
+   * {@link IDocument}s.
    * 
    * @param wordRecords
    *          Iterable collection of word records the index should operate on

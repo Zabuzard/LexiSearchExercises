@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.city;
+package de.zabuza.lexisearch.model.city;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,10 +37,6 @@ public final class CitySet
    */
   private static final String CITY_ID_PATTERN = "\\d+";
   /**
-   * Constant for a comma value. Is used to separate names in some formats.
-   */
-  private static final String COMMA_VALUE = ", ";
-  /**
    * Constant for a tab value. Is used to separate content in some formats.
    */
   private static final String TAB_VALUE = "\t";
@@ -48,8 +44,7 @@ public final class CitySet
   /**
    * Builds a {@link CitySet} from a text file. It needs to list cities line per
    * line where the format for a city is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <nameSeparator>}
-   * state{@literal <contentSeparator>}
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
    * relevanceScore{@literal <contentSeparator>}
    * latitude{@literal <contentSeparator>}longitude</tt><br/>
    * where <tt>id</tt> is optional.
@@ -60,8 +55,6 @@ public final class CitySet
    *          The charset to use for decoding the text file
    * @param contentSeparator
    *          The text used to separate the content in the format
-   * @param nameSeparator
-   *          The separator of the names
    * @param provider
    *          The key provider to use
    * @return The set of cities build from the given file
@@ -70,11 +63,10 @@ public final class CitySet
    */
   public static CitySet buildFromTextFile(final File textFile,
       final Charset charset, final String contentSeparator,
-      final String nameSeparator, final IKeyProvider<String, String> provider)
-          throws IOException {
+      final IKeyProvider<String, String> provider) throws IOException {
     final Stream<String> stream = Files.lines(textFile.toPath(), charset);
-    final CitySet cities = buildFromTextIterator(stream.iterator(),
-        contentSeparator, nameSeparator, provider);
+    final CitySet cities =
+        buildFromTextIterator(stream.iterator(), contentSeparator, provider);
     stream.close();
     return cities;
   }
@@ -83,8 +75,7 @@ public final class CitySet
    * Builds a {@link CitySet} from a text file. The method assumes the text file
    * is encoded in UTF-8. It needs to list cities line per line where the format
    * for a city is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <nameSeparator>}
-   * state{@literal <contentSeparator>}
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
    * relevanceScore{@literal <contentSeparator>}
    * latitude{@literal <contentSeparator>}longitude</tt><br/>
    * where <tt>id</tt> is optional.
@@ -103,18 +94,17 @@ public final class CitySet
    *           If an I/O-Exception occurred.
    */
   public static CitySet buildFromTextFileUtf8(final File textFile,
-      final String contentSeparator, final String nameSeparator,
+      final String contentSeparator,
       final IKeyProvider<String, String> provider) throws IOException {
     return buildFromTextFile(textFile, StandardCharsets.UTF_8, contentSeparator,
-        nameSeparator, provider);
+        provider);
   }
 
   /**
    * Builds a {@link CitySet} from a text file. The method assumes the text file
    * is encoded in UTF-8. It needs to list cities line per line where the format
    * for a city is:<br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <nameSeparator>}
-   * state{@literal <contentSeparator>}
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
    * relevanceScore{@literal <contentSeparator>}
    * latitude{@literal <contentSeparator>}longitude</tt>
    * 
@@ -129,14 +119,13 @@ public final class CitySet
    */
   public static CitySet buildFromTextFileUtf8Tab(final File textFile,
       final IKeyProvider<String, String> provider) throws IOException {
-    return buildFromTextFileUtf8(textFile, TAB_VALUE, COMMA_VALUE, provider);
+    return buildFromTextFileUtf8(textFile, TAB_VALUE, provider);
   }
 
   /**
    * Builds a {@link CitySet} from a text iterator. It needs to list cities as
    * elements in the iterator where the format for a city is: <br/>
-   * <tt>id{@literal <contentSeparator>}name{@literal <nameSeparator>}
-   * state{@literal <contentSeparator>}
+   * <tt>id{@literal <contentSeparator>}name{@literal <contentSeparator>}
    * relevanceScore{@literal <contentSeparator>}
    * latitude{@literal <contentSeparator>}longitude</tt><br/>
    * where <tt>id</tt> is optional.
@@ -145,15 +134,13 @@ public final class CitySet
    *          The text iterator to build the set from
    * @param contentSeparator
    *          The text used to separate the content in the format
-   * @param nameSeparator
-   *          The separator of the names
    * @param provider
    *          The key provider to use
    * @return The set of cities build from the given iterator
    */
   public static CitySet buildFromTextIterator(
       final Iterator<String> textIterator, final String contentSeparator,
-      final String nameSeparator, final IKeyProvider<String, String> provider) {
+      final IKeyProvider<String, String> provider) {
     final CitySet cities = new CitySet();
 
     int nextCityId = 0;
@@ -167,8 +154,7 @@ public final class CitySet
         nextCityId++;
       }
 
-      cities.add(City.buildFromText(cityAsText, contentSeparator, nameSeparator,
-          provider));
+      cities.add(City.buildFromText(cityAsText, contentSeparator, provider));
     }
 
     return cities;

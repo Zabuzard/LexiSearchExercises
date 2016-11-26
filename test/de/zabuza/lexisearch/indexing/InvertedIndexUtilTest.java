@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.zabuza.lexisearch.document.Document;
+import de.zabuza.lexisearch.model.document.Document;
 
 /**
  * Test for {@link InvertedIndexUtil}.
