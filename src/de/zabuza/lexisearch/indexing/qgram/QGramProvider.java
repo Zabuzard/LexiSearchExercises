@@ -13,12 +13,12 @@ public final class QGramProvider implements IKeyProvider<String, String> {
   /**
    * The default character used for padding.
    */
-  private final static char DEFAULT_PADDING_CHARACTER = '$';
+  private static final char DEFAULT_PADDING_CHARACTER = '$';
   /**
    * Represents all patterns that will be removed while normalizing a record
    * with {@link QGramProvider#normalizeRecord(String)}.
    */
-  private final static String NORMALIZE_REMOVE_PATTERN = "\\W";
+  private static final String NORMALIZE_REMOVE_PATTERN = "\\W";
 
   /**
    * Normalizes the given record. This removes all special characters and lowers

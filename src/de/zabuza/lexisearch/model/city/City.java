@@ -13,7 +13,7 @@ public final class City implements ICity {
   /**
    * The default relevance score to use when no score was given.
    */
-  private final static int DEFAULT_RELEVANCE_SCORE = 1;
+  private static final int DEFAULT_RELEVANCE_SCORE = 1;
 
   /**
    * Message which is shown when content should be parsed from a text format
@@ -213,10 +213,10 @@ public final class City implements ICity {
   /*
    * (non-Javadoc)
    * 
-   * @see de.zabuza.lexisearch.city.ICity#getRelevanceScore()
+   * @see de.zabuza.lexisearch.ranking.IRecordScoreProvider#getScore()
    */
   @Override
-  public int getRelevanceScore() {
+  public int getScore() {
     return mRelevanceScore;
   }
 

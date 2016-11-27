@@ -37,7 +37,7 @@ public final class CityQGramDistributionExample {
    * Path to the default sample file.
    */
   private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/cities.txt";
+      "res/examples/cities_small.tsv";
 
   /**
    * Example which demonstrates the usage of {@link CitySet}s,

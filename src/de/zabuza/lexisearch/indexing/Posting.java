@@ -187,7 +187,7 @@ public final class Posting implements Comparable<Posting> {
    */
   @Override
   public String toString() {
-    return "[id=" + mId + ", tf=" + mTermFrequency + ",sc="
+    return "[id=" + mId + ",tf=" + mTermFrequency + ",sc="
         + MathUtil.formatDecimalTwo(mScore) + "]";
   }
 }

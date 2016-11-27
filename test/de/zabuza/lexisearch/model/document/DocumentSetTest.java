@@ -9,9 +9,6 @@ import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
-import de.zabuza.lexisearch.model.document.Document;
-import de.zabuza.lexisearch.model.document.DocumentSet;
-import de.zabuza.lexisearch.model.document.IDocument;
 
 /**
  * Test for {@link DocumentSet}.

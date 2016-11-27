@@ -8,12 +8,9 @@ package de.zabuza.lexisearch.editdistance;
  * computed.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
- *
- * @param <K>
- *          Type of the objects to compare
+ * 
  */
 public final class PrefixLevenshtein implements IEditDistance<String> {
-
   /*
    * (non-Javadoc)
    * 
@@ -23,8 +20,7 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
    */
   @Override
   public int distance(final String first, final String second) {
-    // TODO Implement
-    return 0;
+    return computeDistanceWithTable(first, second);
   }
 
   /*
@@ -37,7 +33,86 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
   @Override
   public int estimatedDistance(final String first, final String second,
       final int bound) {
-    // TODO Implement
-    return 0;
+    // If the first object x is shorter, it's enough to compute only the first
+    // |x| + bound + 1 columns.
+    if (first.length() < second.length()) {
+      return computeDistanceWithTable(first, second.substring(0,
+          Math.min(first.length() + bound, second.length())));
+    } else {
+      // Fall back
+      return computeDistanceWithTable(first, second);
+    }
+  }
+
+  private int computeDistanceWithTable(final String first,
+      final String second) {
+    // Build a 2-dim table where the headers are the objects
+    final int[][] table = new int[second.length() + 1][first.length() + 1];
+
+    // Initialize the table by filling the first row and column
+    for (int x = 0; x < table.length; x++) {
+      table[x][0] = x;
+    }
+    for (int y = 1; y < table[0].length; y++) {
+      table[0][y] = y;
+    }
+
+    // Process the table row by row using a selective formula
+    for (int y = 1; y < table[0].length; y++) {
+      for (int x = 1; x < table.length; x++) {
+        // Take the minimum of all candidates
+        final int upperCandidate = table[x][y - 1] + 1;
+        final int leftCandidate = table[x - 1][y] + 1;
+        final int diagonalCandidate;
+        if (first.charAt(y - 1) != second.charAt(x - 1)) {
+          diagonalCandidate = table[x - 1][y - 1] + 1;
+        } else {
+          diagonalCandidate = table[x - 1][y - 1];
+        }
+        final int minimum = Math.min(Math.min(upperCandidate, leftCandidate),
+            diagonalCandidate);
+        table[x][y] = minimum;
+      }
+    }
+
+    // The prefix distance is the smallest value in the last row
+    int smallestKnownValue = Integer.MAX_VALUE;
+    final int lastRowY = table[0].length - 1;
+    for (int x = 0; x < table.length; x++) {
+      final int candidate = table[x][lastRowY];
+      if (candidate < smallestKnownValue) {
+        smallestKnownValue = candidate;
+      }
+    }
+
+    return smallestKnownValue;
+  }
+
+  protected void debugPrintTable(final String first, final String second,
+      final int[][] table) {
+    for (int x = -1; x < table.length; x++) {
+      if (x == -1) {
+        System.out.print("\t");
+      } else if (x == 0) {
+        System.out.print("€\t");
+      } else {
+        System.out.print(second.charAt(x - 1) + "\t");
+      }
+    }
+    System.out.println();
+    for (int y = 0; y < table[0].length; y++) {
+      for (int x = -1; x < table.length; x++) {
+        if (x == -1) {
+          if (y == 0) {
+            System.out.print("€\t");
+          } else {
+            System.out.print(first.charAt(y - 1) + "\t");
+          }
+        } else {
+          System.out.print(table[x][y] + "\t");
+        }
+      }
+      System.out.println();
+    }
   }
 }

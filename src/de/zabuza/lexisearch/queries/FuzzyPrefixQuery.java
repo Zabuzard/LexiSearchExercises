@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import de.zabuza.lexisearch.editdistance.IEditDistance;
 import de.zabuza.lexisearch.editdistance.PrefixLevenshtein;
@@ -16,6 +17,7 @@ import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.InvertedList;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
+import de.zabuza.lexisearch.ranking.IRankingProvider;
 
 public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
     implements IQuery<String> {
@@ -36,13 +38,40 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
    * The set of word records to use.
    */
   private final IKeyRecordSet<T, String> mWordRecords;
+  /**
+   * If present, used to sort query results by ranking score.
+   */
+  private final Optional<IRankingProvider<String>> mRankingProvider;
+  private int mDebugPEDComputationAmount;
 
   public FuzzyPrefixQuery(final IKeyRecordSet<T, String> wordRecords,
       final QGramProvider provider) {
+    this(wordRecords, provider, Optional.empty());
+  }
+
+  public FuzzyPrefixQuery(final IKeyRecordSet<T, String> wordRecords,
+      final QGramProvider provider,
+      final IRankingProvider<String> rankingProvider) {
+    this(wordRecords, provider, Optional.of(rankingProvider));
+  }
+
+  @SuppressWarnings("unchecked")
+  private FuzzyPrefixQuery(final IKeyRecordSet<T, String> wordRecords,
+      final QGramProvider provider,
+      final Optional<IRankingProvider<String>> rankingProvider) {
     mInvertedIndex = InvertedIndexUtil.createFromWords(wordRecords);
     mProvider = provider;
     mWordRecords = wordRecords;
     mEditDistance = new PrefixLevenshtein();
+    mDebugPEDComputationAmount = 0;
+
+    mRankingProvider = rankingProvider;
+    if (mRankingProvider.isPresent()) {
+      final IRankingProvider<String> ranking = mRankingProvider.get();
+      ranking.takeSnapshot(mInvertedIndex,
+          (IKeyRecordSet<IKeyRecord<String>, String>) wordRecords);
+      ranking.setRankingScoreToIndex();
+    }
   }
 
   @Override
@@ -60,10 +89,10 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
     final int q = mProvider.getQParameter();
 
     // Estimate the distance by using delta and the q-Grams both have in common
-    final double bound =
-        Math.max(first.length(), second.length()) - 1 - (delta - 1) * q;
+    final double bound = first.length() - 1 - q * delta;
     if (qGramsInCommon >= bound) {
       // Compute the exact prefix edit distance, it may be less than delta
+      mDebugPEDComputationAmount++;
       return mEditDistance.estimatedDistance(first, second, delta);
     } else {
       // We already know that the distance must be greater than delta
@@ -73,7 +102,7 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
 
   private List<Posting> searchAggregate(final Iterable<String> keys,
       final EAggregateMode mode) {
-
+    mDebugPEDComputationAmount = 0;
     final LinkedList<IInvertedList> recordsForKeys = new LinkedList<>();
     // Fetch all corresponding inverted indices
     for (final String key : keys) {
@@ -103,6 +132,11 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
     for (final Posting posting : resultingInvertedList.getPostings()) {
       resultingList.add(posting);
     }
+    
+    // Use ranking if present
+    if (mRankingProvider.isPresent()) {
+      mRankingProvider.get().sortPostingsByRank(resultingList);
+    }
 
     return resultingList;
   }
@@ -116,12 +150,22 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
     final String[] qGrams = mProvider.getKeys(keyRecord);
     final LinkedList<IInvertedList> qGramRecords = new LinkedList<>();
     for (final String qGram : qGrams) {
-      qGramRecords.add(mInvertedIndex.getRecords(qGram));
+      final IInvertedList records = mInvertedIndex.getRecords(qGram);
+      if (records != null) {
+        qGramRecords.add(records);
+      }
     }
 
     // Merge records and filter out every record with a prefix edit distance
     // greater than delta
-    final IInvertedList mergedRecords = IInvertedList.union(qGramRecords);
+    final IInvertedList mergedRecords;
+    if (qGramRecords.size() < 1) {
+      mergedRecords = new InvertedList();
+    } else if (qGramRecords.size() == 1) {
+      mergedRecords = qGramRecords.getFirst();
+    } else {
+      mergedRecords = IInvertedList.union(qGramRecords);
+    }
     final IInvertedList resultingList = new InvertedList();
     for (final Posting posting : mergedRecords.getPostings()) {
       final int recordId = posting.getId();
@@ -133,7 +177,8 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
       final int estimatedDistance = estimatedPrefixDistance(normalizedKeyRecord,
           normalizedRecord, termFrequency, delta);
       if (estimatedDistance <= delta) {
-        resultingList.addPosting(recordId, termFrequency, posting.getScore());
+        // Take the record, store the distance in its relevance-score field
+        resultingList.addPosting(recordId, termFrequency, estimatedDistance);
       }
     }
 
