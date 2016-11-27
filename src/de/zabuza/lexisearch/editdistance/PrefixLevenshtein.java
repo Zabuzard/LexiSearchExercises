@@ -115,7 +115,7 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
       if (x == -1) {
         System.out.print("\t");
       } else if (x == 0) {
-        System.out.print("€\t");
+        System.out.print("-\t");
       } else {
         System.out.print(second.charAt(x - 1) + "\t");
       }
@@ -125,7 +125,7 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
       for (int x = -1; x < table.length; x++) {
         if (x == -1) {
           if (y == 0) {
-            System.out.print("€\t");
+            System.out.print("-\t");
           } else {
             System.out.print(first.charAt(y - 1) + "\t");
           }
