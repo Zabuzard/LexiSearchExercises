@@ -44,6 +44,16 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
     }
   }
 
+  /**
+   * Computes the prefix levenshtein distance between the two given objects
+   * using a 2-dimensional array-table and an iterative approach.
+   * 
+   * @param first
+   *          The first object
+   * @param second
+   *          The second object
+   * @return The prefix levenshtein distance between the two given objects
+   */
   private int computeDistanceWithTable(final String first,
       final String second) {
     // Build a 2-dim table where the headers are the objects
@@ -88,6 +98,17 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
     return smallestKnownValue;
   }
 
+  /**
+   * Method used for debugging which prints the given table with the given
+   * objects as headers.
+   * 
+   * @param first
+   *          The first object, header of the y-direction
+   * @param second
+   *          The second object, header of the x-direction
+   * @param table
+   *          The table to print
+   */
   protected void debugPrintTable(final String first, final String second,
       final int[][] table) {
     for (int x = -1; x < table.length; x++) {

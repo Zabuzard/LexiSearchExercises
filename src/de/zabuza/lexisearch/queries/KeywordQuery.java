@@ -17,14 +17,14 @@ import de.zabuza.lexisearch.ranking.IRankingProvider;
 
 /**
  * Generic implementation of {@link IQuery} which operates on
- * {@link IWordRecord}s. Thus it searches in a list of, for example,
- * {@link IDocument}s by using keywords.
+ * {@link IKeyRecord}<tt>{@literal <String>}</tt>. Thus it searches in a list
+ * of, for example, {@link IDocument}s by using keywords.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
  * @param <T>
  *          The class of documents to operate on which must extend
- *          {@link IWordRecord}
+ *          {@link IKeyRecord}<tt>{@literal <String>}</tt>
  */
 public final class KeywordQuery<T extends IKeyRecord<String>>
     implements IQuery<String> {
@@ -48,11 +48,31 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
     this(wordRecords, Optional.empty());
   }
 
+  /**
+   * Creates a new keyword query object with the given ranking provider. After
+   * initialization it is able to perform keyword queries by using the given
+   * methods.
+   * 
+   * @param wordRecords
+   *          The set of records to operate on
+   * @param rankingProvider
+   *          The ranking provider to use
+   */
   public KeywordQuery(final IKeyRecordSet<T, String> wordRecords,
       final IRankingProvider<String> rankingProvider) {
     this(wordRecords, Optional.of(rankingProvider));
   }
 
+  /**
+   * Creates a new keyword query object with the given ranking provider, if
+   * present. After initialization it is able to perform keyword queries by
+   * using the given methods.
+   * 
+   * @param wordRecords
+   *          The set of records to operate on
+   * @param rankingProvider
+   *          The ranking provider to use, if present
+   */
   @SuppressWarnings("unchecked")
   private KeywordQuery(final IKeyRecordSet<T, String> wordRecords,
       final Optional<IRankingProvider<String>> rankingProvider) {
