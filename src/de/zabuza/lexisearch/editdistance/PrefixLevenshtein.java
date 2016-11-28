@@ -99,41 +99,48 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
   }
 
   /**
-   * Method used for debugging which prints the given table with the given
-   * objects as headers.
+   * Method used for debugging which transforms the given table with the given
+   * objects as headers in a human readable format.
    * 
    * @param first
    *          The first object, header of the y-direction
    * @param second
    *          The second object, header of the x-direction
    * @param table
-   *          The table to print
+   *          The table to transform
+   * @return The given table with the given objects in a human readable format
    */
-  protected void debugPrintTable(final String first, final String second,
+  protected String debugTableToString(final String first, final String second,
       final int[][] table) {
+    final StringBuilder result = new StringBuilder();
+    final String tabChar = "\t";
+    final String emptyWordChar = "-";
+    final String lineSeparator = System.lineSeparator();
+
     for (int x = -1; x < table.length; x++) {
       if (x == -1) {
-        System.out.print("\t");
+        result.append(tabChar);
       } else if (x == 0) {
-        System.out.print("-\t");
+        result.append(emptyWordChar + tabChar);
       } else {
-        System.out.print(second.charAt(x - 1) + "\t");
+        result.append(second.charAt(x - 1) + tabChar);
       }
     }
-    System.out.println();
+    result.append(lineSeparator);
     for (int y = 0; y < table[0].length; y++) {
       for (int x = -1; x < table.length; x++) {
         if (x == -1) {
           if (y == 0) {
-            System.out.print("-\t");
+            result.append(emptyWordChar + tabChar);
           } else {
-            System.out.print(first.charAt(y - 1) + "\t");
+            result.append(first.charAt(y - 1) + tabChar);
           }
         } else {
-          System.out.print(table[x][y] + "\t");
+          result.append(table[x][y] + tabChar);
         }
       }
-      System.out.println();
+      result.append(lineSeparator);
     }
+    return result.toString();
   }
 }

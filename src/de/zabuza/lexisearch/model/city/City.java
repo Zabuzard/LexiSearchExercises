@@ -11,16 +11,12 @@ import de.zabuza.lexisearch.indexing.IKeyProvider;
 public final class City implements ICity {
 
   /**
-   * The default relevance score to use when no score was given.
-   */
-  private static final int DEFAULT_RELEVANCE_SCORE = 1;
-
-  /**
    * Message which is shown when content should be parsed from a text format
    * that has an formatting error.
    */
   private static final String MSG_WRONG_TEXT_FORMAT =
       "The given city as text is in the wrong format.";
+
   /**
    * Index of the internal content information array where the id gets saved.
    */
@@ -44,6 +40,10 @@ public final class City implements ICity {
    * gets saved.
    */
   private static final int TEXT_FORMAT_SCORE_INDEX = 2;
+  /**
+   * The default relevance score to use when no score was given.
+   */
+  protected static final int DEFAULT_RELEVANCE_SCORE = 1;
 
   /**
    * Builds a city representing the content given as text format.<br/>

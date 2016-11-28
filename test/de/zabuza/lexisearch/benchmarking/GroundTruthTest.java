@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.util.benchmarking;
+package de.zabuza.lexisearch.benchmarking;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,8 +6,6 @@ import java.util.LinkedList;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import de.zabuza.lexisearch.benchmarking.GroundTruth;
 
 /**
  * Test for {@link GroundTruth}.

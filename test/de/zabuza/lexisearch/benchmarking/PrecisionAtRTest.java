@@ -1,12 +1,10 @@
-package de.zabuza.lexisearch.util.benchmarking;
+package de.zabuza.lexisearch.benchmarking;
 
 import java.util.LinkedList;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.zabuza.lexisearch.benchmarking.GroundTruth;
-import de.zabuza.lexisearch.benchmarking.PrecisionAtR;
 import de.zabuza.lexisearch.indexing.Posting;
 
 /**

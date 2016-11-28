@@ -11,14 +11,14 @@ import de.zabuza.lexisearch.indexing.IKeyProvider;
  */
 public final class QGramProvider implements IKeyProvider<String, String> {
   /**
-   * The default character used for padding.
-   */
-  private static final char DEFAULT_PADDING_CHARACTER = '$';
-  /**
    * Represents all patterns that will be removed while normalizing a record
    * with {@link QGramProvider#normalizeRecord(String)}.
    */
   private static final String NORMALIZE_REMOVE_PATTERN = "\\W";
+  /**
+   * The default character used for padding.
+   */
+  protected static final char DEFAULT_PADDING_CHARACTER = '$';
 
   /**
    * Normalizes the given record. This removes all special characters and lowers

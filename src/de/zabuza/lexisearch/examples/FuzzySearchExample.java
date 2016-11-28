@@ -45,7 +45,7 @@ public final class FuzzySearchExample {
    * Path to the default sample file.
    */
   private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/cities_small.tsv";
+      "res/examples/cities.txt";
 
   /**
    * Example which demonstrates the usage of {@link CitySet}s,

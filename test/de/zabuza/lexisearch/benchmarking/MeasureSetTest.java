@@ -1,4 +1,4 @@
-package de.zabuza.lexisearch.util.benchmarking;
+package de.zabuza.lexisearch.benchmarking;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -7,11 +7,6 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.zabuza.lexisearch.benchmarking.AveragePrecision;
-import de.zabuza.lexisearch.benchmarking.GroundTruth;
-import de.zabuza.lexisearch.benchmarking.IMeasure;
-import de.zabuza.lexisearch.benchmarking.MeasureSet;
-import de.zabuza.lexisearch.benchmarking.PrecisionAtR;
 import de.zabuza.lexisearch.indexing.Posting;
 
 /**

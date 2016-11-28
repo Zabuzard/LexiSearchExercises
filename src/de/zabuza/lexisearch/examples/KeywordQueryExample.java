@@ -42,7 +42,7 @@ public final class KeywordQueryExample {
    * Path to the default sample file.
    */
   private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/movies_small.tsv";
+      "res/examples/movies.txt";
 
   /**
    * Example which demonstrates the usage of {@link DocumentSet}s,
