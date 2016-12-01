@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Lexi Search</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="search.css" media="screen">
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="search.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGq5hDvTSUueByGlboZMS71uUY40EF4Ho&callback=initMap" type="text/javascript"></script>
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+				tex2jax: {
+					inlineMath: [['$','$'], ['\\(','\\)']]
+				}
+			});
+			MathJax.Hub.Queue(function () {
+					$(".annotation").fadeIn(300);
+					$(".annotation").css('visibility', 'visible');
+			});
+		</script>
+		<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+	</head>
+	<body>
+		<section class="page-header">
+			<img src="http://file1.npage.de/005000/36/bilder/lexisearchlogo.png" alt="Lexi Search Logo"/>
+			<h1 class="project-name">Lexi Search</h1>
+			<h2 class="project-tagline">
+				Search for <span class="pl-v">locations</span>. Fastest SE all over.<br/>
+				<div class="annotationWrapper">
+					<div class="annotation">
+						$\forall \varepsilon \gt 0 \exists N \in \mathbb{N} \forall n \ge N : \left|q_n - 0\right| \lt \varepsilon$
+					</div>
+				</div>
+			</h2>
+			<table class="contentTable">
+				<tr>
+					<td class="sideCol"></td>
+					<td class="contentCol">
+						<input type="search" id="query" autofocus>
+						<div class="suggestionBoxWrapper">
+							<div class="suggestionBox">
+								<ul class="suggestionList">
+									<li class="suggestion">
+										Suggestion #1
+									</li>
+									<li class="suggestion highlightedSuggestion">
+										Suggestion #2
+									</li>
+									<li class="suggestion">
+										Suggestion #3
+									</li>
+								</ul>
+							</div>
+						</div>
+					</td>
+					<td class="sideCol">
+						<a href="https://github.com/ZabuzaW/LexiSearch" class="btn">View on GitHub</a>
+					</td>
+				</tr>
+			</table>
+		</section>
+		<section class="main-content">
+			<div id="mapCanvas"></div>
+			<footer class="site-footer">
+				<span class="site-footer-owner">
+					<a href="https://github.com/ZabuzaW/LexiSearch">LexiSearch</a> is maintained by <a href="https://github.com/ZabuzaW">ZabuzaW</a>.
+				</span>
+			</footer>
+		</section>
+	</body>
+</html>
