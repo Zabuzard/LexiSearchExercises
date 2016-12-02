@@ -100,7 +100,8 @@ public final class WebDemoServer {
    * 
    * @param args
    *          The first argument specifies the path to the file to use, else a
-   *          sample file gets used. The second argument specifies the path from
+   *          sample file gets used. The second argument specifies the port to
+   *          use for the server. The third argument specifies the path from
    *          where file serving is allowed. Every file whose path is not
    *          included included in this one must not get served.
    * @throws IOException
@@ -109,21 +110,28 @@ public final class WebDemoServer {
   public static void main(final String[] args) throws IOException {
     final File dataFile;
     final String serverPath;
-    if (args.length == 2) {
-      dataFile = new File(args[0]);
-      serverPath = args[1];
-    } else if (args.length == 1) {
-      dataFile = new File(args[0]);
-      serverPath = DEFAULT_SERVER_PATH;
-    } else if (args.length == 0) {
-      dataFile = new File(DEFAULT_PATH_DATA_FILE);
-      serverPath = DEFAULT_SERVER_PATH;
-    } else {
+    final int port;
+    if (args.length > 3) {
       throw new IllegalArgumentException(MSG_WRONG_ARGUMENT_LENGTH);
+    }
+    if (args.length >= 1) {
+      dataFile = new File(args[0]);
+    } else {
+      dataFile = new File(DEFAULT_PATH_DATA_FILE);
+    }
+    if (args.length >= 2) {
+      port = Integer.parseInt(args[1]);
+    } else {
+      port = DEFAULT_PORT;
+    }
+    if (args.length >= 3) {
+      serverPath = args[2];
+    } else {
+      serverPath = DEFAULT_SERVER_PATH;
     }
 
     WebDemoServer server =
-        new WebDemoServer(DEFAULT_PORT, dataFile, serverPath);
+        new WebDemoServer(port, dataFile, serverPath);
     server.runService();
   }
 
