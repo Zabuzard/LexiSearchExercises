@@ -81,7 +81,8 @@ public final class WebDemoServer {
    */
   private static final String MSG_WRONG_ARGUMENT_LENGTH =
       "Wrong length of arguments. Two optional arguments are allowed: "
-          + "<dataFile> <serverPath>. See the documentation for more info.";
+          + "<dataFile> <port> <serverPath>. "
+          + "See the documentation for more info.";
   /**
    * The keyword which every ordinary GET request begins with.
    */
@@ -130,8 +131,7 @@ public final class WebDemoServer {
       serverPath = DEFAULT_SERVER_PATH;
     }
 
-    WebDemoServer server =
-        new WebDemoServer(port, dataFile, serverPath);
+    WebDemoServer server = new WebDemoServer(port, dataFile, serverPath);
     server.runService();
   }
 
