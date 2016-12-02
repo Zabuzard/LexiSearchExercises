@@ -42,7 +42,7 @@ public final class WebDemoServer {
    */
   private static final String EMPTY_ANSWER = "";
   /**
-   * The path from where file serving is allowed. Every file which path is not
+   * The path from where file serving is allowed. Every file whose path is not
    * included included in this one must not get served.
    */
   private static final String FILE_SERVING_PATH = "res/examples/webdemo";
@@ -75,10 +75,9 @@ public final class WebDemoServer {
    */
   private static final String ORDINARY_GET_REQUEST = "GET";
   /**
-   * Path to the default sample file.
+   * Path to the data file.
    */
-  private static final String PATH_DEFAULT_EXAMPLE_FILE =
-      "res/examples/cities.txt";
+  private static final String PATH_DATA_FILE = "res/examples/cities.txt";
   /**
    * The HTTP GET-parameter that contains the request data.
    */
@@ -145,7 +144,7 @@ public final class WebDemoServer {
     System.out.println("Initializing service...");
     // Loading data from file
     System.out.println("\tLoading file...");
-    final File dataFile = new File(PATH_DEFAULT_EXAMPLE_FILE);
+    final File dataFile = new File(PATH_DATA_FILE);
     // Creating data structure
     System.out.println("\tFetching cities...");
     final int qParameter = 3;
@@ -209,7 +208,6 @@ public final class WebDemoServer {
           serveOrdinaryGetRequest(request, clientSocket);
         }
       }
-
       // Unknown type
       if (!requestTypeFound) {
         sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.NOT_IMPLEMENTED,
@@ -388,6 +386,7 @@ public final class WebDemoServer {
 
     final File file = new File(FILE_SERVING_PATH, requestData);
     if (file.exists() && !file.isDirectory()) {
+      // Limit allowed files to the file serving path
       final Path filePath = Paths.get(file.toURI()).toAbsolutePath();
       if (filePath.startsWith(mFileServingPath) && file.canRead()
           && !file.isHidden()) {
