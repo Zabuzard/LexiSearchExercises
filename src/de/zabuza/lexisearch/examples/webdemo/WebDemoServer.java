@@ -34,18 +34,23 @@ import de.zabuza.lexisearch.ranking.PostingBeforeRecordRanking;
  */
 public final class WebDemoServer {
   /**
+   * Path to the data file.
+   */
+  private static final String DEFAULT_PATH_DATA_FILE =
+      "res/examples/cities_small.tsv";
+  /**
    * The default port to use.
    */
   private static final int DEFAULT_PORT = 8888;
   /**
-   * Constant for an empty answer text.
-   */
-  private static final String EMPTY_ANSWER = "";
-  /**
    * The path from where file serving is allowed. Every file whose path is not
    * included included in this one must not get served.
    */
-  private static final String FILE_SERVING_PATH = "res/examples/webdemo";
+  private static final String DEFAULT_SERVER_PATH = "res/examples/webdemo";
+  /**
+   * Constant for an empty answer text.
+   */
+  private static final String EMPTY_ANSWER = "";
   /**
    * The keyword which every GET request ends with.
    */
@@ -71,13 +76,16 @@ public final class WebDemoServer {
    */
   private static final int MAX_AMOUNT_QUERY_MATCHES = 10;
   /**
+   * Message shown when using the {@link #main(String[])} with the wrong amount
+   * of arguments.
+   */
+  private static final String MSG_WRONG_ARGUMENT_LENGTH =
+      "Wrong length of arguments. Two optional arguments are allowed: "
+          + "<dataFile> <serverPath>. See the documentation for more info.";
+  /**
    * The keyword which every ordinary GET request begins with.
    */
   private static final String ORDINARY_GET_REQUEST = "GET";
-  /**
-   * Path to the data file.
-   */
-  private static final String PATH_DATA_FILE = "res/examples/cities.txt";
   /**
    * The HTTP GET-parameter that contains the request data.
    */
@@ -91,12 +99,31 @@ public final class WebDemoServer {
    * Starts the server of the web application.
    * 
    * @param args
-   *          Not supported
+   *          The first argument specifies the path to the file to use, else a
+   *          sample file gets used. The second argument specifies the path from
+   *          where file serving is allowed. Every file whose path is not
+   *          included included in this one must not get served.
    * @throws IOException
    *           If an I/O-exception occurred
    */
   public static void main(final String[] args) throws IOException {
-    WebDemoServer server = new WebDemoServer(DEFAULT_PORT);
+    final File dataFile;
+    final String serverPath;
+    if (args.length == 2) {
+      dataFile = new File(args[0]);
+      serverPath = args[1];
+    } else if (args.length == 1) {
+      dataFile = new File(args[0]);
+      serverPath = DEFAULT_SERVER_PATH;
+    } else if (args.length == 0) {
+      dataFile = new File(DEFAULT_PATH_DATA_FILE);
+      serverPath = DEFAULT_SERVER_PATH;
+    } else {
+      throw new IllegalArgumentException(MSG_WRONG_ARGUMENT_LENGTH);
+    }
+
+    WebDemoServer server =
+        new WebDemoServer(DEFAULT_PORT, dataFile, serverPath);
     server.runService();
   }
 
@@ -132,19 +159,24 @@ public final class WebDemoServer {
    * 
    * @param port
    *          Port to use for communication
+   * @param dataFile
+   *          The file which holds all the data to search for
+   * @param serverPath
+   *          The path from where file serving is allowed. Every file whose path
+   *          is not included included in this one must not get served.
    * @throws IOException
    *           If an I/O-exception occurred
    */
-  public WebDemoServer(final int port) throws IOException {
+  public WebDemoServer(final int port, final File dataFile,
+      final String serverPath) throws IOException {
     mPort = port;
     mRequestId = 0;
     mServerSocket = new ServerSocket(mPort);
-    mFileServingPath = Paths.get(FILE_SERVING_PATH).toAbsolutePath();
+    mFileServingPath = Paths.get(serverPath).toAbsolutePath();
 
     System.out.println("Initializing service...");
     // Loading data from file
     System.out.println("\tLoading file...");
-    final File dataFile = new File(PATH_DATA_FILE);
     // Creating data structure
     System.out.println("\tFetching cities...");
     final int qParameter = 3;
@@ -358,7 +390,7 @@ public final class WebDemoServer {
   }
 
   /**
-   * Serves an ordinary GET request
+   * Serves an ordinary GET request.
    * 
    * @param request
    *          The request to serve
@@ -384,7 +416,7 @@ public final class WebDemoServer {
     // Strip the first '/' for a valid directory
     requestData = requestData.substring(1);
 
-    final File file = new File(FILE_SERVING_PATH, requestData);
+    final File file = new File(mFileServingPath.toString(), requestData);
     if (file.exists() && !file.isDirectory()) {
       // Limit allowed files to the file serving path
       final Path filePath = Paths.get(file.toURI()).toAbsolutePath();
@@ -427,7 +459,7 @@ public final class WebDemoServer {
   }
 
   /**
-   * Serves an query GET request
+   * Serves an query GET request.
    * 
    * @param request
    *          The request to serve

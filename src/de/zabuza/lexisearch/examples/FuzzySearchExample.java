@@ -40,7 +40,6 @@ public final class FuzzySearchExample {
    */
   private static final String MSG_WRONG_ARGUMENT_LENGTH =
       "Wrong length of arguments.";
-
   /**
    * Path to the default sample file.
    */
