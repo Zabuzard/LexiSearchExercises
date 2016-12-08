@@ -52,6 +52,14 @@ public final class WebDemoServer {
    */
   private static final String EMPTY_ANSWER = "";
   /**
+   * The path where error files are located.
+   */
+  private static final String ERROR_FILES_PATH = "errors";
+  /**
+   * Name of the query callback function to call for query results.
+   */
+  private static final String FNC_QUERY_CALLBACK = "queryServerCallback";
+  /**
    * The keyword which every GET request ends with.
    */
   private static final String GET_REQUEST_END = "HTTP";
@@ -59,6 +67,10 @@ public final class WebDemoServer {
    * The text used in HTTP GET requests to separate parameters.
    */
   private static final String GET_SEPARATOR = "&";
+  /**
+   * The index file which should get served if no file is requested.
+   */
+  private static final String INDEX_FILE = "search.html";
   /**
    * Text used in Java-Script to indicate the begin of an array.
    */
@@ -222,8 +234,7 @@ public final class WebDemoServer {
 
       // Reject the request if empty
       if (request == null || request.trim().length() <= 0) {
-        sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.BAD_REQUEST,
-            clientSocket);
+        sendError(EHttpStatus.BAD_REQUEST, clientSocket);
         br.close();
         clientSocket.close();
         continue;
@@ -250,8 +261,7 @@ public final class WebDemoServer {
       }
       // Unknown type
       if (!requestTypeFound) {
-        sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.NOT_IMPLEMENTED,
-            clientSocket);
+        sendError(EHttpStatus.NOT_IMPLEMENTED, clientSocket);
       }
 
       br.close();
@@ -293,6 +303,63 @@ public final class WebDemoServer {
       return EFileExtension.JPG;
     } else {
       return EFileExtension.UNKNOWN;
+    }
+  }
+
+  /**
+   * Sends an error answer with the given status to the given client by using
+   * the HTTP/1.0 protocol.
+   * 
+   * @param status
+   *          The status of the error answer to send
+   * @param client
+   *          Client to send to
+   * @throws IOException
+   */
+  private void sendError(EHttpStatus status, final Socket client)
+      throws IOException {
+    // Search for an error file
+    final File errorFiles =
+        new File(mFileServingPath.toString(), ERROR_FILES_PATH);
+    final File file = new File(errorFiles, status + ".html");
+    if (file.exists() && !file.isDirectory()) {
+      // Limit allowed files to the file serving path
+      final Path filePath = Paths.get(file.toURI()).toAbsolutePath();
+      if (filePath.startsWith(mFileServingPath) && file.canRead()
+          && !file.isHidden()) {
+        // Extract file extension and choose content type
+        final EHttpContentType contentType;
+        final EFileExtension fileExtension = getFileExtension(file);
+        if (fileExtension == EFileExtension.TEXT) {
+          contentType = EHttpContentType.TEXT;
+        } else if (fileExtension == EFileExtension.HTML) {
+          contentType = EHttpContentType.HTML;
+        } else if (fileExtension == EFileExtension.CSS) {
+          contentType = EHttpContentType.CSS;
+        } else if (fileExtension == EFileExtension.JS) {
+          contentType = EHttpContentType.JS;
+        } else if (fileExtension == EFileExtension.PNG) {
+          contentType = EHttpContentType.PNG;
+        } else if (fileExtension == EFileExtension.JPG) {
+          contentType = EHttpContentType.JPG;
+        } else {
+          sendHttpAnswer(EHttpContentType.TEXT, status, client);
+          return;
+        }
+
+        // Serve the error file
+        final byte[] contentAsBytes = Files.readAllBytes(filePath);
+        final String content = new String(contentAsBytes, TEXT_CHARSET);
+
+        // Send the answer
+        sendHttpAnswer(content, contentType, status, client);
+      } else {
+        sendHttpAnswer(EHttpContentType.TEXT, status, client);
+        return;
+      }
+    } else {
+      sendHttpAnswer(EHttpContentType.TEXT, status, client);
+      return;
     }
   }
 
@@ -340,6 +407,8 @@ public final class WebDemoServer {
       contentTypeText = "text/css";
     } else if (contentType == EHttpContentType.JS) {
       contentTypeText = "application/javascript";
+    } else if (contentType == EHttpContentType.JSON) {
+      contentTypeText = "application/json";
     } else if (contentType == EHttpContentType.PNG) {
       contentTypeText = "image/png";
     } else if (contentType == EHttpContentType.JPG) {
@@ -415,7 +484,7 @@ public final class WebDemoServer {
     int requestDataEndIndex =
         request.indexOf(GET_REQUEST_END, requestDataBeginIndex);
     if (requestDataEndIndex < 0) {
-      sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.BAD_REQUEST, client);
+      sendError(EHttpStatus.BAD_REQUEST, client);
       return;
     }
     String requestData =
@@ -423,6 +492,11 @@ public final class WebDemoServer {
     requestData = requestData.trim();
     // Strip the first '/' for a valid directory
     requestData = requestData.substring(1);
+
+    // If request is empty or the index, serve the index file
+    if (requestData.length() <= 0 || requestData.equals("index.html")) {
+      requestData = INDEX_FILE;
+    }
 
     final File file = new File(mFileServingPath.toString(), requestData);
     if (file.exists() && !file.isDirectory()) {
@@ -446,7 +520,7 @@ public final class WebDemoServer {
         } else if (fileExtension == EFileExtension.JPG) {
           contentType = EHttpContentType.JPG;
         } else {
-          sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.FORBIDDEN, client);
+          sendError(EHttpStatus.FORBIDDEN, client);
           return;
         }
 
@@ -457,11 +531,11 @@ public final class WebDemoServer {
         // Send the answer
         sendHttpAnswer(content, contentType, EHttpStatus.OK, client);
       } else {
-        sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.FORBIDDEN, client);
+        sendError(EHttpStatus.FORBIDDEN, client);
         return;
       }
     } else {
-      sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.NOT_FOUND, client);
+      sendError(EHttpStatus.NOT_FOUND, client);
       return;
     }
   }
@@ -487,7 +561,7 @@ public final class WebDemoServer {
       requestDataEndIndex =
           request.indexOf(GET_REQUEST_END, requestDataBeginIndex);
       if (requestDataEndIndex < 0) {
-        sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.BAD_REQUEST, client);
+        sendError(EHttpStatus.BAD_REQUEST, client);
         return;
       }
     }
@@ -498,7 +572,7 @@ public final class WebDemoServer {
     final String searchKeyword =
         URLDecoder.decode(requestData.trim(), TEXT_CHARSET.displayName());
     if (searchKeyword.length() <= 0) {
-      sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.NO_CONTENT, client);
+      sendError(EHttpStatus.NO_CONTENT, client);
       return;
     }
 
@@ -537,13 +611,13 @@ public final class WebDemoServer {
 
       // Build the answer text as jsonp which calls
       // a callback function
-      final String jsonp =
-          "queryServerCallback({" + textWrapper + "matches" + textWrapper + ": "
-              + JS_ARRAY_BEGIN + matchesArray.toString() + JS_ARRAY_END + "})";
+      final String jsonp = FNC_QUERY_CALLBACK + "({" + textWrapper + "matches"
+          + textWrapper + ": " + JS_ARRAY_BEGIN + matchesArray.toString()
+          + JS_ARRAY_END + "})";
       // Send the answer
       sendHttpAnswer(jsonp, EHttpContentType.TEXT, EHttpStatus.OK, client);
     } else {
-      sendHttpAnswer(EHttpContentType.TEXT, EHttpStatus.NO_CONTENT, client);
+      sendError(EHttpStatus.NO_CONTENT, client);
       return;
     }
   }

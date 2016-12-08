@@ -20,8 +20,11 @@ public enum EHttpContentType {
         * Type used for javascript files.
         */
   JS, /**
-       * Type used for PNG image files.
+       * Type used for json objects.
        */
+  JSON, /**
+         * Type used for PNG image files.
+         */
   PNG, /**
         * Type for regular text files.
         */

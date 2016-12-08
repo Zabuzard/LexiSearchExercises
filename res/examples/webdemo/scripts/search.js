@@ -57,7 +57,7 @@ function initMap() {
  * which performs a fuzzy prefix search.
  */
 function queryRoutine() {
-	var query = $("#query").val();
+	var query = $('#query').val();
 	
 	// Clear dropdown if query is empty
 	if (!query.trim().length) {
@@ -67,6 +67,9 @@ function queryRoutine() {
     var host = window.location.host;
     var url = "http://" + host + "/?q=" + query;
 	$.ajax(url, {dataType: 'jsonp'});
+	
+	// Save the query in a cookie
+	Cookies.set('lastQuery', query);
 }
 
 /**
@@ -160,4 +163,5 @@ $(document).ready(function() {
 	  queryRoutine();
   });
   $('#mapCanvas').hide();
+  $('#query').val(Cookies.get('lastQuery'));
 });
