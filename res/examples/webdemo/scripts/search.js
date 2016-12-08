@@ -27,6 +27,37 @@ var isMapHidden = true;
  * Holds current data of computed matches.
  */
 var matchesData;
+/**
+ * Holds entity data for escaping html characters.
+ */
+var entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;',
+  "/": '&#x2F;'
+};
+
+/**
+ * Escapes sensitive html characters to their
+ * corresponding html entities.
+ */
+function escapeHtml(text) {
+	return String(text).replace(/[&<>"'\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
+/**
+ * Escapes text limiting characters by adding
+ * escaping flags.
+ */
+function escapeText(text) {
+	return String(text).replace(/["']/g, function (s) {
+		return '\\' + s;
+	});
+}
 
 /**
  * Callback method which is used by the Google Maps API
@@ -126,8 +157,9 @@ function buildDropDown(matches) {
 	var textToAppend = '<ul class="suggestionList">';
 	for (var i = 0; i < matches.length; i++) {
 		var match = matches[i];
-		textToAppend += '<li class="suggestion" onclick="decidedForSuggestion(\'' + match[0] + '\')">';
-		textToAppend += match[0];
+		textToAppend += '<li class="suggestion" onclick="decidedForSuggestion(\''
+			+ escapeHtml(escapeText(match[0])) + '\')">';
+		textToAppend += escapeHtml(match[0]);
 		textToAppend += '</li>';
 	}
 	textToAppend += '</ul>';
@@ -154,7 +186,7 @@ function decidedForSuggestion(matchName) {
 	$('#query').val(matchEntry[0]);
 	
 	// Display location in map
-	displayPosition(matchEntry[1], matchEntry[2]);
+	displayPosition(escapeHtml(matchEntry[1]), escapeHtml(matchEntry[2]));
 }
 
 // Hook the routine to an event
