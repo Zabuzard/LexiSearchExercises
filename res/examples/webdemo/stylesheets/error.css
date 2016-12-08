@@ -1,0 +1,51 @@
+@media screen {
+	.page-header {
+		padding-top: 2rem;
+		padding-bottom: 1rem;
+	}
+}
+
+a {
+	color: #FF6262;
+}
+
+.btn {
+	margin-bottom: 0;
+}
+
+.page-header {
+	background-color: #FF6262;
+	background-image: linear-gradient(120deg, #11467B, #FF6262);
+}
+
+.project-tagline {
+	margin-bottom: 1rem;
+}
+
+.main-content h1,
+.main-content h2,
+.main-content h3,
+.main-content h4,
+.main-content h5,
+.main-content h6 {
+	color: #FF6262;
+}
+
+.contentTable {
+	margin: 0 auto;
+	width: 100%;
+}
+
+.contentCol {
+	width: 40%;
+}
+
+.sideCol {
+	width: 30%;
+}
+
+.errorMessage {
+	text-align: center;
+	font-weight: bold;
+	font-size: xx-large;
+}
