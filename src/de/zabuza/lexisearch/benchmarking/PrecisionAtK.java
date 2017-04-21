@@ -36,7 +36,7 @@ public final class PrecisionAtK<K> implements IMeasure<K> {
    *          The length of the list to consider
    */
   public PrecisionAtK(final int kParameter) {
-    mKParameter = kParameter;
+    this.mKParameter = kParameter;
   }
 
   /*
@@ -55,10 +55,10 @@ public final class PrecisionAtK<K> implements IMeasure<K> {
 
     int counter = 0;
     int amountOfRelevantRecords = 0;
-    while (postingsIter.hasNext() && counter < mKParameter) {
+    while (postingsIter.hasNext() && counter < this.mKParameter) {
       final int currentRecordId = postingsIter.next().getId();
       if (relevantRecords != null
-          && relevantRecords.contains(currentRecordId)) {
+          && relevantRecords.contains(Integer.valueOf(currentRecordId))) {
         amountOfRelevantRecords++;
       }
 
@@ -83,7 +83,7 @@ public final class PrecisionAtK<K> implements IMeasure<K> {
    *         consider
    */
   public int getKParameter() {
-    return mKParameter;
+    return this.mKParameter;
   }
 
   /*
@@ -93,7 +93,7 @@ public final class PrecisionAtK<K> implements IMeasure<K> {
    */
   @Override
   public String getMeasureName() {
-    return "P@" + mKParameter;
+    return "P@" + this.mKParameter;
   }
 
 }

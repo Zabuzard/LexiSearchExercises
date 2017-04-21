@@ -16,6 +16,7 @@ public final class ScoreComparatorTest {
   /**
    * Test method for {@link ScoreComparator#compare(Posting, Posting)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCompare() {
     final Posting posting = new Posting(1, 1, 1);

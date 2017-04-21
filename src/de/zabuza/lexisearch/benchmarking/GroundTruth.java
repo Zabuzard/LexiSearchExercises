@@ -48,11 +48,12 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
   public static GroundTruth<String> buildFromTextFile(final File textFile,
       final Charset charset, final String contentSeparator,
       final String dataSeparator) throws IOException {
-    final Stream<String> stream = Files.lines(textFile.toPath(), charset);
-    final GroundTruth<String> groundTruth = buildFromTextIterator(
-        stream.iterator(), contentSeparator, dataSeparator);
-    stream.close();
-    return groundTruth;
+    try (
+        final Stream<String> stream = Files.lines(textFile.toPath(), charset)) {
+      final GroundTruth<String> groundTruth = buildFromTextIterator(
+          stream.iterator(), contentSeparator, dataSeparator);
+      return groundTruth;
+    }
   }
 
   /**
@@ -91,7 +92,8 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
           new ArrayList<>(relevantRecordsUnparsed.length);
       for (int i = 0; i < relevantRecordsUnparsed.length; i++) {
         // We need to subtract one as our indices start with zero and not one
-        relevantRecords.add(Integer.parseInt(relevantRecordsUnparsed[i]) - 1);
+        relevantRecords.add(
+            Integer.valueOf(Integer.parseInt(relevantRecordsUnparsed[i]) - 1));
       }
 
       groundTruth.addRelevantRecords(keys, relevantRecords);
@@ -110,7 +112,7 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
    * Creates a new empty ground truth object.
    */
   public GroundTruth() {
-    mKeysToRelevantRecords = new HashMap<>();
+    this.mKeysToRelevantRecords = new HashMap<>();
   }
 
   /**
@@ -123,12 +125,12 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
    */
   public void addRelevantRecords(final Collection<K> keys,
       final Collection<Integer> records) {
-    HashSet<Integer> relevantRecords = mKeysToRelevantRecords.get(keys);
+    HashSet<Integer> relevantRecords = this.mKeysToRelevantRecords.get(keys);
     if (relevantRecords == null) {
       relevantRecords = new HashSet<>();
     }
     relevantRecords.addAll(records);
-    mKeysToRelevantRecords.put(keys, relevantRecords);
+    this.mKeysToRelevantRecords.put(keys, relevantRecords);
   }
 
   /*
@@ -139,7 +141,7 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
    */
   @Override
   public Collection<Collection<K>> getKeysForRelevantRecords() {
-    return mKeysToRelevantRecords.keySet();
+    return this.mKeysToRelevantRecords.keySet();
   }
 
   /*
@@ -151,7 +153,7 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
    */
   @Override
   public Collection<Integer> getRelevantRecords(final Collection<K> keys) {
-    return mKeysToRelevantRecords.get(keys);
+    return this.mKeysToRelevantRecords.get(keys);
   }
 
   /*
@@ -163,7 +165,7 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
    */
   @Override
   public boolean hasRelevantRecords(final Collection<K> keys) {
-    return mKeysToRelevantRecords.containsKey(keys);
+    return this.mKeysToRelevantRecords.containsKey(keys);
   }
 
 }

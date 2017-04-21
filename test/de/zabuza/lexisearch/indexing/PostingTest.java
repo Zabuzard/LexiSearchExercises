@@ -14,6 +14,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#compareTo(Posting)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCompareTo() {
     final int recordId = 1;
@@ -28,6 +29,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#equals(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testEqualsObject() {
     final int recordId = 1;
@@ -44,6 +46,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#getId()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetId() {
     final int recordId = 1;
@@ -58,6 +61,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#getScore()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetScore() {
     final int recordId = 1;
@@ -77,6 +81,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#getTermFrequency()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetTermFrequency() {
     final int recordId = 1;
@@ -95,6 +100,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#hashCode()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testHashCode() {
     final int recordId = 1;
@@ -111,6 +117,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#increaseTermFrequency()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIncreaseTermFrequency() {
     final int recordId = 1;
@@ -129,6 +136,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#Posting(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPostingInt() {
     final int recordId = 1;
@@ -151,6 +159,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#Posting(int, int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPostingIntInt() {
     final int recordId = 1;
@@ -175,6 +184,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#Posting(int, int, double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPostingIntIntDouble() {
     final int recordId = 1;
@@ -201,6 +211,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#setScore(double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetScore() {
     final int recordId = 1;
@@ -219,6 +230,7 @@ public final class PostingTest {
   /**
    * Test method for {@link Posting#setTermFrequency(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetTermFrequency() {
     final int recordId = 1;

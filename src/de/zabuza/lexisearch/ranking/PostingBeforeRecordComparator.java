@@ -35,7 +35,7 @@ public final class PostingBeforeRecordComparator<E extends IKeyRecord<K>, K>
    *          to
    */
   public PostingBeforeRecordComparator(final IKeyRecordSet<E, K> keyRecords) {
-    mKeyRecords = keyRecords;
+    this.mKeyRecords = keyRecords;
   }
 
   /*
@@ -50,24 +50,24 @@ public final class PostingBeforeRecordComparator<E extends IKeyRecord<K>, K>
     if (firstRelation != 0) {
       // The posting score is already different
       return firstRelation;
-    } else {
-      // Compare by the record score descending, if present
-      final E firstRecord = mKeyRecords.getKeyRecordById(o1.getId());
-      final E secondRecord = mKeyRecords.getKeyRecordById(o2.getId());
-      if (firstRecord instanceof IRecordScoreProvider
-          && secondRecord instanceof IRecordScoreProvider) {
-        final IRecordScoreProvider firstProvider =
-            (IRecordScoreProvider) firstRecord;
-        final IRecordScoreProvider secondProvider =
-            (IRecordScoreProvider) secondRecord;
-        // The order needs to be descending so we compare reversed
-        return Integer.compare(secondProvider.getScore(),
-            firstProvider.getScore());
-      } else {
-        // Record score is not present
-        return firstRelation;
-      }
     }
+
+    // Compare by the record score descending, if present
+    final E firstRecord = this.mKeyRecords.getKeyRecordById(o1.getId());
+    final E secondRecord = this.mKeyRecords.getKeyRecordById(o2.getId());
+    if (firstRecord instanceof IRecordScoreProvider
+        && secondRecord instanceof IRecordScoreProvider) {
+      final IRecordScoreProvider firstProvider =
+          (IRecordScoreProvider) firstRecord;
+      final IRecordScoreProvider secondProvider =
+          (IRecordScoreProvider) secondRecord;
+      // The order needs to be descending so we compare reversed
+      return Integer.compare(secondProvider.getScore(),
+          firstProvider.getScore());
+    }
+
+    // Record score is not present
+    return firstRelation;
   }
 
   /**
@@ -77,7 +77,7 @@ public final class PostingBeforeRecordComparator<E extends IKeyRecord<K>, K>
    *          The set of key records to set
    */
   public void setKeyRecords(final IKeyRecordSet<E, K> keyRecords) {
-    mKeyRecords = keyRecords;
+    this.mKeyRecords = keyRecords;
   }
 
 }

@@ -42,8 +42,7 @@ public final class AveragePrecision<K> implements IMeasure<K> {
         && amountOfRelevantRecordsFound < amountOfRelevantRecordsTotal) {
       counter++;
       final int currentRecordId = postingsIter.next().getId();
-      if (relevantRecords != null
-          && relevantRecords.contains(currentRecordId)) {
+      if (relevantRecords.contains(Integer.valueOf(currentRecordId))) {
         amountOfRelevantRecordsFound++;
         final PrecisionAtK<K> precisionAtK = new PrecisionAtK<>(counter);
         totalPrecision +=

@@ -16,6 +16,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#addPosting(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddPostingInt() {
     final InvertedList invertedList = new InvertedList();
@@ -34,6 +35,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#addPosting(int, int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddPostingIntInt() {
     final InvertedList invertedList = new InvertedList();
@@ -52,6 +54,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#addPosting(int, int, double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddPostingIntIntDouble() {
     final InvertedList invertedList = new InvertedList();
@@ -70,6 +73,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#containsPosting(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContainsPosting() {
     final InvertedList invertedList = new InvertedList();
@@ -90,6 +94,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#getPostings()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetPostings() {
     final InvertedList invertedList = new InvertedList();
@@ -111,6 +116,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#getSize()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetSize() {
     final InvertedList invertedList = new InvertedList();
@@ -129,6 +135,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#InvertedList()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testInvertedList() {
     final InvertedList invertedList = new InvertedList();
@@ -147,6 +154,7 @@ public final class InvertedListTest {
   /**
    * Test method for {@link InvertedList#isEmpty()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIsEmpty() {
     final InvertedList invertedList = new InvertedList();

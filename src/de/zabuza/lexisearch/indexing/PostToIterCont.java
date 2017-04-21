@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 /**
  * Container which stores a posting and the remaining postings that belong to a
- * given {@link AInvertedList}.
+ * given {@link IInvertedList}.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
  *
@@ -22,7 +22,7 @@ public final class PostToIterCont implements Comparable<PostToIterCont> {
 
   /**
    * Creates a new container which stores a given posting and the remaining
-   * postings that belong to a given {@link AInvertedList}.
+   * postings that belong to a given {@link IInvertedList}.
    * 
    * @param posting
    *          The posting to store
@@ -31,8 +31,8 @@ public final class PostToIterCont implements Comparable<PostToIterCont> {
    */
   public PostToIterCont(final Posting posting,
       final Iterator<Posting> remainingPostings) {
-    mPosting = posting;
-    mRemainingPostings = remainingPostings;
+    this.mPosting = posting;
+    this.mRemainingPostings = remainingPostings;
   }
 
   /*
@@ -51,7 +51,7 @@ public final class PostToIterCont implements Comparable<PostToIterCont> {
    * @return The posting of this container
    */
   public Posting getPosting() {
-    return mPosting;
+    return this.mPosting;
   }
 
   /**
@@ -60,7 +60,7 @@ public final class PostToIterCont implements Comparable<PostToIterCont> {
    * @return The record id of this container
    */
   public int getRecordId() {
-    return mPosting.getId();
+    return this.mPosting.getId();
   }
 
   /**
@@ -69,7 +69,7 @@ public final class PostToIterCont implements Comparable<PostToIterCont> {
    * @return The iterator over the remaining postings of this container
    */
   public Iterator<Posting> getRemainingPostings() {
-    return mRemainingPostings;
+    return this.mRemainingPostings;
   }
 
 }

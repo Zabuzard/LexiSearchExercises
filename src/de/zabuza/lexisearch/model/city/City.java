@@ -72,9 +72,8 @@ public final class City implements ICity {
           Float.parseFloat(content[TEXT_FORMAT_LAT_INDEX]),
           Float.parseFloat(content[TEXT_FORMAT_LONG_INDEX]),
           Integer.parseInt(content[TEXT_FORMAT_SCORE_INDEX]), keyProvider);
-    } else {
-      throw new IllegalArgumentException(MSG_WRONG_TEXT_FORMAT);
     }
+    throw new IllegalArgumentException(MSG_WRONG_TEXT_FORMAT);
   }
 
   /**
@@ -142,12 +141,12 @@ public final class City implements ICity {
   public City(final int id, final String name, final float latitude,
       final float longitude, final int relevanceScore,
       final IKeyProvider<String, String> keyProvider) {
-    mId = id;
-    mName = name;
-    mLatitude = latitude;
-    mLongitude = longitude;
-    mRelevanceScore = relevanceScore;
-    mKeyProvider = keyProvider;
+    this.mId = id;
+    this.mName = name;
+    this.mLatitude = latitude;
+    this.mLongitude = longitude;
+    this.mRelevanceScore = relevanceScore;
+    this.mKeyProvider = keyProvider;
   }
 
   /*
@@ -157,7 +156,7 @@ public final class City implements ICity {
    */
   @Override
   public int getId() {
-    return mId;
+    return this.mId;
   }
 
   /*
@@ -167,7 +166,7 @@ public final class City implements ICity {
    */
   @Override
   public String[] getKeys() {
-    return mKeyProvider.getKeys(getName());
+    return this.mKeyProvider.getKeys(getName());
   }
 
   /*
@@ -177,7 +176,7 @@ public final class City implements ICity {
    */
   @Override
   public float getLatitude() {
-    return mLatitude;
+    return this.mLatitude;
   }
 
   /*
@@ -187,7 +186,7 @@ public final class City implements ICity {
    */
   @Override
   public float getLongitude() {
-    return mLongitude;
+    return this.mLongitude;
   }
 
   /*
@@ -197,7 +196,7 @@ public final class City implements ICity {
    */
   @Override
   public String getName() {
-    return mName;
+    return this.mName;
   }
 
   /*
@@ -217,7 +216,7 @@ public final class City implements ICity {
    */
   @Override
   public int getScore() {
-    return mRelevanceScore;
+    return this.mRelevanceScore;
   }
 
   /*
@@ -227,7 +226,7 @@ public final class City implements ICity {
    */
   @Override
   public int getSize() {
-    return mKeyProvider.getSize(getName());
+    return this.mKeyProvider.getSize(getName());
   }
 
 }

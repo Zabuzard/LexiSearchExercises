@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IKeyRecord;
+import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
 import de.zabuza.lexisearch.model.city.City;
@@ -21,6 +22,7 @@ public final class PostingBeforeRecordComparatorTest {
    * Test method for
    * {@link PostingBeforeRecordComparator#compare(Posting, Posting)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCompare() {
     final QGramProvider provider = new QGramProvider(3);
@@ -47,8 +49,10 @@ public final class PostingBeforeRecordComparatorTest {
 
   /**
    * Test method for
-   * {@link PostingBeforeRecordComparator#PostingBeforeRecordComparator()}.
+   * {@link PostingBeforeRecordComparator#PostingBeforeRecordComparator(IKeyRecordSet)}
+   * .
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPostingBeforeRecordComparator() {
     final QGramProvider provider = new QGramProvider(3);
@@ -77,6 +81,7 @@ public final class PostingBeforeRecordComparatorTest {
    * Test method for
    * {@link PostingBeforeRecordComparator#setKeyRecords(IKeyRecordSet)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetKeyRecords() {
     final QGramProvider provider = new QGramProvider(3);

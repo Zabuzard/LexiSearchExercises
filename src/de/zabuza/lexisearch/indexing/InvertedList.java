@@ -3,10 +3,11 @@ package de.zabuza.lexisearch.indexing;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Implementation of {@link AInvertedList} which holds its records sorted at all
+ * Implementation of {@link IInvertedList} which holds its records sorted at all
  * time by using a {@link SortedSet}.
  * 
  * @author Zabuza {@literal <zabuza.dev@gmail.com>}
@@ -37,8 +38,8 @@ public class InvertedList implements IInvertedList {
    *          The set to store postings in which must be empty
    */
   protected InvertedList(final Set<Posting> postings) {
-    mPostings = postings;
-    mIdToPosting = new HashMap<>();
+    this.mPostings = postings;
+    this.mIdToPosting = new HashMap<>();
   }
 
   /*
@@ -48,14 +49,16 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public boolean addPosting(final int recordId) {
-    final boolean isContained = mIdToPosting.containsKey(recordId);
+    final Integer recordIdAsInteger = Integer.valueOf(recordId);
+    final boolean isContained =
+        this.mIdToPosting.containsKey(recordIdAsInteger);
     if (!isContained) {
       final Posting posting = new Posting(recordId);
-      mPostings.add(posting);
-      mIdToPosting.put(recordId, posting);
+      this.mPostings.add(posting);
+      this.mIdToPosting.put(recordIdAsInteger, posting);
     } else {
       // Increase the term frequency as this element is already contained
-      final Posting posting = mIdToPosting.get(recordId);
+      final Posting posting = this.mIdToPosting.get(recordIdAsInteger);
       posting.increaseTermFrequency();
     }
     return !isContained;
@@ -68,14 +71,16 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public boolean addPosting(final int recordId, final int termFrequency) {
-    final boolean isContained = mIdToPosting.containsKey(recordId);
+    final Integer recordIdAsInteger = Integer.valueOf(recordId);
+    final boolean isContained =
+        this.mIdToPosting.containsKey(recordIdAsInteger);
     if (!isContained) {
       final Posting posting = new Posting(recordId, termFrequency);
-      mPostings.add(posting);
-      mIdToPosting.put(recordId, posting);
+      this.mPostings.add(posting);
+      this.mIdToPosting.put(recordIdAsInteger, posting);
     } else {
       // Increase the term frequency as this element is already contained
-      final Posting posting = mIdToPosting.get(recordId);
+      final Posting posting = this.mIdToPosting.get(recordIdAsInteger);
       posting.increaseTermFrequency();
     }
     return !isContained;
@@ -90,14 +95,16 @@ public class InvertedList implements IInvertedList {
   @Override
   public boolean addPosting(final int recordId, final int termFrequency,
       final double score) {
-    final boolean isContained = mIdToPosting.containsKey(recordId);
+    final Integer recordIdAsInteger = Integer.valueOf(recordId);
+    final boolean isContained =
+        this.mIdToPosting.containsKey(recordIdAsInteger);
     if (!isContained) {
       final Posting posting = new Posting(recordId, termFrequency, score);
-      mPostings.add(posting);
-      mIdToPosting.put(recordId, posting);
+      this.mPostings.add(posting);
+      this.mIdToPosting.put(recordIdAsInteger, posting);
     } else {
       // Increase the term frequency as this element is already contained
-      final Posting posting = mIdToPosting.get(recordId);
+      final Posting posting = this.mIdToPosting.get(recordIdAsInteger);
       posting.increaseTermFrequency();
     }
     return !isContained;
@@ -110,7 +117,7 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public boolean containsPosting(final int recordId) {
-    return mIdToPosting.containsKey(recordId);
+    return this.mIdToPosting.containsKey(Integer.valueOf(recordId));
   }
 
   /*
@@ -120,7 +127,7 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public Iterable<Posting> getPostings() {
-    return Collections.unmodifiableSet(mPostings);
+    return Collections.unmodifiableSet(this.mPostings);
   }
 
   /*
@@ -130,7 +137,7 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public int getSize() {
-    return mPostings.size();
+    return this.mPostings.size();
   }
 
   /*
@@ -140,7 +147,7 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public boolean isEmpty() {
-    return mPostings.isEmpty();
+    return this.mPostings.isEmpty();
   }
 
   /*
@@ -150,7 +157,7 @@ public class InvertedList implements IInvertedList {
    */
   @Override
   public String toString() {
-    return mPostings.toString();
+    return this.mPostings.toString();
   }
 
 }

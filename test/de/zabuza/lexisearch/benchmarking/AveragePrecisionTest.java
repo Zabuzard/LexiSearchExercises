@@ -1,6 +1,8 @@
 package de.zabuza.lexisearch.benchmarking;
 
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +21,7 @@ public final class AveragePrecisionTest {
    * Test method for
    * {@link AveragePrecision#evaluateRelevance(Collection, List, IGroundTruth)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testEvaluateRelevance() {
     final AveragePrecision<String> averagePrecision = new AveragePrecision<>();
@@ -28,9 +31,9 @@ public final class AveragePrecisionTest {
     query.add("first");
     query.add("query");
     final LinkedList<Integer> relevantRecords = new LinkedList<>();
-    relevantRecords.add(10);
-    relevantRecords.add(582);
-    relevantRecords.add(10003);
+    relevantRecords.add(Integer.valueOf(10));
+    relevantRecords.add(Integer.valueOf(582));
+    relevantRecords.add(Integer.valueOf(10003));
     final LinkedList<Posting> results = new LinkedList<>();
     results.add(new Posting(582));
     results.add(new Posting(17));
@@ -50,10 +53,10 @@ public final class AveragePrecisionTest {
     testQuery.add("test");
     testQuery.add("query");
     final LinkedList<Integer> testRelevantRecords = new LinkedList<>();
-    testRelevantRecords.add(10);
-    testRelevantRecords.add(582);
-    testRelevantRecords.add(877);
-    testRelevantRecords.add(10003);
+    testRelevantRecords.add(Integer.valueOf(10));
+    testRelevantRecords.add(Integer.valueOf(582));
+    testRelevantRecords.add(Integer.valueOf(877));
+    testRelevantRecords.add(Integer.valueOf(10003));
     final LinkedList<Posting> testResults = new LinkedList<>();
     testResults.add(new Posting(582));
     testResults.add(new Posting(17));

@@ -2,12 +2,14 @@ package de.zabuza.lexisearch.ranking;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IInvertedList;
+import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
@@ -25,6 +27,7 @@ public final class PostingBeforeRecordRankingTest {
   /**
    * Test method for {@link PostingBeforeRecordRanking#getInvertedIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetInvertedIndex() {
     final PostingBeforeRecordRanking<String> ranking =
@@ -49,6 +52,7 @@ public final class PostingBeforeRecordRankingTest {
   /**
    * Test method for {@link PostingBeforeRecordRanking#getKeyRecords()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeyRecords() {
     final PostingBeforeRecordRanking<String> ranking =
@@ -74,6 +78,7 @@ public final class PostingBeforeRecordRankingTest {
    * Test method for
    * {@link PostingBeforeRecordRanking#getRankingScore(Object, Posting)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRankingScore() {
     final PostingBeforeRecordRanking<String> ranking =
@@ -108,6 +113,7 @@ public final class PostingBeforeRecordRankingTest {
    * Test method for
    * {@link PostingBeforeRecordRanking#PostingBeforeRecordRanking()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPostingBeforeRecordRanking() {
     final PostingBeforeRecordRanking<String> ranking =
@@ -134,6 +140,7 @@ public final class PostingBeforeRecordRankingTest {
    * Test method for
    * {@link PostingBeforeRecordRanking#setRankingScoreToIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetRankingScoreToIndex() {
     final PostingBeforeRecordRanking<String> ranking =
@@ -176,6 +183,7 @@ public final class PostingBeforeRecordRankingTest {
    * Test method for
    * {@link PostingBeforeRecordRanking#sortPostingsByRank(List)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSortPostingsByRank() {
     // Test required by lecture
@@ -242,8 +250,11 @@ public final class PostingBeforeRecordRankingTest {
   }
 
   /**
-   * Test method for {@link PostingBeforeRecordRanking#takeSnapshot()}.
+   * Test method for
+   * {@link PostingBeforeRecordRanking#takeSnapshot(IInvertedIndex, IKeyRecordSet)}
+   * .
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testTakeSnapshot() {
     final PostingBeforeRecordRanking<String> ranking =

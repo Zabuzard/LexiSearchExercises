@@ -1,6 +1,8 @@
 package de.zabuza.lexisearch.benchmarking;
 
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +21,7 @@ public final class PrecisionAtRTest {
    * Test method for
    * {@link PrecisionAtR#evaluateRelevance(Collection, List, IGroundTruth)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testEvaluateRelevance() {
     final PrecisionAtR<String> precision = new PrecisionAtR<>();
@@ -28,9 +31,9 @@ public final class PrecisionAtRTest {
     query.add("first");
     query.add("query");
     final LinkedList<Integer> relevantRecords = new LinkedList<>();
-    relevantRecords.add(10);
-    relevantRecords.add(582);
-    relevantRecords.add(10003);
+    relevantRecords.add(Integer.valueOf(10));
+    relevantRecords.add(Integer.valueOf(582));
+    relevantRecords.add(Integer.valueOf(10003));
     final LinkedList<Posting> results = new LinkedList<>();
     results.add(new Posting(582));
     results.add(new Posting(17));

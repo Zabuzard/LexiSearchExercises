@@ -87,45 +87,46 @@ public final class FuzzySearchExample {
 
     System.out.println("Starting query service.");
     boolean stopService = false;
-    final Scanner scanner = new Scanner(System.in);
-    while (!stopService) {
-      System.out.println(">Type your query. Type an empty text to stop.");
-      final String query = scanner.nextLine().toLowerCase();
 
-      if (query.trim().isEmpty()) {
-        stopService = true;
-      } else {
-        final long queryStartTime = System.currentTimeMillis();
+    try (final Scanner scanner = new Scanner(System.in)) {
+      while (!stopService) {
+        System.out.println(">Type your query. Type an empty text to stop.");
+        final String query = scanner.nextLine().toLowerCase();
 
-        String[] keywords = query.split(KEYWORD_SEPARATOR);
-        final List<Posting> queryResults =
-            fuzzyQuery.searchOr(Arrays.asList(keywords));
+        if (query.trim().isEmpty()) {
+          stopService = true;
+        } else {
+          final long queryStartTime = System.currentTimeMillis();
 
-        final long queryEndTime = System.currentTimeMillis();
-        final long queryTime = queryEndTime - queryStartTime;
+          String[] keywords = query.split(KEYWORD_SEPARATOR);
+          final List<Posting> queryResults =
+              fuzzyQuery.searchOr(Arrays.asList(keywords));
 
-        System.out.println("Matching postings are (" + queryResults.size()
-            + "): " + queryResults);
+          final long queryEndTime = System.currentTimeMillis();
+          final long queryTime = queryEndTime - queryStartTime;
 
-        System.out.println("Some of them are:");
-        final int maximalPostingsForPreview = 5;
-        int postingsShown = 0;
-        for (final Posting posting : queryResults) {
-          final int recordId = posting.getId();
-          final ICity city = (ICity) cities.getKeyRecordById(recordId);
-          System.out.println("\t" + (int) posting.getScore() + "\t"
-              + city.getScore() + "\t" + city.getName());
+          System.out.println("Matching postings are (" + queryResults.size()
+              + "): " + queryResults);
 
-          postingsShown++;
-          if (postingsShown >= maximalPostingsForPreview) {
-            break;
+          System.out.println("Some of them are:");
+          final int maximalPostingsForPreview = 5;
+          int postingsShown = 0;
+          for (final Posting posting : queryResults) {
+            final int recordId = posting.getId();
+            final ICity city = (ICity) cities.getKeyRecordById(recordId);
+            System.out.println("\t" + (int) posting.getScore() + "\t"
+                + city.getScore() + "\t" + city.getName());
+
+            postingsShown++;
+            if (postingsShown >= maximalPostingsForPreview) {
+              break;
+            }
           }
+          System.out.println("Query took: " + queryTime + "ms");
         }
-        System.out.println("Query took: " + queryTime + "ms");
       }
     }
 
-    scanner.close();
     System.out.println("Terminated.");
   }
 

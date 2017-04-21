@@ -73,9 +73,9 @@ public final class Posting implements Comparable<Posting> {
    *          containing inverted list.
    */
   public Posting(final int id, final int termFrequency, final double score) {
-    mId = id;
-    mTermFrequency = termFrequency;
-    mScore = score;
+    this.mId = id;
+    this.mTermFrequency = termFrequency;
+    this.mScore = score;
   }
 
   /*
@@ -105,7 +105,7 @@ public final class Posting implements Comparable<Posting> {
       return false;
     }
     Posting other = (Posting) obj;
-    if (mId != other.mId) {
+    if (this.mId != other.mId) {
       return false;
     }
     return true;
@@ -117,7 +117,7 @@ public final class Posting implements Comparable<Posting> {
    * @return The id of the record belonging to this posting
    */
   public int getId() {
-    return mId;
+    return this.mId;
   }
 
   /**
@@ -127,7 +127,7 @@ public final class Posting implements Comparable<Posting> {
    * @return The score of this posting
    */
   public double getScore() {
-    return mScore;
+    return this.mScore;
   }
 
   /**
@@ -136,7 +136,7 @@ public final class Posting implements Comparable<Posting> {
    * @return The term frequency of the posting
    */
   public int getTermFrequency() {
-    return mTermFrequency;
+    return this.mTermFrequency;
   }
 
   /*
@@ -148,7 +148,7 @@ public final class Posting implements Comparable<Posting> {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + mId;
+    result = prime * result + this.mId;
     return result;
   }
 
@@ -156,7 +156,7 @@ public final class Posting implements Comparable<Posting> {
    * Increases the term frequency of this posting by one.
    */
   public void increaseTermFrequency() {
-    mTermFrequency++;
+    this.mTermFrequency++;
   }
 
   /**
@@ -167,7 +167,7 @@ public final class Posting implements Comparable<Posting> {
    *          The score to set
    */
   public void setScore(final double score) {
-    mScore = score;
+    this.mScore = score;
   }
 
   /**
@@ -177,7 +177,7 @@ public final class Posting implements Comparable<Posting> {
    *          The term frequency to set
    */
   public void setTermFrequency(final int termFrequency) {
-    mTermFrequency = termFrequency;
+    this.mTermFrequency = termFrequency;
   }
 
   /*
@@ -187,7 +187,7 @@ public final class Posting implements Comparable<Posting> {
    */
   @Override
   public String toString() {
-    return "[id=" + mId + ",tf=" + mTermFrequency + ",sc="
-        + MathUtil.formatDecimalTwo(mScore) + "]";
+    return "[id=" + this.mId + ",tf=" + this.mTermFrequency + ",sc="
+        + MathUtil.formatDecimalTwo(this.mScore) + "]";
   }
 }

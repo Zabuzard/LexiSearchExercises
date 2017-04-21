@@ -1,5 +1,7 @@
 package de.zabuza.lexisearch.indexing;
 
+import de.zabuza.lexisearch.model.document.IDocument;
+
 /**
  * Utility class for {@link IInvertedIndex}. Provides methods for building
  * indices that operate on different structures.
@@ -14,10 +16,12 @@ public final class InvertedIndexUtil {
    * {@link IKeyRecord}<tt>{@literal <String>}</tt> which can, for example, be
    * {@link IDocument}s.
    * 
+   * @param <T>
+   *          The exact type of records
    * @param wordRecords
    *          Iterable collection of word records the index should operate on
    * @return An {@link IInvertedIndex} which operates on the given collection of
-   *         {@link IWordRecord}s
+   *         {@link IKeyRecord}s
    */
   public static <T extends IKeyRecord<String>> IInvertedIndex<String>
       createFromWords(final Iterable<T> wordRecords) {

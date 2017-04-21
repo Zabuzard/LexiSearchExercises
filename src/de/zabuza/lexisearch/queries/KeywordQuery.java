@@ -13,6 +13,7 @@ import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.InvertedIndexUtil;
 import de.zabuza.lexisearch.indexing.Posting;
+import de.zabuza.lexisearch.model.document.IDocument;
 import de.zabuza.lexisearch.ranking.IRankingProvider;
 
 /**
@@ -76,12 +77,12 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
   @SuppressWarnings("unchecked")
   private KeywordQuery(final IKeyRecordSet<T, String> wordRecords,
       final Optional<IRankingProvider<String>> rankingProvider) {
-    mInvertedIndex = InvertedIndexUtil.createFromWords(wordRecords);
-    mRankingProvider = rankingProvider;
+    this.mInvertedIndex = InvertedIndexUtil.createFromWords(wordRecords);
+    this.mRankingProvider = rankingProvider;
 
-    if (mRankingProvider.isPresent()) {
-      final IRankingProvider<String> ranking = mRankingProvider.get();
-      ranking.takeSnapshot(mInvertedIndex,
+    if (this.mRankingProvider.isPresent()) {
+      final IRankingProvider<String> ranking = this.mRankingProvider.get();
+      ranking.takeSnapshot(this.mInvertedIndex,
           (IKeyRecordSet<IKeyRecord<String>, String>) wordRecords);
       ranking.setRankingScoreToIndex();
     }
@@ -117,7 +118,7 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
    *          The keywords to search for
    * @param mode
    *          The aggregation mode to use
-   * @return An {@link AInvertedList} containing all records where the keywords
+   * @return An {@link IInvertedList} containing all records where the keywords
    *         occur depending on the given {@link EAggregateMode}.
    */
   private List<Posting> searchAggregate(final Iterable<String> keys,
@@ -126,13 +127,13 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
 
     // Fetch all corresponding inverted indices
     for (final String key : keys) {
-      if (!mInvertedIndex.containsKey(key)) {
+      if (!this.mInvertedIndex.containsKey(key)) {
         if (mode == EAggregateMode.INTERSECT) {
           // If key is not contained, return an empty list
           return Collections.emptyList();
         }
       } else {
-        recordsForKeys.add(mInvertedIndex.getRecords(key));
+        recordsForKeys.add(this.mInvertedIndex.getRecords(key));
       }
     }
 
@@ -155,14 +156,14 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
 
     // Transform the result into a list
     ArrayList<Posting> resultingList =
-        new ArrayList<Posting>(resultingInvertedList.getSize());
+        new ArrayList<>(resultingInvertedList.getSize());
     for (final Posting posting : resultingInvertedList.getPostings()) {
       resultingList.add(posting);
     }
 
     // Use ranking if present
-    if (mRankingProvider.isPresent()) {
-      mRankingProvider.get().sortPostingsByRank(resultingList);
+    if (this.mRankingProvider.isPresent()) {
+      this.mRankingProvider.get().sortPostingsByRank(resultingList);
     }
 
     return resultingList;

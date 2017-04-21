@@ -14,6 +14,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#buildFromText(String, String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testBuildFromText() {
     final int id = 1;
@@ -41,6 +42,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#Document()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testDocument() {
     final Document document = new Document();
@@ -53,6 +55,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#Document(int, String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testDocumentIntString() {
     final int id = 1;
@@ -67,6 +70,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#Document(int, String, String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testDocumentIntStringString() {
     final int id = 1;
@@ -82,6 +86,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#getDescription()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetDescription() {
     final String description = "a";
@@ -97,6 +102,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#getId()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetId() {
     final int id = 1;
@@ -112,6 +118,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#getKeys()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeys() {
     final String name = "a b";
@@ -131,6 +138,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#getName()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetName() {
     final String name = "a";
@@ -146,6 +154,7 @@ public final class DocumentTest {
   /**
    * Test method for {@link Document#getRecordId()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRecordId() {
     final int id = 1;

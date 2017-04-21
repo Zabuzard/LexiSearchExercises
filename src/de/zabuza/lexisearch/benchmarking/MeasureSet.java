@@ -28,7 +28,7 @@ public final class MeasureSet<K> implements IMeasureSet<K> {
    * Creates a new empty set of measures.
    */
   public MeasureSet() {
-    mMeasures = new HashSet<>();
+    this.mMeasures = new HashSet<>();
   }
 
   /*
@@ -39,7 +39,7 @@ public final class MeasureSet<K> implements IMeasureSet<K> {
    */
   @Override
   public void addMeasure(IMeasure<K> measure) {
-    mMeasures.add(measure);
+    this.mMeasures.add(measure);
   }
 
   /*
@@ -53,10 +53,10 @@ public final class MeasureSet<K> implements IMeasureSet<K> {
   public Map<IMeasure<K>, Double> evaluateRelevance(Collection<K> keys,
       List<Posting> postings, IGroundTruth<K> groundTruth) {
     final HashMap<IMeasure<K>, Double> measureToRelevance = new HashMap<>();
-    for (final IMeasure<K> measure : mMeasures) {
+    for (final IMeasure<K> measure : this.mMeasures) {
       final double relevance =
           measure.evaluateRelevance(keys, postings, groundTruth);
-      measureToRelevance.put(measure, relevance);
+      measureToRelevance.put(measure, Double.valueOf(relevance));
     }
     return measureToRelevance;
   }
@@ -68,7 +68,7 @@ public final class MeasureSet<K> implements IMeasureSet<K> {
    */
   @Override
   public Iterable<IMeasure<K>> getMeasures() {
-    return Collections.unmodifiableSet(mMeasures);
+    return Collections.unmodifiableSet(this.mMeasures);
   }
 
 }

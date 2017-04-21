@@ -15,10 +15,9 @@ public final class PrefixLevenshteinTest {
    * Test method for
    * {@link PrefixLevenshtein#debugTableToString(String, String, int[][])}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testDebugTableToString() {
-    final PrefixLevenshtein distanceProvider = new PrefixLevenshtein();
-
     final String lineSeparator = System.lineSeparator();
     final String xHeader = "BLOED";
     final String yHeader = "DOOF";
@@ -64,12 +63,13 @@ public final class PrefixLevenshteinTest {
             + "O\t2\t2\t2\t2\t3\t4\t" + lineSeparator + "O\t3\t3\t3\t2\t3\t4\t"
             + lineSeparator + "F\t4\t4\t4\t3\t3\t4\t" + lineSeparator;
     Assert.assertEquals(resultingText,
-        distanceProvider.debugTableToString(yHeader, xHeader, table));
+        PrefixLevenshtein.debugTableToString(yHeader, xHeader, table));
   }
 
   /**
    * Test method for {@link PrefixLevenshtein#distance(String, String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testDistance() {
     final PrefixLevenshtein distanceProvider = new PrefixLevenshtein();
@@ -85,6 +85,7 @@ public final class PrefixLevenshteinTest {
    * Test method for
    * {@link PrefixLevenshtein#estimatedDistance(String, String, int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testEstimatedDistance() {
     final PrefixLevenshtein distanceProvider = new PrefixLevenshtein();

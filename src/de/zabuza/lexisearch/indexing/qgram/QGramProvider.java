@@ -79,8 +79,8 @@ public final class QGramProvider implements IKeyProvider<String, String> {
    *          The character to use for padding
    */
   public QGramProvider(final int qParameter, final char padding) {
-    mQParameter = qParameter;
-    mPadding = createPadding(qParameter, padding);
+    this.mQParameter = qParameter;
+    this.mPadding = createPadding(qParameter, padding);
   }
 
   /*
@@ -91,11 +91,11 @@ public final class QGramProvider implements IKeyProvider<String, String> {
   @Override
   public String[] getKeys(final String record) {
     final String normalizedRecord = normalizeRecord(record);
-    final String normalizedRecordWithPadding = mPadding + normalizedRecord;
+    final String normalizedRecordWithPadding = this.mPadding + normalizedRecord;
     final String[] keys = new String[normalizedRecord.length()];
-    for (int i = 0; i < normalizedRecordWithPadding.length() - mQParameter
+    for (int i = 0; i < normalizedRecordWithPadding.length() - this.mQParameter
         + 1; i++) {
-      keys[i] = normalizedRecordWithPadding.substring(i, i + mQParameter);
+      keys[i] = normalizedRecordWithPadding.substring(i, i + this.mQParameter);
     }
     return keys;
   }
@@ -106,7 +106,7 @@ public final class QGramProvider implements IKeyProvider<String, String> {
    * @return The qParameter to get
    */
   public int getQParameter() {
-    return mQParameter;
+    return this.mQParameter;
   }
 
   /*

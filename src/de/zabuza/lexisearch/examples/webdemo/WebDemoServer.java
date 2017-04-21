@@ -148,135 +148,13 @@ public final class WebDemoServer {
   }
 
   /**
-   * Data structure which holds all cities.
-   */
-  private final CitySet mCities;
-  /**
-   * The path from where file serving is allowed. Every file which path is not
-   * included included in this one must not get served.
-   */
-  private final Path mFileServingPath;
-  /**
-   * The port to listen at.
-   */
-  private final int mPort;
-  /**
-   * Object to use for performing the fuzzy prefix search queries.
-   */
-  private final FuzzyPrefixQuery<IKeyRecord<String>> mQuery;
-  /**
-   * The ID of the current request the server is processing.
-   */
-  private int mRequestId;
-  /**
-   * The server socket used to listen for requests.
-   */
-  private final ServerSocket mServerSocket;
-
-  /**
-   * Creates a new server for the web application which listens at the given
-   * port for requests and solves them.
-   * 
-   * @param port
-   *          Port to use for communication
-   * @param dataFile
-   *          The file which holds all the data to search for
-   * @param serverPath
-   *          The path from where file serving is allowed. Every file whose path
-   *          is not included included in this one must not get served.
-   * @throws IOException
-   *           If an I/O-exception occurred
-   */
-  public WebDemoServer(final int port, final File dataFile,
-      final String serverPath) throws IOException {
-    mPort = port;
-    mRequestId = 0;
-    mServerSocket = new ServerSocket(mPort);
-    mFileServingPath = Paths.get(serverPath).toAbsolutePath();
-
-    System.out.println("Initializing service...");
-    // Loading data from file
-    System.out.println("\tLoading file...");
-    // Creating data structure
-    System.out.println("\tFetching cities...");
-    final int qParameter = 3;
-    QGramProvider qGramProvider = new QGramProvider(qParameter);
-    mCities = CitySet.buildFromTextFileUtf8Tab(dataFile, qGramProvider);
-
-    // Creating fuzzy prefix query and ranking
-    System.out.println("\tCreating fuzzy prefix query and ranking...");
-    final PostingBeforeRecordRanking<String> ranking =
-        new PostingBeforeRecordRanking<>();
-    mQuery = new FuzzyPrefixQuery<>(mCities, qGramProvider, ranking);
-  }
-
-  /**
-   * Runs the service in an infinite loop.
-   * 
-   * @throws IOException
-   *           If an I/O-exception occurred
-   */
-  public void runService() throws IOException {
-    boolean continueService = true;
-    System.out.println("Service started.");
-    System.out.println("Waiting for requests on port " + mPort + " ...");
-    while (continueService) {
-      mRequestId++;
-      Socket clientSocket = mServerSocket.accept();
-
-      // Read the request
-      BufferedReader br = new BufferedReader(
-          new InputStreamReader(clientSocket.getInputStream()));
-      System.out.println("#" + mRequestId + " Connected with "
-          + clientSocket.getInetAddress());
-      String request = br.readLine();
-      System.out.println("\tRequest: " + request);
-
-      // Reject the request if empty
-      if (request == null || request.trim().length() <= 0) {
-        sendError(EHttpStatus.BAD_REQUEST, clientSocket);
-        br.close();
-        clientSocket.close();
-        continue;
-      }
-
-      // Find the request type and serve
-      boolean requestTypeFound = false;
-
-      // Query GET request
-      if (!requestTypeFound) {
-        int requestDataBeginIndex = request.indexOf(QUERY_GET_REQUEST);
-        if (requestDataBeginIndex >= 0) {
-          requestTypeFound = true;
-          serveQueryGetRequest(request, clientSocket);
-        }
-      }
-      // Ordinary GET request
-      if (!requestTypeFound) {
-        int requestDataBeginIndex = request.indexOf(ORDINARY_GET_REQUEST);
-        if (requestDataBeginIndex >= 0) {
-          requestTypeFound = true;
-          serveOrdinaryGetRequest(request, clientSocket);
-        }
-      }
-      // Unknown type
-      if (!requestTypeFound) {
-        sendError(EHttpStatus.NOT_IMPLEMENTED, clientSocket);
-      }
-
-      br.close();
-      clientSocket.close();
-    }
-  }
-
-  /**
    * Gets the file extension of the given file.
    * 
    * @param file
    *          The file to get its extension
    * @return The extension of the given file
    */
-  private EFileExtension getFileExtension(final File file) {
+  private static EFileExtension getFileExtension(final File file) {
     final String fileName = file.getName();
     String extensionText = "";
 
@@ -307,6 +185,232 @@ public final class WebDemoServer {
   }
 
   /**
+   * Sends an empty answer with the given parameters to the given client by
+   * using the HTTP/1.0 protocol.
+   * 
+   * @param client
+   *          Client to send to
+   * @param contentType
+   *          Type of the content to send
+   * @param status
+   *          The status of the answer to send
+   * @throws IOException
+   *           If an I/O-Exception occurred.
+   */
+  private static void sendHttpAnswer(EHttpContentType contentType,
+      EHttpStatus status, final Socket client) throws IOException {
+    sendHttpAnswer(EMPTY_ANSWER, contentType, status, client);
+  }
+
+  /**
+   * Sends the given answer with the given parameters to the given client by
+   * using the HTTP/1.0 protocol.
+   * 
+   * @param answerText
+   *          Answer to send
+   * @param client
+   *          Client to send to
+   * @param contentType
+   *          Type of the content to send
+   * @param status
+   *          The status of the answer to send
+   * @throws IOException
+   *           If an I/O-Exception occurred.
+   */
+  private static void sendHttpAnswer(String answerText,
+      EHttpContentType contentType, EHttpStatus status, final Socket client)
+          throws IOException {
+    EHttpStatus statusToUse = status;
+    String answerTextToUse = answerText;
+
+    final String contentTypeText;
+    if (contentType == EHttpContentType.TEXT) {
+      contentTypeText = "text/plain";
+    } else if (contentType == EHttpContentType.HTML) {
+      contentTypeText = "text/html";
+    } else if (contentType == EHttpContentType.CSS) {
+      contentTypeText = "text/css";
+    } else if (contentType == EHttpContentType.JS) {
+      contentTypeText = "application/javascript";
+    } else if (contentType == EHttpContentType.JSON) {
+      contentTypeText = "application/json";
+    } else if (contentType == EHttpContentType.PNG) {
+      contentTypeText = "image/png";
+    } else if (contentType == EHttpContentType.JPG) {
+      contentTypeText = "image/jpeg";
+    } else {
+      contentTypeText = "text/plain";
+      statusToUse = EHttpStatus.INTERNAL_SERVER_ERROR;
+      // In case of an server error inside this method, don't send the intended
+      // message. It might contain sensible data.
+      answerTextToUse = "";
+    }
+
+    final int statusNumber;
+    if (statusToUse == EHttpStatus.OK) {
+      statusNumber = 200;
+    } else if (statusToUse == EHttpStatus.NO_CONTENT) {
+      statusNumber = 204;
+    } else if (statusToUse == EHttpStatus.BAD_REQUEST) {
+      statusNumber = 400;
+    } else if (statusToUse == EHttpStatus.FORBIDDEN) {
+      statusNumber = 403;
+    } else if (statusToUse == EHttpStatus.NOT_FOUND) {
+      statusNumber = 404;
+    } else if (statusToUse == EHttpStatus.INTERNAL_SERVER_ERROR) {
+      statusNumber = 500;
+    } else if (statusToUse == EHttpStatus.NOT_IMPLEMENTED) {
+      statusNumber = 501;
+    } else {
+      statusToUse = EHttpStatus.INTERNAL_SERVER_ERROR;
+      statusNumber = 500;
+      // In case of an server error inside this method, don't send the intended
+      // message. It might contain sensible data.
+      answerTextToUse = "";
+    }
+
+    final byte[] answerTextAsBytes = answerTextToUse.getBytes(TEXT_CHARSET);
+    final String charset = TEXT_CHARSET.displayName().toLowerCase();
+
+    final String nextLine = "\r\n";
+    final StringBuilder answer = new StringBuilder();
+    answer.append("HTTP/1.0 " + statusNumber + " " + statusToUse + nextLine);
+    answer.append("Content-Length: " + answerTextAsBytes.length + nextLine);
+    answer.append(
+        "Content-Type: " + contentTypeText + ", charset=" + charset + nextLine);
+    answer.append("Connection: close" + nextLine);
+    answer.append(nextLine);
+    answer.append(answerTextToUse);
+
+    try (final DataOutputStream output =
+        new DataOutputStream(client.getOutputStream())) {
+      output.write(answer.toString().getBytes(TEXT_CHARSET));
+    }
+
+    System.out.println("\tSent " + statusToUse);
+  }
+
+  /**
+   * Data structure which holds all cities.
+   */
+  private final CitySet mCities;
+  /**
+   * The path from where file serving is allowed. Every file which path is not
+   * included included in this one must not get served.
+   */
+  private final Path mFileServingPath;
+  /**
+   * The port to listen at.
+   */
+  private final int mPort;
+
+  /**
+   * Object to use for performing the fuzzy prefix search queries.
+   */
+  private final FuzzyPrefixQuery<IKeyRecord<String>> mQuery;
+
+  /**
+   * The ID of the current request the server is processing.
+   */
+  private int mRequestId;
+
+  /**
+   * The server socket used to listen for requests.
+   */
+  private final ServerSocket mServerSocket;
+
+  /**
+   * Creates a new server for the web application which listens at the given
+   * port for requests and solves them.
+   * 
+   * @param port
+   *          Port to use for communication
+   * @param dataFile
+   *          The file which holds all the data to search for
+   * @param serverPath
+   *          The path from where file serving is allowed. Every file whose path
+   *          is not included included in this one must not get served.
+   * @throws IOException
+   *           If an I/O-exception occurred
+   */
+  public WebDemoServer(final int port, final File dataFile,
+      final String serverPath) throws IOException {
+    this.mPort = port;
+    this.mRequestId = 0;
+    this.mServerSocket = new ServerSocket(this.mPort);
+    this.mFileServingPath = Paths.get(serverPath).toAbsolutePath();
+
+    System.out.println("Initializing service...");
+    // Loading data from file
+    System.out.println("\tLoading file...");
+    // Creating data structure
+    System.out.println("\tFetching cities...");
+    final int qParameter = 3;
+    QGramProvider qGramProvider = new QGramProvider(qParameter);
+    this.mCities = CitySet.buildFromTextFileUtf8Tab(dataFile, qGramProvider);
+
+    // Creating fuzzy prefix query and ranking
+    System.out.println("\tCreating fuzzy prefix query and ranking...");
+    final PostingBeforeRecordRanking<String> ranking =
+        new PostingBeforeRecordRanking<>();
+    this.mQuery = new FuzzyPrefixQuery<>(this.mCities, qGramProvider, ranking);
+  }
+
+  /**
+   * Runs the service in an infinite loop.
+   * 
+   * @throws IOException
+   *           If an I/O-exception occurred
+   */
+  public void runService() throws IOException {
+    boolean continueService = true;
+    System.out.println("Service started.");
+    System.out.println("Waiting for requests on port " + this.mPort + " ...");
+    while (continueService) {
+      this.mRequestId++;
+      try (final Socket clientSocket = this.mServerSocket.accept();
+          final BufferedReader br = new BufferedReader(
+              new InputStreamReader(clientSocket.getInputStream()))) {
+        // Read the request
+        System.out.println("#" + this.mRequestId + " Connected with "
+            + clientSocket.getInetAddress());
+        String request = br.readLine();
+        System.out.println("\tRequest: " + request);
+
+        // Reject the request if empty
+        if (request == null || request.trim().length() <= 0) {
+          sendError(EHttpStatus.BAD_REQUEST, clientSocket);
+          continue;
+        }
+
+        // Find the request type and serve
+        boolean requestTypeFound = false;
+
+        // Query GET request
+        if (!requestTypeFound) {
+          int requestDataBeginIndex = request.indexOf(QUERY_GET_REQUEST);
+          if (requestDataBeginIndex >= 0) {
+            requestTypeFound = true;
+            serveQueryGetRequest(request, clientSocket);
+          }
+        }
+        // Ordinary GET request
+        if (!requestTypeFound) {
+          int requestDataBeginIndex = request.indexOf(ORDINARY_GET_REQUEST);
+          if (requestDataBeginIndex >= 0) {
+            requestTypeFound = true;
+            serveOrdinaryGetRequest(request, clientSocket);
+          }
+        }
+        // Unknown type
+        if (!requestTypeFound) {
+          sendError(EHttpStatus.NOT_IMPLEMENTED, clientSocket);
+        }
+      }
+    }
+  }
+
+  /**
    * Sends an error answer with the given status to the given client by using
    * the HTTP/1.0 protocol.
    * 
@@ -315,17 +419,18 @@ public final class WebDemoServer {
    * @param client
    *          Client to send to
    * @throws IOException
+   *           If an I/O-Exception occurred
    */
   private void sendError(EHttpStatus status, final Socket client)
       throws IOException {
     // Search for an error file
     final File errorFiles =
-        new File(mFileServingPath.toString(), ERROR_FILES_PATH);
+        new File(this.mFileServingPath.toString(), ERROR_FILES_PATH);
     final File file = new File(errorFiles, status + ".html");
     if (file.exists() && !file.isDirectory()) {
       // Limit allowed files to the file serving path
       final Path filePath = Paths.get(file.toURI()).toAbsolutePath();
-      if (filePath.startsWith(mFileServingPath) && file.canRead()
+      if (filePath.startsWith(this.mFileServingPath) && file.canRead()
           && !file.isHidden()) {
         // Extract file extension and choose content type
         final EHttpContentType contentType;
@@ -364,109 +469,6 @@ public final class WebDemoServer {
   }
 
   /**
-   * Sends an empty answer with the given parameters to the given client by
-   * using the HTTP/1.0 protocol.
-   * 
-   * @param client
-   *          Client to send to
-   * @param contentType
-   *          Type of the content to send
-   * @param status
-   *          The status of the answer to send
-   * @throws IOException
-   *           If an I/O-Exception occurred.
-   */
-  private void sendHttpAnswer(EHttpContentType contentType, EHttpStatus status,
-      final Socket client) throws IOException {
-    sendHttpAnswer(EMPTY_ANSWER, contentType, status, client);
-  }
-
-  /**
-   * Sends the given answer with the given parameters to the given client by
-   * using the HTTP/1.0 protocol.
-   * 
-   * @param answerText
-   *          Answer to send
-   * @param client
-   *          Client to send to
-   * @param contentType
-   *          Type of the content to send
-   * @param status
-   *          The status of the answer to send
-   * @throws IOException
-   *           If an I/O-Exception occurred.
-   */
-  private void sendHttpAnswer(String answerText, EHttpContentType contentType,
-      EHttpStatus status, final Socket client) throws IOException {
-    final String contentTypeText;
-    if (contentType == EHttpContentType.TEXT) {
-      contentTypeText = "text/plain";
-    } else if (contentType == EHttpContentType.HTML) {
-      contentTypeText = "text/html";
-    } else if (contentType == EHttpContentType.CSS) {
-      contentTypeText = "text/css";
-    } else if (contentType == EHttpContentType.JS) {
-      contentTypeText = "application/javascript";
-    } else if (contentType == EHttpContentType.JSON) {
-      contentTypeText = "application/json";
-    } else if (contentType == EHttpContentType.PNG) {
-      contentTypeText = "image/png";
-    } else if (contentType == EHttpContentType.JPG) {
-      contentTypeText = "image/jpeg";
-    } else {
-      contentType = EHttpContentType.TEXT;
-      contentTypeText = "text/plain";
-      status = EHttpStatus.INTERNAL_SERVER_ERROR;
-      // In case of an server error inside this method, don't send the intended
-      // message. It might contain sensible data.
-      answerText = "";
-    }
-
-    final int statusNumber;
-    if (status == EHttpStatus.OK) {
-      statusNumber = 200;
-    } else if (status == EHttpStatus.NO_CONTENT) {
-      statusNumber = 204;
-    } else if (status == EHttpStatus.BAD_REQUEST) {
-      statusNumber = 400;
-    } else if (status == EHttpStatus.FORBIDDEN) {
-      statusNumber = 403;
-    } else if (status == EHttpStatus.NOT_FOUND) {
-      statusNumber = 404;
-    } else if (status == EHttpStatus.INTERNAL_SERVER_ERROR) {
-      statusNumber = 500;
-    } else if (status == EHttpStatus.NOT_IMPLEMENTED) {
-      statusNumber = 501;
-    } else {
-      status = EHttpStatus.INTERNAL_SERVER_ERROR;
-      statusNumber = 500;
-      // In case of an server error inside this method, don't send the intended
-      // message. It might contain sensible data.
-      answerText = "";
-    }
-
-    final byte[] answerTextAsBytes = answerText.getBytes(TEXT_CHARSET);
-    final String charset = TEXT_CHARSET.displayName().toLowerCase();
-
-    final String nextLine = "\r\n";
-    final StringBuilder answer = new StringBuilder();
-    answer.append("HTTP/1.0 " + statusNumber + " " + status + nextLine);
-    answer.append("Content-Length: " + answerTextAsBytes.length + nextLine);
-    answer.append(
-        "Content-Type: " + contentTypeText + ", charset=" + charset + nextLine);
-    answer.append("Connection: close" + nextLine);
-    answer.append(nextLine);
-    answer.append(answerText);
-
-    final DataOutputStream output =
-        new DataOutputStream(client.getOutputStream());
-    output.write(answer.toString().getBytes(TEXT_CHARSET));
-    output.close();
-
-    System.out.println("\tSent " + status);
-  }
-
-  /**
    * Serves an ordinary GET request.
    * 
    * @param request
@@ -498,11 +500,11 @@ public final class WebDemoServer {
       requestData = INDEX_FILE;
     }
 
-    final File file = new File(mFileServingPath.toString(), requestData);
+    final File file = new File(this.mFileServingPath.toString(), requestData);
     if (file.exists() && !file.isDirectory()) {
       // Limit allowed files to the file serving path
       final Path filePath = Paths.get(file.toURI()).toAbsolutePath();
-      if (filePath.startsWith(mFileServingPath) && file.canRead()
+      if (filePath.startsWith(this.mFileServingPath) && file.canRead()
           && !file.isHidden()) {
         // Extract file extension and choose content type
         final EHttpContentType contentType;
@@ -579,7 +581,7 @@ public final class WebDemoServer {
     // Perform the query
     final LinkedList<String> keywords = new LinkedList<>();
     keywords.add(searchKeyword);
-    final List<Posting> matches = mQuery.searchOr(keywords);
+    final List<Posting> matches = this.mQuery.searchOr(keywords);
 
     // Send an answer
     if (!matches.isEmpty()) {
@@ -591,7 +593,7 @@ public final class WebDemoServer {
       final String textWrapper = "\"";
       for (final Posting matchingPosting : matches) {
         final City matchingCity =
-            (City) mCities.getKeyRecordById(matchingPosting.getId());
+            (City) this.mCities.getKeyRecordById(matchingPosting.getId());
         final String name = matchingCity.getName();
         final float lattitude = matchingCity.getLatitude();
         final float longitude = matchingCity.getLongitude();

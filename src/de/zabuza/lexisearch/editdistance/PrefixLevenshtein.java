@@ -11,39 +11,6 @@ package de.zabuza.lexisearch.editdistance;
  * 
  */
 public final class PrefixLevenshtein implements IEditDistance<String> {
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * de.zabuza.lexisearch.editdistance.IEditDistance#distance(java.lang.Object,
-   * java.lang.Object)
-   */
-  @Override
-  public int distance(final String first, final String second) {
-    return computeDistanceWithTable(first, second);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * de.zabuza.lexisearch.editdistance.IEditDistance#estimatedDistance(java.lang
-   * .Object, java.lang.Object, int)
-   */
-  @Override
-  public int estimatedDistance(final String first, final String second,
-      final int bound) {
-    // If the first object x is shorter, it's enough to compute only the first
-    // |x| + bound + 1 columns.
-    if (first.length() < second.length()) {
-      return computeDistanceWithTable(first, second.substring(0,
-          Math.min(first.length() + bound, second.length())));
-    } else {
-      // Fall back
-      return computeDistanceWithTable(first, second);
-    }
-  }
-
   /**
    * Computes the prefix levenshtein distance between the two given objects
    * using a 2-dimensional array-table and an iterative approach.
@@ -54,7 +21,7 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
    *          The second object
    * @return The prefix levenshtein distance between the two given objects
    */
-  private int computeDistanceWithTable(final String first,
+  private static int computeDistanceWithTable(final String first,
       final String second) {
     // Build a 2-dim table where the headers are the objects
     final int[][] table = new int[second.length() + 1][first.length() + 1];
@@ -110,8 +77,8 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
    *          The table to transform
    * @return The given table with the given objects in a human readable format
    */
-  protected String debugTableToString(final String first, final String second,
-      final int[][] table) {
+  protected static String debugTableToString(final String first,
+      final String second, final int[][] table) {
     final StringBuilder result = new StringBuilder();
     final String tabChar = "\t";
     final String emptyWordChar = "-";
@@ -142,5 +109,37 @@ public final class PrefixLevenshtein implements IEditDistance<String> {
       result.append(lineSeparator);
     }
     return result.toString();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * de.zabuza.lexisearch.editdistance.IEditDistance#distance(java.lang.Object,
+   * java.lang.Object)
+   */
+  @Override
+  public int distance(final String first, final String second) {
+    return computeDistanceWithTable(first, second);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * de.zabuza.lexisearch.editdistance.IEditDistance#estimatedDistance(java.lang
+   * .Object, java.lang.Object, int)
+   */
+  @Override
+  public int estimatedDistance(final String first, final String second,
+      final int bound) {
+    // If the first object x is shorter, it's enough to compute only the first
+    // |x| + bound + 1 columns.
+    if (first.length() < second.length()) {
+      return computeDistanceWithTable(first, second.substring(0,
+          Math.min(first.length() + bound, second.length())));
+    }
+    // Fall back
+    return computeDistanceWithTable(first, second);
   }
 }

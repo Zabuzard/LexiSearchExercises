@@ -86,11 +86,11 @@ public final class IndexSearchListingExample {
     final long indexBuildTime = indexBuildEndTime - indexBuildStartTime;
 
     System.out.println("Post processing...");
-    final HashMap<Integer, List<String>> hitsToWords =
-        new HashMap<Integer, List<String>>();
+    final HashMap<Integer, List<String>> hitsToWords = new HashMap<>();
 
     for (final String word : invertedIndex.getKeys()) {
-      final int hits = invertedIndex.getRecords(word).getSize();
+      final Integer hits =
+          Integer.valueOf(invertedIndex.getRecords(word).getSize());
 
       List<String> words = hitsToWords.get(hits);
       if (words == null) {

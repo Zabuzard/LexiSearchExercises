@@ -17,6 +17,7 @@ public final class IInvertedListTest {
   /**
    * Test method for {@link IInvertedList#intersect(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIntersectCollectionOfAInvertedList() {
     final InvertedList firstInvertedList = new InvertedList();
@@ -51,6 +52,7 @@ public final class IInvertedListTest {
    * Test method for
    * {@link IInvertedList#intersect(IInvertedList, IInvertedList)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIntersectIInvertedListIInvertedList() {
     final InvertedList invertedList = new InvertedList();
@@ -73,6 +75,7 @@ public final class IInvertedListTest {
   /**
    * Test method for {@link IInvertedList#union(IInvertedList, IInvertedList)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testUnionAInvertedListAInvertedList() {
     // Test required by lecture
@@ -104,6 +107,7 @@ public final class IInvertedListTest {
   /**
    * Test method for {@link IInvertedList#union(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testUnionCollectionOfAInvertedList() {
     final InvertedList firstInvertedList = new InvertedList();

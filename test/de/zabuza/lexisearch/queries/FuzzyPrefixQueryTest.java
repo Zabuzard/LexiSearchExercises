@@ -7,10 +7,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IKeyRecord;
+import de.zabuza.lexisearch.indexing.IKeyRecordSet;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
 import de.zabuza.lexisearch.model.city.City;
 import de.zabuza.lexisearch.model.city.CitySet;
+import de.zabuza.lexisearch.ranking.IRankingProvider;
 import de.zabuza.lexisearch.ranking.PostingBeforeRecordRanking;
 
 /**
@@ -22,8 +24,11 @@ import de.zabuza.lexisearch.ranking.PostingBeforeRecordRanking;
 public final class FuzzyPrefixQueryTest {
 
   /**
-   * Test method for {@link FuzzyPrefixQuery#FuzzyPrefixQuery()}.
+   * Test method for
+   * {@link FuzzyPrefixQuery#FuzzyPrefixQuery(IKeyRecordSet, QGramProvider, IRankingProvider)}
+   * .
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testFuzzyPrefixQueryWithIRankingProvider() {
     final QGramProvider provider = new QGramProvider(3, '$');
@@ -87,6 +92,7 @@ public final class FuzzyPrefixQueryTest {
    * Test method for
    * {@link FuzzyPrefixQuery#FuzzyPrefixQuery(IKeyRecordSet, QGramProvider)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testFuzzyPrefixQueryWithoutIRankingProvider() {
     final QGramProvider provider = new QGramProvider(3, '$');
@@ -149,6 +155,7 @@ public final class FuzzyPrefixQueryTest {
   /**
    * Test method for {@link FuzzyPrefixQuery#searchAnd(Iterable)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSearchAnd() {
     // Test required by lecture
@@ -212,6 +219,7 @@ public final class FuzzyPrefixQueryTest {
   /**
    * Test method for {@link FuzzyPrefixQuery#searchOr(Iterable)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSearchOr() {
     final QGramProvider provider = new QGramProvider(3, '$');

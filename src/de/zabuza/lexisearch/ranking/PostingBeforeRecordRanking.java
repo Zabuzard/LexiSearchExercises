@@ -45,7 +45,7 @@ public final class PostingBeforeRecordRanking<K>
    * {@link #setRankingScoreToIndex()}.
    */
   public PostingBeforeRecordRanking() {
-    mScoreComparator = null;
+    this.mScoreComparator = null;
   }
 
   /*
@@ -55,7 +55,7 @@ public final class PostingBeforeRecordRanking<K>
    */
   @Override
   public IInvertedIndex<K> getInvertedIndex() {
-    return mInvertedIndex;
+    return this.mInvertedIndex;
   }
 
   /*
@@ -65,7 +65,7 @@ public final class PostingBeforeRecordRanking<K>
    */
   @Override
   public IKeyRecordSet<IKeyRecord<K>, K> getKeyRecords() {
-    return mKeyRecords;
+    return this.mKeyRecords;
   }
 
   /*
@@ -99,7 +99,7 @@ public final class PostingBeforeRecordRanking<K>
    */
   @Override
   public void sortPostingsByRank(final List<Posting> postings) {
-    Collections.sort(postings, mScoreComparator);
+    Collections.sort(postings, this.mScoreComparator);
   }
 
   /*
@@ -112,12 +112,13 @@ public final class PostingBeforeRecordRanking<K>
   @Override
   public void takeSnapshot(IInvertedIndex<K> invertedIndex,
       IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
-    mInvertedIndex = invertedIndex;
-    mKeyRecords = keyRecords;
-    if (mScoreComparator == null) {
-      mScoreComparator = new PostingBeforeRecordComparator<>(mKeyRecords);
+    this.mInvertedIndex = invertedIndex;
+    this.mKeyRecords = keyRecords;
+    if (this.mScoreComparator == null) {
+      this.mScoreComparator =
+          new PostingBeforeRecordComparator<>(this.mKeyRecords);
     } else {
-      mScoreComparator.setKeyRecords(mKeyRecords);
+      this.mScoreComparator.setKeyRecords(this.mKeyRecords);
     }
   }
 }

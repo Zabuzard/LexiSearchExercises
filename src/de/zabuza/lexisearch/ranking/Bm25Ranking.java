@@ -90,11 +90,11 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    *          The b parameter of the BM25 algorithm to use
    */
   public Bm25Ranking(final double kParameter, final double bParameter) {
-    mKeyRecordToSize = new HashMap<>();
-    mKeyToKeyRecordFrequency = new HashMap<>();
-    mKParameter = kParameter;
-    mBParameter = bParameter;
-    mScoreComparator = new ScoreComparator().reversed();
+    this.mKeyRecordToSize = new HashMap<>();
+    this.mKeyToKeyRecordFrequency = new HashMap<>();
+    this.mKParameter = kParameter;
+    this.mBParameter = bParameter;
+    this.mScoreComparator = new ScoreComparator().reversed();
   }
 
   /**
@@ -103,7 +103,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    * @return The b parameter to get
    */
   public double getBParameter() {
-    return mBParameter;
+    return this.mBParameter;
   }
 
   /*
@@ -113,7 +113,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    */
   @Override
   public IInvertedIndex<K> getInvertedIndex() {
-    return mInvertedIndex;
+    return this.mInvertedIndex;
   }
 
   /*
@@ -123,7 +123,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    */
   @Override
   public IKeyRecordSet<IKeyRecord<K>, K> getKeyRecords() {
-    return mKeyRecords;
+    return this.mKeyRecords;
   }
 
   /**
@@ -132,7 +132,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    * @return The k parameter to get
    */
   public double getKParameter() {
-    return mKParameter;
+    return this.mKParameter;
   }
 
   /*
@@ -144,17 +144,18 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    */
   @Override
   public double getRankingScore(final K key, final Posting posting) {
-    final int n = mAmountOfKeyRecords;
-    final int df = mKeyToKeyRecordFrequency.get(key);
+    final int n = this.mAmountOfKeyRecords;
+    final int df = this.mKeyToKeyRecordFrequency.get(key).intValue();
     final double idf = MathUtil.log2((n + 0.0) / df);
 
     final double tf = posting.getTermFrequency() + 0.0;
-    final int dl =
-        mKeyRecordToSize.get(mKeyRecords.getKeyRecordById(posting.getId()));
-    final double avdl = (mTotalSizeOfAllKeyRecords + 0.0) / mAmountOfKeyRecords;
+    final int dl = this.mKeyRecordToSize
+        .get(this.mKeyRecords.getKeyRecordById(posting.getId())).intValue();
+    final double avdl =
+        (this.mTotalSizeOfAllKeyRecords + 0.0) / this.mAmountOfKeyRecords;
 
-    final double k = mKParameter;
-    final double b = mBParameter;
+    final double k = this.mKParameter;
+    final double b = this.mBParameter;
 
     final double tfModified =
         tf * (k + 1) / (k * (1 - b + b * (dl / avdl)) + tf);
@@ -169,7 +170,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    *          The b parameter to set
    */
   public void setBParameter(final double bParameter) {
-    mBParameter = bParameter;
+    this.mBParameter = bParameter;
   }
 
   /**
@@ -179,7 +180,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    *          The k parameter to set
    */
   public void setKParameter(final double kParameter) {
-    mKParameter = kParameter;
+    this.mKParameter = kParameter;
   }
 
   /*
@@ -190,8 +191,8 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
   @Override
   public void setRankingScoreToIndex() {
     // Iterate over the inverted index and set all ranking scores
-    for (final K key : mInvertedIndex.getKeys()) {
-      final IInvertedList invertedList = mInvertedIndex.getRecords(key);
+    for (final K key : this.mInvertedIndex.getKeys()) {
+      final IInvertedList invertedList = this.mInvertedIndex.getRecords(key);
       for (final Posting posting : invertedList.getPostings()) {
         posting.setScore(getRankingScore(key, posting));
       }
@@ -207,7 +208,7 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
    */
   @Override
   public void sortPostingsByRank(final List<Posting> postings) {
-    Collections.sort(postings, mScoreComparator);
+    Collections.sort(postings, this.mScoreComparator);
   }
 
   /*
@@ -220,27 +221,29 @@ public final class Bm25Ranking<K> implements IRankingProvider<K> {
   @Override
   public void takeSnapshot(final IInvertedIndex<K> invertedIndex,
       final IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
-    mKeyRecordToSize.clear();
-    mKeyToKeyRecordFrequency.clear();
-    mInvertedIndex = invertedIndex;
-    mKeyRecords = keyRecords;
+    this.mKeyRecordToSize.clear();
+    this.mKeyToKeyRecordFrequency.clear();
+    this.mInvertedIndex = invertedIndex;
+    this.mKeyRecords = keyRecords;
 
     // Iterate over the key records and compute meta data
     int amountOfKeyRecords = 0;
     int totalSize = 0;
-    for (final IKeyRecord<K> keyRecord : mKeyRecords) {
+    for (final IKeyRecord<K> keyRecord : this.mKeyRecords) {
       amountOfKeyRecords++;
       final int size = keyRecord.getSize();
-      mKeyRecordToSize.put(keyRecord, size);
+      this.mKeyRecordToSize.put(keyRecord, Integer.valueOf(size));
       totalSize += size;
     }
-    mAmountOfKeyRecords = amountOfKeyRecords;
-    mTotalSizeOfAllKeyRecords = totalSize;
+    this.mAmountOfKeyRecords = amountOfKeyRecords;
+    this.mTotalSizeOfAllKeyRecords = totalSize;
 
     // Iterate over the inverted index and compute meta data
-    for (final K key : mInvertedIndex.getKeys()) {
-      final int keyRecordFrequency = mInvertedIndex.getRecords(key).getSize();
-      mKeyToKeyRecordFrequency.put(key, keyRecordFrequency);
+    for (final K key : this.mInvertedIndex.getKeys()) {
+      final int keyRecordFrequency =
+          this.mInvertedIndex.getRecords(key).getSize();
+      this.mKeyToKeyRecordFrequency.put(key,
+          Integer.valueOf(keyRecordFrequency));
     }
   }
 

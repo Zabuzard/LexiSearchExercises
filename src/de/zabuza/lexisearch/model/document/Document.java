@@ -111,9 +111,9 @@ public class Document implements IDocument {
    *          The description of the document
    */
   public Document(final int id, final String name, final String description) {
-    mId = id;
-    mName = name;
-    mDescription = description;
+    this.mId = id;
+    this.mName = name;
+    this.mDescription = description;
   }
 
   /**
@@ -122,9 +122,9 @@ public class Document implements IDocument {
    * field-getter methods and maintain id, name and description by themselves.
    */
   protected Document() {
-    mId = NO_ID;
-    mName = EMPTY_TEXT;
-    mDescription = EMPTY_TEXT;
+    this.mId = NO_ID;
+    this.mName = EMPTY_TEXT;
+    this.mDescription = EMPTY_TEXT;
   }
 
   /*
@@ -134,7 +134,7 @@ public class Document implements IDocument {
    */
   @Override
   public String getDescription() {
-    return mDescription;
+    return this.mDescription;
   }
 
   /*
@@ -144,7 +144,7 @@ public class Document implements IDocument {
    */
   @Override
   public int getId() {
-    return mId;
+    return this.mId;
   }
 
   /*
@@ -165,7 +165,7 @@ public class Document implements IDocument {
    */
   @Override
   public String getName() {
-    return mName;
+    return this.mName;
   }
 
   /*

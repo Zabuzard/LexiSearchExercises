@@ -1,6 +1,8 @@
 package de.zabuza.lexisearch.benchmarking;
 
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +21,7 @@ public final class PrecisionAtKTest {
    * Test method for
    * {@link PrecisionAtK#evaluateRelevance(Collection, List, IGroundTruth)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testEvaluateRelevance() {
     final int firstK = 2;
@@ -31,9 +34,9 @@ public final class PrecisionAtKTest {
     query.add("first");
     query.add("query");
     final LinkedList<Integer> relevantRecords = new LinkedList<>();
-    relevantRecords.add(10);
-    relevantRecords.add(582);
-    relevantRecords.add(10003);
+    relevantRecords.add(Integer.valueOf(10));
+    relevantRecords.add(Integer.valueOf(582));
+    relevantRecords.add(Integer.valueOf(10003));
     final LinkedList<Posting> results = new LinkedList<>();
     results.add(new Posting(582));
     results.add(new Posting(17));
@@ -57,12 +60,12 @@ public final class PrecisionAtKTest {
     testQuery.add("test");
     testQuery.add("query");
     final LinkedList<Integer> testRelevantRecords = new LinkedList<>();
-    testRelevantRecords.add(0);
-    testRelevantRecords.add(2);
-    testRelevantRecords.add(5);
-    testRelevantRecords.add(6);
-    testRelevantRecords.add(7);
-    testRelevantRecords.add(8);
+    testRelevantRecords.add(Integer.valueOf(0));
+    testRelevantRecords.add(Integer.valueOf(2));
+    testRelevantRecords.add(Integer.valueOf(5));
+    testRelevantRecords.add(Integer.valueOf(6));
+    testRelevantRecords.add(Integer.valueOf(7));
+    testRelevantRecords.add(Integer.valueOf(8));
     final LinkedList<Posting> testResults = new LinkedList<>();
     testResults.add(new Posting(0));
     testResults.add(new Posting(1));
@@ -79,6 +82,7 @@ public final class PrecisionAtKTest {
   /**
    * Test method for {@link PrecisionAtK#getKParameter()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKParameter() {
     final int firstK = 1;
@@ -93,6 +97,7 @@ public final class PrecisionAtKTest {
   /**
    * Test method for {@link PrecisionAtK#PrecisionAtK(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPrecisionAtK() {
     final int firstK = 1;

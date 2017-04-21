@@ -18,6 +18,7 @@ public final class InvertedIndexUtilTest {
   /**
    * Test method for {@link InvertedIndexUtil#createFromWords(Iterable)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCreateFromWords() {
     final int firstId = 1;

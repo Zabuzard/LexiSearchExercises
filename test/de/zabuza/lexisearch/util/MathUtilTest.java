@@ -16,6 +16,7 @@ public final class MathUtilTest {
   /**
    * Test method for {@link MathUtil#formatDecimalTwo(double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testFormatDecimalTwo() {
     final DecimalFormat format = new DecimalFormat();
@@ -31,6 +32,7 @@ public final class MathUtilTest {
   /**
    * Test method for {@link MathUtil#log2(double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testLog2() {
     Assert.assertEquals(1, MathUtil.log2(2), 0);

@@ -1,7 +1,9 @@
 package de.zabuza.lexisearch.benchmarking;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -20,6 +22,7 @@ public final class MeasureSetTest {
   /**
    * Test method for {@link MeasureSet#addMeasure(IMeasure)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddMeasure() {
     final MeasureSet<String> measures = new MeasureSet<>();
@@ -50,6 +53,7 @@ public final class MeasureSetTest {
    * Test method for
    * {@link MeasureSet#evaluateRelevance(Collection, List, IGroundTruth)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testEvaluateRelevance() {
     final MeasureSet<String> measures = new MeasureSet<>();
@@ -64,9 +68,9 @@ public final class MeasureSetTest {
     query.add("first");
     query.add("query");
     final LinkedList<Integer> relevantRecords = new LinkedList<>();
-    relevantRecords.add(10);
-    relevantRecords.add(582);
-    relevantRecords.add(10003);
+    relevantRecords.add(Integer.valueOf(10));
+    relevantRecords.add(Integer.valueOf(582));
+    relevantRecords.add(Integer.valueOf(10003));
     final LinkedList<Posting> results = new LinkedList<>();
     results.add(new Posting(582));
     results.add(new Posting(17));
@@ -86,6 +90,7 @@ public final class MeasureSetTest {
   /**
    * Test method for {@link MeasureSet#getMeasures()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetMeasures() {
     final MeasureSet<String> measures = new MeasureSet<>();
@@ -115,6 +120,7 @@ public final class MeasureSetTest {
   /**
    * Test method for {@link MeasureSet#MeasureSet()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testMeasureSet() {
     final MeasureSet<String> measures = new MeasureSet<>();

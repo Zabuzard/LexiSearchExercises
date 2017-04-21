@@ -14,6 +14,7 @@ public final class QGramProviderTest {
   /**
    * Test method for {@link QGramProvider#getKeys(String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeys() {
     final QGramProvider provider = new QGramProvider(3, '$');
@@ -61,6 +62,7 @@ public final class QGramProviderTest {
   /**
    * Test method for {@link QGramProvider#getQParameter()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetQParameter() {
     final QGramProvider provider = new QGramProvider(3);
@@ -73,6 +75,7 @@ public final class QGramProviderTest {
   /**
    * Test method for {@link QGramProvider#getSize(String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetSize() {
     final QGramProvider provider = new QGramProvider(3);
@@ -91,6 +94,7 @@ public final class QGramProviderTest {
   /**
    * Test method for {@link QGramProvider#normalizeRecord(String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testNormalizeRecord() {
     Assert.assertEquals("", QGramProvider.normalizeRecord(""));
@@ -102,6 +106,7 @@ public final class QGramProviderTest {
   /**
    * Test method for {@link QGramProvider#QGramProvider(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testQGramProviderInt() {
     final QGramProvider provider = new QGramProvider(3);
@@ -120,6 +125,7 @@ public final class QGramProviderTest {
   /**
    * Test method for {@link QGramProvider#QGramProvider(int, char)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testQGramProviderIntChar() {
     final QGramProvider provider = new QGramProvider(3, '-');

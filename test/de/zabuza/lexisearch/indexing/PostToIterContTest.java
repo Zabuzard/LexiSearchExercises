@@ -17,6 +17,7 @@ public final class PostToIterContTest {
   /**
    * Test method for {@link PostToIterCont#compareTo(PostToIterCont)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCompareTo() {
     final int recordId = 0;
@@ -40,6 +41,7 @@ public final class PostToIterContTest {
   /**
    * Test method for {@link PostToIterCont#getPosting()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetPosting() {
     final int recordId = 0;
@@ -64,6 +66,7 @@ public final class PostToIterContTest {
   /**
    * Test method for {@link PostToIterCont#getRecordId()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRecordId() {
     final int recordId = 0;
@@ -85,6 +88,7 @@ public final class PostToIterContTest {
   /**
    * Test method for {@link PostToIterCont#getRemainingPostings()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRemainingPostings() {
     final int recordId = 0;
@@ -114,6 +118,7 @@ public final class PostToIterContTest {
   /**
    * Test method for {@link PostToIterCont#PostToIterCont(Posting, Iterator)} .
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testPostToIterCont() {
     final int recordId = 0;

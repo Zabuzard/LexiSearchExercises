@@ -76,8 +76,7 @@ public final class CityQGramDistributionExample {
     final long indexBuildTime = indexBuildEndTime - indexBuildStartTime;
 
     System.out.println("Post processing...");
-    final HashMap<Integer, List<String>> hitsToQGram =
-        new HashMap<Integer, List<String>>();
+    final HashMap<Integer, List<String>> hitsToQGram = new HashMap<>();
 
     for (final String qGram : invertedIndex.getKeys()) {
       int hits = 0;
@@ -86,12 +85,13 @@ public final class CityQGramDistributionExample {
         hits += cityPosting.getTermFrequency();
       }
 
-      List<String> qGrams = hitsToQGram.get(hits);
+      final Integer hitsAsInteger = Integer.valueOf(hits);
+      List<String> qGrams = hitsToQGram.get(hitsAsInteger);
       if (qGrams == null) {
         qGrams = new LinkedList<>();
       }
       qGrams.add(qGram);
-      hitsToQGram.put(hits, qGrams);
+      hitsToQGram.put(hitsAsInteger, qGrams);
     }
 
     final List<Integer> hits = new ArrayList<>(hitsToQGram.keySet());

@@ -21,7 +21,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    * Creates a new empty inverted index.
    */
   public InvertedIndex() {
-    mKeyToInvertedLists = new HashMap<>();
+    this.mKeyToInvertedLists = new HashMap<>();
   }
 
   /*
@@ -33,12 +33,12 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean addRecord(final K key, final int recordId) {
-    IInvertedList records = mKeyToInvertedLists.get(key);
+    IInvertedList records = this.mKeyToInvertedLists.get(key);
     if (records == null) {
       records = new InvertedList();
     }
     boolean wasAdded = records.addPosting(recordId);
-    mKeyToInvertedLists.put(key, records);
+    this.mKeyToInvertedLists.put(key, records);
 
     return wasAdded;
   }
@@ -51,7 +51,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean containsKey(final K key) {
-    return mKeyToInvertedLists.containsKey(key);
+    return this.mKeyToInvertedLists.containsKey(key);
   }
 
   /*
@@ -62,7 +62,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public boolean containsRecord(final K key, final int recordId) {
-    final IInvertedList records = mKeyToInvertedLists.get(key);
+    final IInvertedList records = this.mKeyToInvertedLists.get(key);
     return records != null && records.containsPosting(recordId);
   }
 
@@ -73,7 +73,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public Iterable<K> getKeys() {
-    return Collections.unmodifiableSet(mKeyToInvertedLists.keySet());
+    return Collections.unmodifiableSet(this.mKeyToInvertedLists.keySet());
   }
 
   /*
@@ -84,6 +84,6 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
    */
   @Override
   public IInvertedList getRecords(final K key) {
-    return mKeyToInvertedLists.get(key);
+    return this.mKeyToInvertedLists.get(key);
   }
 }

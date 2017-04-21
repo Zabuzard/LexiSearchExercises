@@ -18,6 +18,7 @@ import de.zabuza.lexisearch.benchmarking.IMeasureSet;
 import de.zabuza.lexisearch.benchmarking.MeasureSet;
 import de.zabuza.lexisearch.benchmarking.PrecisionAtK;
 import de.zabuza.lexisearch.benchmarking.PrecisionAtR;
+import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.model.document.DocumentSet;
@@ -161,7 +162,7 @@ public final class BenchmarkExample {
       final double amountOfResultsForMeasure = resultsForMeasure.size();
       double resultsForMeasureTotal = 0;
       for (final Double value : resultsForMeasure) {
-        resultsForMeasureTotal += value;
+        resultsForMeasureTotal += value.doubleValue();
       }
 
       final double meanResultsForMeasure;

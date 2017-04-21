@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
@@ -63,11 +65,12 @@ public final class DocumentSet
    */
   public static DocumentSet buildFromTextFile(final File textFile,
       final Charset charset, final String contentSeparator) throws IOException {
-    final Stream<String> stream = Files.lines(textFile.toPath(), charset);
-    final DocumentSet documents =
-        buildFromTextIterator(stream.iterator(), contentSeparator);
-    stream.close();
-    return documents;
+    try (
+        final Stream<String> stream = Files.lines(textFile.toPath(), charset)) {
+      final DocumentSet documents =
+          buildFromTextIterator(stream.iterator(), contentSeparator);
+      return documents;
+    }
   }
 
   /**
@@ -173,41 +176,39 @@ public final class DocumentSet
       final int newLineLength) throws IOException {
     final DocumentSet documents = new DocumentSet();
 
-    final FileInputStream fileInputStream = new FileInputStream(textFile);
-    final BufferedReader singleCharBufferedReader =
-        new BufferedReader(new InputStreamReader(fileInputStream, charset));
+    try (final BufferedReader singleCharBufferedReader = new BufferedReader(
+        new InputStreamReader(new FileInputStream(textFile), charset))) {
+      int nextDocumentId = 0;
+      BigInteger offsetPosToLineStart = BigInteger.ZERO;
+      while (singleCharBufferedReader.ready()) {
+        String documentAsText = singleCharBufferedReader.readLine();
+        if (documentAsText == null) {
+          break;
+        }
 
-    int nextDocumentId = 0;
-    BigInteger offsetPosToLineStart = BigInteger.ZERO;
-    while (singleCharBufferedReader.ready()) {
-      String documentAsText = singleCharBufferedReader.readLine();
-      if (documentAsText == null) {
-        break;
+        final int idBegin = 0;
+        final int idEnd = documentAsText.indexOf(contentSeparator);
+        String potentialId = documentAsText.substring(idBegin, idEnd);
+        int documentId = -1;
+        if (alwaysSelfAssignIds || !potentialId.matches(DOCUMENT_ID_PATTERN)) {
+          documentId = nextDocumentId;
+          nextDocumentId++;
+        }
+
+        if (documentId == -1) {
+          documents.add(new FixFileLookupDocument(textFile,
+              offsetPosToLineStart.longValueExact(), contentSeparator));
+        } else {
+          documents.add(new FixFileLookupDocument(documentId, textFile,
+              offsetPosToLineStart.longValueExact(), contentSeparator));
+        }
+
+        offsetPosToLineStart = offsetPosToLineStart.add(BigInteger
+            .valueOf(documentAsText.getBytes(charset).length + newLineLength));
       }
 
-      final int idBegin = 0;
-      final int idEnd = documentAsText.indexOf(contentSeparator);
-      String potentialId = documentAsText.substring(idBegin, idEnd);
-      int documentId = -1;
-      if (alwaysSelfAssignIds || !potentialId.matches(DOCUMENT_ID_PATTERN)) {
-        documentId = nextDocumentId;
-        nextDocumentId++;
-      }
-
-      if (documentId == -1) {
-        documents.add(new FixFileLookupDocument(textFile,
-            offsetPosToLineStart.longValueExact(), contentSeparator));
-      } else {
-        documents.add(new FixFileLookupDocument(documentId, textFile,
-            offsetPosToLineStart.longValueExact(), contentSeparator));
-      }
-
-      offsetPosToLineStart = offsetPosToLineStart.add(BigInteger
-          .valueOf(documentAsText.getBytes(charset).length + newLineLength));
+      return documents;
     }
-
-    singleCharBufferedReader.close();
-    return documents;
   }
 
   /**
@@ -270,7 +271,7 @@ public final class DocumentSet
    * Creates a new empty document set.
    */
   public DocumentSet() {
-    mIdToDocument = new HashMap<>();
+    this.mIdToDocument = new HashMap<>();
   }
 
   /*
@@ -280,9 +281,9 @@ public final class DocumentSet
    */
   @Override
   public boolean add(final IKeyRecord<String> e) {
-    final int id = e.getRecordId();
-    final IKeyRecord<String> valueBefore = mIdToDocument.get(id);
-    mIdToDocument.put(id, e);
+    final Integer id = Integer.valueOf(e.getRecordId());
+    final IKeyRecord<String> valueBefore = this.mIdToDocument.get(id);
+    this.mIdToDocument.put(id, e);
 
     return valueBefore == null || !valueBefore.equals(e);
   }
@@ -310,7 +311,7 @@ public final class DocumentSet
    */
   @Override
   public void clear() {
-    mIdToDocument.clear();
+    this.mIdToDocument.clear();
   }
 
   /*
@@ -322,11 +323,10 @@ public final class DocumentSet
   public boolean contains(final Object o) {
     if (o instanceof IDocument) {
       IKeyRecord<String> currentValue =
-          mIdToDocument.get(((IDocument) o).getId());
+          this.mIdToDocument.get(Integer.valueOf(((IDocument) o).getId()));
       return currentValue != null && currentValue.equals(o);
-    } else {
-      return false;
     }
+    return false;
   }
 
   /*
@@ -351,7 +351,7 @@ public final class DocumentSet
    * @return The inverted index working on this set of documents
    */
   public IInvertedIndex<String> createInvertedIndex() {
-    return InvertedIndexUtil.createFromWords(mIdToDocument.values());
+    return InvertedIndexUtil.createFromWords(this.mIdToDocument.values());
   }
 
   /*
@@ -361,7 +361,7 @@ public final class DocumentSet
    */
   @Override
   public IKeyRecord<String> getKeyRecordById(final int documentId) {
-    return mIdToDocument.get(documentId);
+    return this.mIdToDocument.get(Integer.valueOf(documentId));
   }
 
   /*
@@ -371,7 +371,7 @@ public final class DocumentSet
    */
   @Override
   public boolean isEmpty() {
-    return mIdToDocument.isEmpty();
+    return this.mIdToDocument.isEmpty();
   }
 
   /*
@@ -381,7 +381,7 @@ public final class DocumentSet
    */
   @Override
   public Iterator<IKeyRecord<String>> iterator() {
-    return mIdToDocument.values().iterator();
+    return this.mIdToDocument.values().iterator();
   }
 
   /*
@@ -392,11 +392,10 @@ public final class DocumentSet
   @Override
   public boolean remove(final Object o) {
     if (contains(o)) {
-      mIdToDocument.remove(((IDocument) o).getId());
+      this.mIdToDocument.remove(Integer.valueOf(((IDocument) o).getId()));
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /*
@@ -422,7 +421,7 @@ public final class DocumentSet
    */
   @Override
   public boolean retainAll(final Collection<?> c) {
-    return mIdToDocument.values().retainAll(c);
+    return this.mIdToDocument.values().retainAll(c);
   }
 
   /*
@@ -432,7 +431,7 @@ public final class DocumentSet
    */
   @Override
   public int size() {
-    return mIdToDocument.size();
+    return this.mIdToDocument.size();
   }
 
   /*
@@ -442,7 +441,7 @@ public final class DocumentSet
    */
   @Override
   public Object[] toArray() {
-    return mIdToDocument.values().toArray();
+    return this.mIdToDocument.values().toArray();
   }
 
   /*
@@ -452,7 +451,7 @@ public final class DocumentSet
    */
   @Override
   public <T> T[] toArray(final T[] a) {
-    return mIdToDocument.values().toArray(a);
+    return this.mIdToDocument.values().toArray(a);
   }
 
 }

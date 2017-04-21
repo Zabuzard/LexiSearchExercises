@@ -16,6 +16,7 @@ public final class InvertedIndexTest {
   /**
    * Test method for {@link InvertedIndex#addRecord(Object, int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddRecord() {
     final InvertedIndex<String> invertedIndex = new InvertedIndex<>();
@@ -37,6 +38,7 @@ public final class InvertedIndexTest {
   /**
    * Test method for {@link InvertedIndex#containsKey(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContainsKey() {
     final InvertedIndex<String> invertedIndex = new InvertedIndex<>();
@@ -58,6 +60,7 @@ public final class InvertedIndexTest {
   /**
    * Test method for {@link InvertedIndex#containsRecord(Object, int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContainsRecord() {
     final InvertedIndex<String> invertedIndex = new InvertedIndex<>();
@@ -79,6 +82,7 @@ public final class InvertedIndexTest {
   /**
    * Test method for {@link InvertedIndex#getKeys()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeys() {
     final InvertedIndex<String> invertedIndex = new InvertedIndex<>();
@@ -107,6 +111,7 @@ public final class InvertedIndexTest {
   /**
    * Test method for {@link InvertedIndex#getRecords(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRecords() {
     final InvertedIndex<String> invertedIndex = new InvertedIndex<>();
@@ -133,6 +138,7 @@ public final class InvertedIndexTest {
   /**
    * Test method for {@link InvertedIndex#InvertedIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testInvertedIndex() {
     final InvertedIndex<String> invertedIndex = new InvertedIndex<>();

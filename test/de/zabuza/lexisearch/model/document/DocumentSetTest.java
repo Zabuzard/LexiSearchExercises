@@ -1,5 +1,6 @@
 package de.zabuza.lexisearch.model.document;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +20,9 @@ import de.zabuza.lexisearch.indexing.IKeyRecord;
 public final class DocumentSetTest {
 
   /**
-   * Test method for {@link DocumentSet#add(IDocument)}.
+   * Test method for {@link DocumentSet#add(IKeyRecord)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAdd() {
     final DocumentSet documentSet = new DocumentSet();
@@ -40,6 +42,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#addAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddAll() {
     final DocumentSet documentSet = new DocumentSet();
@@ -64,6 +67,7 @@ public final class DocumentSetTest {
    * Test method for
    * {@link DocumentSet#buildFromTextIterator(Iterator, String)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testBuildFromTextIterator() {
     final String separator = "\t";
@@ -81,6 +85,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#clear()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testClear() {
     final DocumentSet documentSet = new DocumentSet();
@@ -105,6 +110,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#contains(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContains() {
     final DocumentSet documentSet = new DocumentSet();
@@ -128,6 +134,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#containsAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContainsAll() {
     final DocumentSet documentSet = new DocumentSet();
@@ -150,6 +157,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#createInvertedIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCreateInvertedIndex() {
     final DocumentSet documentSet = new DocumentSet();
@@ -170,6 +178,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#DocumentSet()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testDocumentSet() {
     final DocumentSet documentSet = new DocumentSet();
@@ -184,6 +193,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#getKeyRecordById(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeyRecordById() {
     final DocumentSet documentSet = new DocumentSet();
@@ -205,6 +215,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#isEmpty()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIsEmpty() {
     final DocumentSet documentSet = new DocumentSet();
@@ -227,6 +238,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#iterator()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIterator() {
     final DocumentSet documentSet = new DocumentSet();
@@ -248,6 +260,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#remove(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testRemove() {
     final DocumentSet documentSet = new DocumentSet();
@@ -272,6 +285,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#removeAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testRemoveAll() {
     final DocumentSet documentSet = new DocumentSet();
@@ -296,6 +310,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#retainAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testRetainAll() {
     final DocumentSet documentSet = new DocumentSet();
@@ -320,6 +335,7 @@ public final class DocumentSetTest {
   /**
    * Test method for {@link DocumentSet#size()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSize() {
     final DocumentSet documentSet = new DocumentSet();

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +29,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#Bm25Ranking()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testBm25Ranking() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
@@ -41,6 +43,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#Bm25Ranking(double, double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testBm25RankingDoubleDouble() {
     final double bParameter = 1f;
@@ -55,6 +58,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#getBParameter()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetBParameter() {
     final double bParameter = 1f;
@@ -69,6 +73,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#getInvertedIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetInvertedIndex() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
@@ -90,6 +95,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#getKeyRecords()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeyRecords() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
@@ -111,6 +117,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#getKParameter()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKParameter() {
     final double bParameter = 1f;
@@ -125,6 +132,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#getRankingScore(Object, Posting)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRankingScore() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
@@ -168,6 +176,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#setBParameter(double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetBParameter() {
     double bParameter = 1f;
@@ -192,6 +201,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#setKParameter(double)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetKParameter() {
     double bParameter = 1f;
@@ -216,6 +226,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#setRankingScoreToIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSetRankingScoreToIndex() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
@@ -240,8 +251,7 @@ public final class Bm25RankingTest {
     }
 
     final IInvertedList unionOfAll = IInvertedList.union(lists);
-    ArrayList<Posting> resultingList =
-        new ArrayList<Posting>(unionOfAll.getSize());
+    ArrayList<Posting> resultingList = new ArrayList<>(unionOfAll.getSize());
     for (final Posting posting : unionOfAll.getPostings()) {
       resultingList.add(posting);
     }
@@ -299,6 +309,7 @@ public final class Bm25RankingTest {
   /**
    * Test method for {@link Bm25Ranking#sortPostingsByRank(List)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSortPostingsByRank() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();
@@ -324,8 +335,7 @@ public final class Bm25RankingTest {
 
     final IInvertedList unionOfAll = IInvertedList.union(lists);
     // Transform the result into a list
-    ArrayList<Posting> resultingList =
-        new ArrayList<Posting>(unionOfAll.getSize());
+    ArrayList<Posting> resultingList = new ArrayList<>(unionOfAll.getSize());
     for (final Posting posting : unionOfAll.getPostings()) {
       resultingList.add(posting);
     }
@@ -339,6 +349,7 @@ public final class Bm25RankingTest {
    * Test method for
    * {@link Bm25Ranking#takeSnapshot(IInvertedIndex, IKeyRecordSet)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testTakeSnapshot() {
     final Bm25Ranking<String> ranking = new Bm25Ranking<>();

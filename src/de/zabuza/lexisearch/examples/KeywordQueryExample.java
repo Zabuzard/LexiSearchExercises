@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import de.zabuza.lexisearch.indexing.IInvertedIndex;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.Posting;
 import de.zabuza.lexisearch.model.document.DocumentSet;
@@ -94,38 +95,39 @@ public final class KeywordQueryExample {
 
     System.out.println("Starting query service.");
     boolean stopService = false;
-    final Scanner scanner = new Scanner(System.in);
-    while (!stopService) {
-      System.out.println(">Type your query. Type an empty text to stop.");
-      final String query = scanner.nextLine().toLowerCase();
 
-      if (query.trim().isEmpty()) {
-        stopService = true;
-      } else {
-        String[] keywords = query.split(KEYWORD_SEPARATOR);
-        List<Posting> queryResults =
-            keywordQuery.searchOr(Arrays.asList(keywords));
-        System.out.println("Matching postings are: " + queryResults);
+    try (final Scanner scanner = new Scanner(System.in)) {
+      while (!stopService) {
+        System.out.println(">Type your query. Type an empty text to stop.");
+        final String query = scanner.nextLine().toLowerCase();
 
-        System.out.println("Some of them are:");
-        final int maximalPostingsForPreview = 3;
-        int postingsShown = 0;
-        for (final Posting posting : queryResults) {
-          final int recordId = posting.getId();
-          final IDocument document =
-              (IDocument) documents.getKeyRecordById(recordId);
-          System.out.println(
-              "\t" + document.getName() + "\t" + document.getDescription());
+        if (query.trim().isEmpty()) {
+          stopService = true;
+        } else {
+          String[] keywords = query.split(KEYWORD_SEPARATOR);
+          List<Posting> queryResults =
+              keywordQuery.searchOr(Arrays.asList(keywords));
+          System.out.println("Matching postings are: " + queryResults);
 
-          postingsShown++;
-          if (postingsShown >= maximalPostingsForPreview) {
-            break;
+          System.out.println("Some of them are:");
+          final int maximalPostingsForPreview = 3;
+          int postingsShown = 0;
+          for (final Posting posting : queryResults) {
+            final int recordId = posting.getId();
+            final IDocument document =
+                (IDocument) documents.getKeyRecordById(recordId);
+            System.out.println(
+                "\t" + document.getName() + "\t" + document.getDescription());
+
+            postingsShown++;
+            if (postingsShown >= maximalPostingsForPreview) {
+              break;
+            }
           }
         }
       }
     }
 
-    scanner.close();
     System.out.println("Terminated.");
   }
 

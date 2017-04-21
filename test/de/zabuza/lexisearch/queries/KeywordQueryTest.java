@@ -23,8 +23,9 @@ import de.zabuza.lexisearch.ranking.Bm25Ranking;
 public class KeywordQueryTest {
 
   /**
-   * Test method for {@link KeywordQuery#KeywordQuery(Iterable)}.
+   * Test method for {@link KeywordQuery#KeywordQuery(IKeyRecordSet)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testKeywordQuery() {
     final String firstWord = "a";
@@ -62,8 +63,9 @@ public class KeywordQueryTest {
   }
 
   /**
-   * Test method for {@link KeywordQuery#searchAnd(Iterable, Optional)}.
+   * Test method for {@link KeywordQuery#searchAnd(Iterable)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSearchAnd() {
     final String firstWord = "a";
@@ -101,8 +103,9 @@ public class KeywordQueryTest {
   }
 
   /**
-   * Test method for {@link KeywordQuery#searchOr(Iterable, Optional)}.
+   * Test method for {@link KeywordQuery#searchOr(Iterable)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSearchOr() {
     final String firstWord = "a";

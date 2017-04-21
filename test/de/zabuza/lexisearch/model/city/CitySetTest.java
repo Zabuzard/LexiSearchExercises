@@ -1,5 +1,6 @@
 package de.zabuza.lexisearch.model.city;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
+import de.zabuza.lexisearch.indexing.IKeyProvider;
 import de.zabuza.lexisearch.indexing.IKeyRecord;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
 
@@ -20,6 +22,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#add(IKeyRecord)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAdd() {
     final QGramProvider provider = new QGramProvider(3);
@@ -40,6 +43,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#addAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testAddAll() {
     final QGramProvider provider = new QGramProvider(3);
@@ -65,6 +69,7 @@ public final class CitySetTest {
    * Test method for
    * {@link CitySet#buildFromTextIterator(Iterator, String, IKeyProvider)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testBuildFromTextIterator() {
     final QGramProvider provider = new QGramProvider(3);
@@ -83,6 +88,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#CitySet()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCitySet() {
     final QGramProvider provider = new QGramProvider(3);
@@ -98,6 +104,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#clear()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testClear() {
     final QGramProvider provider = new QGramProvider(3);
@@ -123,6 +130,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#contains(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContains() {
     final QGramProvider provider = new QGramProvider(3);
@@ -147,6 +155,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#containsAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testContainsAll() {
     final QGramProvider provider = new QGramProvider(3);
@@ -170,6 +179,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#createInvertedIndex()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCreateInvertedIndex() {
     final QGramProvider provider = new QGramProvider(3);
@@ -216,6 +226,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#getKeyRecordById(int)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeyRecordById() {
     final QGramProvider provider = new QGramProvider(3);
@@ -238,6 +249,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#isEmpty()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIsEmpty() {
     final QGramProvider provider = new QGramProvider(3);
@@ -261,6 +273,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#iterator()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testIterator() {
     final QGramProvider provider = new QGramProvider(3);
@@ -283,6 +296,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#remove(Object)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testRemove() {
     final QGramProvider provider = new QGramProvider(3);
@@ -308,6 +322,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#removeAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testRemoveAll() {
     final QGramProvider provider = new QGramProvider(3);
@@ -333,6 +348,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#retainAll(Collection)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testRetainAll() {
     final QGramProvider provider = new QGramProvider(3);
@@ -358,6 +374,7 @@ public final class CitySetTest {
   /**
    * Test method for {@link CitySet#size()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testSize() {
     final QGramProvider provider = new QGramProvider(3);

@@ -3,6 +3,7 @@ package de.zabuza.lexisearch.model.city;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.zabuza.lexisearch.indexing.IKeyProvider;
 import de.zabuza.lexisearch.indexing.qgram.QGramProvider;
 
 /**
@@ -16,6 +17,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#buildFromText(String, String, IKeyProvider)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testBuildFromText() {
     final QGramProvider provider = new QGramProvider(3);
@@ -40,6 +42,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#City(int, String, float, float, IKeyProvider)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCityIntStringFloatFloatIKeyProviderOfStringString() {
     final QGramProvider provider = new QGramProvider(3);
@@ -56,6 +59,7 @@ public final class CityTest {
    * Test method for
    * {@link City#City(int, String, float, float, int, IKeyProvider)}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testCityIntStringFloatFloatIntIKeyProviderOfStringString() {
     final QGramProvider provider = new QGramProvider(3);
@@ -71,6 +75,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getId()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetId() {
     final QGramProvider provider = new QGramProvider(3);
@@ -84,6 +89,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getKeys()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetKeys() {
     final QGramProvider provider = new QGramProvider(3, '$');
@@ -109,6 +115,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getLatitude()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetLatitude() {
     final QGramProvider provider = new QGramProvider(3);
@@ -122,6 +129,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getLongitude()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetLongitude() {
     final QGramProvider provider = new QGramProvider(3);
@@ -135,6 +143,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getName()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetName() {
     final QGramProvider provider = new QGramProvider(3);
@@ -148,6 +157,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getRecordId()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetRecordId() {
     final QGramProvider provider = new QGramProvider(3);
@@ -161,6 +171,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getScore()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetScore() {
     final QGramProvider provider = new QGramProvider(3);
@@ -174,6 +185,7 @@ public final class CityTest {
   /**
    * Test method for {@link City#getSize()}.
    */
+  @SuppressWarnings("static-method")
   @Test
   public void testGetSize() {
     final QGramProvider provider = new QGramProvider(3);

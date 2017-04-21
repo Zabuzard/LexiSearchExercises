@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import de.zabuza.lexisearch.indexing.IInvertedIndex;
@@ -64,11 +66,12 @@ public final class CitySet
   public static CitySet buildFromTextFile(final File textFile,
       final Charset charset, final String contentSeparator,
       final IKeyProvider<String, String> provider) throws IOException {
-    final Stream<String> stream = Files.lines(textFile.toPath(), charset);
-    final CitySet cities =
-        buildFromTextIterator(stream.iterator(), contentSeparator, provider);
-    stream.close();
-    return cities;
+    try (
+        final Stream<String> stream = Files.lines(textFile.toPath(), charset)) {
+      final CitySet cities =
+          buildFromTextIterator(stream.iterator(), contentSeparator, provider);
+      return cities;
+    }
   }
 
   /**
@@ -85,8 +88,6 @@ public final class CitySet
    *          UTF-8
    * @param contentSeparator
    *          The text used to separate the content in the format
-   * @param nameSeparator
-   *          The separator of the names
    * @param provider
    *          The key provider to use
    * @return The set of cities build from the given file
@@ -169,7 +170,7 @@ public final class CitySet
    * Creates a new empty city set.
    */
   public CitySet() {
-    mIdToCity = new HashMap<>();
+    this.mIdToCity = new HashMap<>();
   }
 
   /*
@@ -179,9 +180,9 @@ public final class CitySet
    */
   @Override
   public boolean add(final IKeyRecord<String> e) {
-    final int id = e.getRecordId();
-    final IKeyRecord<String> valueBefore = mIdToCity.get(id);
-    mIdToCity.put(id, e);
+    final Integer id = Integer.valueOf(e.getRecordId());
+    final IKeyRecord<String> valueBefore = this.mIdToCity.get(id);
+    this.mIdToCity.put(id, e);
 
     return valueBefore == null || !valueBefore.equals(e);
   }
@@ -209,7 +210,7 @@ public final class CitySet
    */
   @Override
   public void clear() {
-    mIdToCity.clear();
+    this.mIdToCity.clear();
   }
 
   /*
@@ -220,11 +221,11 @@ public final class CitySet
   @Override
   public boolean contains(final Object o) {
     if (o instanceof ICity) {
-      IKeyRecord<String> currentValue = mIdToCity.get(((ICity) o).getId());
+      IKeyRecord<String> currentValue =
+          this.mIdToCity.get(Integer.valueOf(((ICity) o).getId()));
       return currentValue != null && currentValue.equals(o);
-    } else {
-      return false;
     }
+    return false;
   }
 
   /*
@@ -249,7 +250,7 @@ public final class CitySet
    * @return The inverted index working on this set of cities
    */
   public IInvertedIndex<String> createInvertedIndex() {
-    return InvertedIndexUtil.createFromWords(mIdToCity.values());
+    return InvertedIndexUtil.createFromWords(this.mIdToCity.values());
   }
 
   /*
@@ -259,7 +260,7 @@ public final class CitySet
    */
   @Override
   public IKeyRecord<String> getKeyRecordById(final int cityId) {
-    return mIdToCity.get(cityId);
+    return this.mIdToCity.get(Integer.valueOf(cityId));
   }
 
   /*
@@ -269,7 +270,7 @@ public final class CitySet
    */
   @Override
   public boolean isEmpty() {
-    return mIdToCity.isEmpty();
+    return this.mIdToCity.isEmpty();
   }
 
   /*
@@ -279,7 +280,7 @@ public final class CitySet
    */
   @Override
   public Iterator<IKeyRecord<String>> iterator() {
-    return mIdToCity.values().iterator();
+    return this.mIdToCity.values().iterator();
   }
 
   /*
@@ -290,11 +291,10 @@ public final class CitySet
   @Override
   public boolean remove(final Object o) {
     if (contains(o)) {
-      mIdToCity.remove(((ICity) o).getId());
+      this.mIdToCity.remove(Integer.valueOf(((ICity) o).getId()));
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /*
@@ -320,7 +320,7 @@ public final class CitySet
    */
   @Override
   public boolean retainAll(final Collection<?> c) {
-    return mIdToCity.values().retainAll(c);
+    return this.mIdToCity.values().retainAll(c);
   }
 
   /*
@@ -330,7 +330,7 @@ public final class CitySet
    */
   @Override
   public int size() {
-    return mIdToCity.size();
+    return this.mIdToCity.size();
   }
 
   /*
@@ -340,7 +340,7 @@ public final class CitySet
    */
   @Override
   public Object[] toArray() {
-    return mIdToCity.values().toArray();
+    return this.mIdToCity.values().toArray();
   }
 
   /*
@@ -350,7 +350,7 @@ public final class CitySet
    */
   @Override
   public <T> T[] toArray(final T[] a) {
-    return mIdToCity.values().toArray(a);
+    return this.mIdToCity.values().toArray(a);
   }
 
 }

@@ -44,11 +44,10 @@ public final class FixFileLookupDocument extends Document {
       final Optional<Integer> id, final File file, final long lineStartPos,
       final String contentSeparator) {
     if (id.isPresent()) {
-      return new FixFileLookupDocument(id.get(), file, lineStartPos,
+      return new FixFileLookupDocument(id.get().intValue(), file, lineStartPos,
           contentSeparator);
-    } else {
-      return new FixFileLookupDocument(file, lineStartPos, contentSeparator);
     }
+    return new FixFileLookupDocument(file, lineStartPos, contentSeparator);
   }
 
   /**
@@ -139,11 +138,11 @@ public final class FixFileLookupDocument extends Document {
   private FixFileLookupDocument(final int id, final File file,
       final long lineStartPos, final String contentSeparator,
       final boolean doFetchId) {
-    mFile = file;
-    mLineStartPos = lineStartPos;
-    mContentSeparator = contentSeparator;
-    mDoFetchId = doFetchId;
-    mId = id;
+    this.mFile = file;
+    this.mLineStartPos = lineStartPos;
+    this.mContentSeparator = contentSeparator;
+    this.mDoFetchId = doFetchId;
+    this.mId = id;
   }
 
   /*
@@ -168,7 +167,7 @@ public final class FixFileLookupDocument extends Document {
    * @return The file object of this document to get
    */
   public File getFile() {
-    return mFile;
+    return this.mFile;
   }
 
   /*
@@ -178,7 +177,7 @@ public final class FixFileLookupDocument extends Document {
    */
   @Override
   public int getId() {
-    if (mDoFetchId) {
+    if (this.mDoFetchId) {
       String[] content;
       try {
         content = fetchContent();
@@ -186,9 +185,8 @@ public final class FixFileLookupDocument extends Document {
       } catch (IllegalArgumentException | IOException e) {
         throw new IllegalStateException(MSG_WRONG_TEXT_FORMAT);
       }
-    } else {
-      return mId;
     }
+    return this.mId;
   }
 
   /*
@@ -222,19 +220,22 @@ public final class FixFileLookupDocument extends Document {
    *           If the document is in the wrong format
    */
   private String[] fetchContent() throws IOException {
-    final RandomAccessFile raf = new RandomAccessFile(mFile, FLAG_READ_ONLY);
-    raf.seek(mLineStartPos);
-    final String line = raf.readLine();
-    raf.close();
-    final String[] content = line.split(mContentSeparator);
+    final String line;
+    try (final RandomAccessFile raf =
+        new RandomAccessFile(this.mFile, FLAG_READ_ONLY)) {
+      raf.seek(this.mLineStartPos);
+      line = raf.readLine();
+    }
 
-    if ((mDoFetchId && content.length != 3)
-        || (!mDoFetchId && content.length != 2)) {
+    final String[] content = line.split(this.mContentSeparator);
+
+    if ((this.mDoFetchId && content.length != 3)
+        || (!this.mDoFetchId && content.length != 2)) {
       throw new IllegalArgumentException(MSG_WRONG_TEXT_FORMAT);
     }
 
     final String[] resultingContent;
-    if (mDoFetchId) {
+    if (this.mDoFetchId) {
       resultingContent = content;
     } else {
       resultingContent = new String[3];
