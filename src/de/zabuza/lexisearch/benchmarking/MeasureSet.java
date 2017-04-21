@@ -38,7 +38,7 @@ public final class MeasureSet<K> implements IMeasureSet<K> {
    * lexisearch.benchmarking.IMeasure)
    */
   @Override
-  public void addMeasure(IMeasure<K> measure) {
+  public void addMeasure(final IMeasure<K> measure) {
     this.mMeasures.add(measure);
   }
 
@@ -50,8 +50,8 @@ public final class MeasureSet<K> implements IMeasureSet<K> {
    * Collection, java.util.List, de.zabuza.lexisearch.benchmarking.IGroundTruth)
    */
   @Override
-  public Map<IMeasure<K>, Double> evaluateRelevance(Collection<K> keys,
-      List<Posting> postings, IGroundTruth<K> groundTruth) {
+  public Map<IMeasure<K>, Double> evaluateRelevance(final Collection<K> keys,
+      final List<Posting> postings, final IGroundTruth<K> groundTruth) {
     final HashMap<IMeasure<K>, Double> measureToRelevance = new HashMap<>();
     for (final IMeasure<K> measure : this.mMeasures) {
       final double relevance =

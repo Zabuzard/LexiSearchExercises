@@ -65,7 +65,7 @@ public final class CityQGramDistributionExample {
 
     System.out.println("Fetching cities...");
     final int qParameter = 3;
-    QGramProvider qGramProvider = new QGramProvider(qParameter);
+    final QGramProvider qGramProvider = new QGramProvider(qParameter);
     final CitySet cities =
         CitySet.buildFromTextFileUtf8Tab(file, qGramProvider);
 
@@ -80,7 +80,7 @@ public final class CityQGramDistributionExample {
 
     for (final String qGram : invertedIndex.getKeys()) {
       int hits = 0;
-      for (Posting cityPosting : invertedIndex.getRecords(qGram)
+      for (final Posting cityPosting : invertedIndex.getRecords(qGram)
           .getPostings()) {
         hits += cityPosting.getTermFrequency();
       }

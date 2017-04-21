@@ -181,14 +181,14 @@ public final class DocumentSet
       int nextDocumentId = 0;
       BigInteger offsetPosToLineStart = BigInteger.ZERO;
       while (singleCharBufferedReader.ready()) {
-        String documentAsText = singleCharBufferedReader.readLine();
+        final String documentAsText = singleCharBufferedReader.readLine();
         if (documentAsText == null) {
           break;
         }
 
         final int idBegin = 0;
         final int idEnd = documentAsText.indexOf(contentSeparator);
-        String potentialId = documentAsText.substring(idBegin, idEnd);
+        final String potentialId = documentAsText.substring(idBegin, idEnd);
         int documentId = -1;
         if (alwaysSelfAssignIds || !potentialId.matches(DOCUMENT_ID_PATTERN)) {
           documentId = nextDocumentId;
@@ -322,7 +322,7 @@ public final class DocumentSet
   @Override
   public boolean contains(final Object o) {
     if (o instanceof IDocument) {
-      IKeyRecord<String> currentValue =
+      final IKeyRecord<String> currentValue =
           this.mIdToDocument.get(Integer.valueOf(((IDocument) o).getId()));
       return currentValue != null && currentValue.equals(o);
     }

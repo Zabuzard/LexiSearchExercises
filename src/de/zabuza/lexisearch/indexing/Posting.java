@@ -94,7 +94,7 @@ public final class Posting implements Comparable<Posting> {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
@@ -104,7 +104,7 @@ public final class Posting implements Comparable<Posting> {
     if (!(obj instanceof Posting)) {
       return false;
     }
-    Posting other = (Posting) obj;
+    final Posting other = (Posting) obj;
     if (this.mId != other.mId) {
       return false;
     }

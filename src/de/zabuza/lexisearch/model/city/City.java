@@ -63,7 +63,8 @@ public final class City implements ICity {
    *           If the city is in the wrong format
    */
   public static City buildFromText(final String cityAsText,
-      final String contentSeparator, IKeyProvider<String, String> keyProvider) {
+      final String contentSeparator,
+      final IKeyProvider<String, String> keyProvider) {
     final String[] content = cityAsText.split(contentSeparator);
 
     if (content.length == 5) {

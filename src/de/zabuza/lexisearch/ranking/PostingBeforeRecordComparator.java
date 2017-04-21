@@ -46,7 +46,7 @@ public final class PostingBeforeRecordComparator<E extends IKeyRecord<K>, K>
   @Override
   public int compare(final Posting o1, final Posting o2) {
     // First sort by the posting score ascending
-    int firstRelation = Double.compare(o1.getScore(), o2.getScore());
+    final int firstRelation = Double.compare(o1.getScore(), o2.getScore());
     if (firstRelation != 0) {
       // The posting score is already different
       return firstRelation;

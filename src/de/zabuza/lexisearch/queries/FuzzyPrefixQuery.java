@@ -217,7 +217,7 @@ public final class FuzzyPrefixQuery<T extends IKeyRecord<String>>
     }
 
     // Transform the result into a list
-    ArrayList<Posting> resultingList =
+    final ArrayList<Posting> resultingList =
         new ArrayList<>(resultingInvertedList.getSize());
     for (final Posting posting : resultingInvertedList.getPostings()) {
       resultingList.add(posting);

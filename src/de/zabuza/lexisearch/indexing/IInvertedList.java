@@ -25,13 +25,13 @@ public interface IInvertedList {
    */
   static IInvertedList aggregate(final Collection<IInvertedList> lists,
       final EAggregateMode mode) {
-    int amountOfLists = lists.size();
+    final int amountOfLists = lists.size();
     if (amountOfLists <= 1) {
       throw new IllegalArgumentException();
     }
 
     // Setup a priority queue containing all initial elements
-    PriorityQueue<PostToIterCont> queue = new PriorityQueue<>();
+    final PriorityQueue<PostToIterCont> queue = new PriorityQueue<>();
     for (final IInvertedList list : lists) {
       final Iterator<Posting> postings = list.getPostings().iterator();
       if (postings.hasNext()) {
@@ -50,7 +50,7 @@ public interface IInvertedList {
     // Process all queue elements
     while (!queue.isEmpty()) {
       // Poll the smallest value of all lists
-      PostToIterCont smallestContainer = queue.poll();
+      final PostToIterCont smallestContainer = queue.poll();
       final int smallestRecordId = smallestContainer.getRecordId();
       // Put the next value of this list in the queue
       final Iterator<Posting> smallestIter =
@@ -66,7 +66,7 @@ public interface IInvertedList {
       // Check if all other lists currently also hold this record
       int amountOfListsMatching = 1;
       while (amountOfListsMatching != amountOfLists) {
-        PostToIterCont nextSmallestContainer = queue.peek();
+        final PostToIterCont nextSmallestContainer = queue.peek();
         if (nextSmallestContainer == null) {
           // The queue is empty, break
           break;

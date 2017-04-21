@@ -79,7 +79,7 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
     final GroundTruth<String> groundTruth = new GroundTruth<>();
 
     while (textIterator.hasNext()) {
-      String groundTruthAsText = textIterator.next();
+      final String groundTruthAsText = textIterator.next();
       final int idBegin = 0;
       final int idEnd = groundTruthAsText.indexOf(contentSeparator);
       final String keysText = groundTruthAsText.substring(idBegin, idEnd);
@@ -88,7 +88,7 @@ public final class GroundTruth<K> implements IGroundTruth<K> {
       final String relevantRecordsText = groundTruthAsText.substring(idEnd + 1);
       final String[] relevantRecordsUnparsed =
           relevantRecordsText.split(dataSeparator);
-      ArrayList<Integer> relevantRecords =
+      final ArrayList<Integer> relevantRecords =
           new ArrayList<>(relevantRecordsUnparsed.length);
       for (int i = 0; i < relevantRecordsUnparsed.length; i++) {
         // We need to subtract one as our indices start with zero and not one

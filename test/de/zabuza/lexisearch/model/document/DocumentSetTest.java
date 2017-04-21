@@ -51,7 +51,7 @@ public final class DocumentSetTest {
     final Document document = new Document(1, "a", "b");
     final Document anotherDocument = new Document(2, "1", "2");
 
-    List<Document> documents = new LinkedList<>();
+    final List<Document> documents = new LinkedList<>();
     documents.add(document);
     documents.add(anotherDocument);
     documents.add(document);
@@ -94,7 +94,7 @@ public final class DocumentSetTest {
     final Document document = new Document(1, "a", "b");
     final Document anotherDocument = new Document(2, "1", "2");
 
-    List<Document> documents = new LinkedList<>();
+    final List<Document> documents = new LinkedList<>();
     documents.add(document);
     documents.add(anotherDocument);
     documents.add(document);
@@ -119,7 +119,7 @@ public final class DocumentSetTest {
     final Document document = new Document(1, "a", "b");
     final Document anotherDocument = new Document(2, "1", "2");
 
-    List<Document> documents = new LinkedList<>();
+    final List<Document> documents = new LinkedList<>();
     documents.add(document);
     documents.add(anotherDocument);
     documents.add(document);
@@ -143,7 +143,7 @@ public final class DocumentSetTest {
     final Document document = new Document(1, "a", "b");
     final Document anotherDocument = new Document(2, "1", "2");
 
-    List<Document> documents = new LinkedList<>();
+    final List<Document> documents = new LinkedList<>();
     documents.add(document);
     documents.add(anotherDocument);
     documents.add(document);
@@ -293,7 +293,7 @@ public final class DocumentSetTest {
 
     final Document document = new Document(1, "a", "b");
     final Document anotherDocument = new Document(2, "1", "2");
-    List<Document> documents = new LinkedList<>();
+    final List<Document> documents = new LinkedList<>();
     documents.add(document);
     documents.add(anotherDocument);
     documents.add(document);

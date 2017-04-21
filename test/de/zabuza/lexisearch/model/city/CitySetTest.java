@@ -53,7 +53,7 @@ public final class CitySetTest {
     final City city = new City(1, "city", 1.0f, 2.0f, 1, provider);
     final City anotherCity = new City(2, "city", 1.0f, 2.0f, 1, provider);
 
-    List<City> cities = new LinkedList<>();
+    final List<City> cities = new LinkedList<>();
     cities.add(city);
     cities.add(anotherCity);
     cities.add(city);
@@ -114,7 +114,7 @@ public final class CitySetTest {
     final City city = new City(1, "city", 1.0f, 2.0f, 1, provider);
     final City anotherCity = new City(2, "city", 1.0f, 2.0f, 1, provider);
 
-    List<City> cities = new LinkedList<>();
+    final List<City> cities = new LinkedList<>();
     cities.add(city);
     cities.add(anotherCity);
     cities.add(city);
@@ -140,7 +140,7 @@ public final class CitySetTest {
     final City city = new City(1, "city", 1.0f, 2.0f, 1, provider);
     final City anotherCity = new City(2, "city", 1.0f, 2.0f, 1, provider);
 
-    List<City> cities = new LinkedList<>();
+    final List<City> cities = new LinkedList<>();
     cities.add(city);
     cities.add(anotherCity);
     cities.add(city);
@@ -165,7 +165,7 @@ public final class CitySetTest {
     final City city = new City(1, "city", 1.0f, 2.0f, 1, provider);
     final City anotherCity = new City(2, "city", 1.0f, 2.0f, 1, provider);
 
-    List<City> cities = new LinkedList<>();
+    final List<City> cities = new LinkedList<>();
     cities.add(city);
     cities.add(anotherCity);
     cities.add(city);
@@ -331,7 +331,7 @@ public final class CitySetTest {
 
     final City city = new City(1, "city", 1.0f, 2.0f, 1, provider);
     final City anotherCity = new City(2, "city", 1.0f, 2.0f, 1, provider);
-    List<City> cities = new LinkedList<>();
+    final List<City> cities = new LinkedList<>();
     cities.add(city);
     cities.add(anotherCity);
     cities.add(city);
@@ -357,7 +357,7 @@ public final class CitySetTest {
 
     final City city = new City(1, "city", 1.0f, 2.0f, 1, provider);
     final City anotherCity = new City(2, "city", 1.0f, 2.0f, 1, provider);
-    List<City> cities = new LinkedList<>();
+    final List<City> cities = new LinkedList<>();
     cities.add(city);
     cities.add(city);
 

@@ -244,14 +244,15 @@ public final class Bm25RankingTest {
     ranking.takeSnapshot(invertedIndex, documents);
     ranking.setRankingScoreToIndex();
 
-    LinkedList<IInvertedList> lists = new LinkedList<>();
+    final LinkedList<IInvertedList> lists = new LinkedList<>();
     for (final String key : invertedIndex.getKeys()) {
       final IInvertedList list = invertedIndex.getRecords(key);
       lists.add(list);
     }
 
     final IInvertedList unionOfAll = IInvertedList.union(lists);
-    ArrayList<Posting> resultingList = new ArrayList<>(unionOfAll.getSize());
+    final ArrayList<Posting> resultingList =
+        new ArrayList<>(unionOfAll.getSize());
     for (final Posting posting : unionOfAll.getPostings()) {
       resultingList.add(posting);
     }
@@ -275,7 +276,7 @@ public final class Bm25RankingTest {
     testRanking.setRankingScoreToIndex();
 
     // Note that we begin to give indices starting from zero instead of one
-    Iterator<Posting> documPostings =
+    final Iterator<Posting> documPostings =
         testInvertedIndex.getRecords("docum").getPostings().iterator();
     final Posting firstDocumPosting = documPostings.next();
     final Posting secondDocumPosting = documPostings.next();
@@ -287,19 +288,19 @@ public final class Bm25RankingTest {
     Assert.assertEquals(2, thirdDocumPosting.getId());
     Assert.assertEquals(0, thirdDocumPosting.getScore(), 0);
 
-    Iterator<Posting> firstPostings =
+    final Iterator<Posting> firstPostings =
         testInvertedIndex.getRecords("first").getPostings().iterator();
     final Posting firstPosting = firstPostings.next();
     Assert.assertEquals(0, firstPosting.getId());
     Assert.assertEquals(1.885, firstPosting.getScore(), 0.0005);
 
-    Iterator<Posting> secondPostings =
+    final Iterator<Posting> secondPostings =
         testInvertedIndex.getRecords("second").getPostings().iterator();
     final Posting secondPosting = secondPostings.next();
     Assert.assertEquals(1, secondPosting.getId());
     Assert.assertEquals(2.325, secondPosting.getScore(), 0.0005);
 
-    Iterator<Posting> thirdPostings =
+    final Iterator<Posting> thirdPostings =
         testInvertedIndex.getRecords("third").getPostings().iterator();
     final Posting thirdPosting = thirdPostings.next();
     Assert.assertEquals(2, thirdPosting.getId());
@@ -327,7 +328,7 @@ public final class Bm25RankingTest {
     ranking.takeSnapshot(invertedIndex, documents);
     ranking.setRankingScoreToIndex();
 
-    LinkedList<IInvertedList> lists = new LinkedList<>();
+    final LinkedList<IInvertedList> lists = new LinkedList<>();
     for (final String key : invertedIndex.getKeys()) {
       final IInvertedList list = invertedIndex.getRecords(key);
       lists.add(list);
@@ -335,7 +336,8 @@ public final class Bm25RankingTest {
 
     final IInvertedList unionOfAll = IInvertedList.union(lists);
     // Transform the result into a list
-    ArrayList<Posting> resultingList = new ArrayList<>(unionOfAll.getSize());
+    final ArrayList<Posting> resultingList =
+        new ArrayList<>(unionOfAll.getSize());
     for (final Posting posting : unionOfAll.getPostings()) {
       resultingList.add(posting);
     }

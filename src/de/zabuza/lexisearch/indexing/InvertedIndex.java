@@ -37,7 +37,7 @@ public final class InvertedIndex<K> implements IInvertedIndex<K> {
     if (records == null) {
       records = new InvertedList();
     }
-    boolean wasAdded = records.addPosting(recordId);
+    final boolean wasAdded = records.addPosting(recordId);
     this.mKeyToInvertedLists.put(key, records);
 
     return wasAdded;

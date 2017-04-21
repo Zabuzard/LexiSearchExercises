@@ -75,7 +75,7 @@ public final class FuzzySearchExample {
 
     System.out.println("Fetching cities...");
     final int qParameter = 3;
-    QGramProvider qGramProvider = new QGramProvider(qParameter);
+    final QGramProvider qGramProvider = new QGramProvider(qParameter);
     final CitySet cities =
         CitySet.buildFromTextFileUtf8Tab(file, qGramProvider);
 
@@ -98,7 +98,7 @@ public final class FuzzySearchExample {
         } else {
           final long queryStartTime = System.currentTimeMillis();
 
-          String[] keywords = query.split(KEYWORD_SEPARATOR);
+          final String[] keywords = query.split(KEYWORD_SEPARATOR);
           final List<Posting> queryResults =
               fuzzyQuery.searchOr(Arrays.asList(keywords));
 

@@ -41,20 +41,20 @@ public class KeywordQueryTest {
     final KeywordQuery<IKeyRecord<String>> keywordQuery =
         new KeywordQuery<>(documents);
 
-    LinkedList<String> firstQuery = new LinkedList<>();
+    final LinkedList<String> firstQuery = new LinkedList<>();
     firstQuery.add(firstWord);
     final List<Posting> firstResult = keywordQuery.searchAnd(firstQuery);
     Assert.assertEquals(1, firstResult.size());
     Assert.assertEquals(0, firstResult.get(0).getId());
 
-    LinkedList<String> secondQuery = new LinkedList<>();
+    final LinkedList<String> secondQuery = new LinkedList<>();
     secondQuery.add(secondWord);
     final List<Posting> secondResult = keywordQuery.searchAnd(secondQuery);
     Assert.assertEquals(2, secondResult.size());
     Assert.assertEquals(0, secondResult.get(0).getId());
     Assert.assertEquals(1, secondResult.get(1).getId());
 
-    LinkedList<String> thirdQuery = new LinkedList<>();
+    final LinkedList<String> thirdQuery = new LinkedList<>();
     thirdQuery.add(firstWord);
     thirdQuery.add(secondWord);
     final List<Posting> thirdResult = keywordQuery.searchAnd(thirdQuery);
@@ -81,20 +81,20 @@ public class KeywordQueryTest {
     final KeywordQuery<IKeyRecord<String>> keywordQuery =
         new KeywordQuery<>(documents);
 
-    LinkedList<String> firstQuery = new LinkedList<>();
+    final LinkedList<String> firstQuery = new LinkedList<>();
     firstQuery.add(firstWord);
     final List<Posting> firstResult = keywordQuery.searchAnd(firstQuery);
     Assert.assertEquals(1, firstResult.size());
     Assert.assertEquals(0, firstResult.get(0).getId());
 
-    LinkedList<String> secondQuery = new LinkedList<>();
+    final LinkedList<String> secondQuery = new LinkedList<>();
     secondQuery.add(secondWord);
     final List<Posting> secondResult = keywordQuery.searchAnd(secondQuery);
     Assert.assertEquals(2, secondResult.size());
     Assert.assertEquals(0, secondResult.get(0).getId());
     Assert.assertEquals(1, secondResult.get(1).getId());
 
-    LinkedList<String> thirdQuery = new LinkedList<>();
+    final LinkedList<String> thirdQuery = new LinkedList<>();
     thirdQuery.add(firstWord);
     thirdQuery.add(secondWord);
     final List<Posting> thirdResult = keywordQuery.searchAnd(thirdQuery);
@@ -121,20 +121,20 @@ public class KeywordQueryTest {
     final KeywordQuery<IKeyRecord<String>> keywordQuery =
         new KeywordQuery<>(documents);
 
-    LinkedList<String> firstQuery = new LinkedList<>();
+    final LinkedList<String> firstQuery = new LinkedList<>();
     firstQuery.add(firstWord);
     final List<Posting> firstResult = keywordQuery.searchOr(firstQuery);
     Assert.assertEquals(1, firstResult.size());
     Assert.assertEquals(0, firstResult.get(0).getId());
 
-    LinkedList<String> secondQuery = new LinkedList<>();
+    final LinkedList<String> secondQuery = new LinkedList<>();
     secondQuery.add(secondWord);
     final List<Posting> secondResult = keywordQuery.searchOr(secondQuery);
     Assert.assertEquals(2, secondResult.size());
     Assert.assertEquals(0, secondResult.get(0).getId());
     Assert.assertEquals(1, secondResult.get(1).getId());
 
-    LinkedList<String> thirdQuery = new LinkedList<>();
+    final LinkedList<String> thirdQuery = new LinkedList<>();
     thirdQuery.add(firstWord);
     thirdQuery.add(secondWord);
     final List<Posting> thirdResult = keywordQuery.searchOr(thirdQuery);
@@ -153,7 +153,7 @@ public class KeywordQueryTest {
     final KeywordQuery<IKeyRecord<String>> testKeywordQuery =
         new KeywordQuery<>(testDocuments, new Bm25Ranking<>());
 
-    LinkedList<String> testQuery = new LinkedList<>();
+    final LinkedList<String> testQuery = new LinkedList<>();
     testQuery.add("docum");
     testQuery.add("third");
     final List<Posting> testResult = testKeywordQuery.searchOr(testQuery);

@@ -36,7 +36,7 @@ public final class IInvertedListTest {
     thirdInvertedList.addPosting(3);
     thirdInvertedList.addPosting(5);
 
-    Collection<IInvertedList> collection = new LinkedList<>();
+    final Collection<IInvertedList> collection = new LinkedList<>();
     collection.add(firstInvertedList);
     collection.add(secondInvertedList);
     collection.add(thirdInvertedList);
@@ -126,7 +126,7 @@ public final class IInvertedListTest {
     thirdInvertedList.addPosting(3);
     thirdInvertedList.addPosting(5);
 
-    Collection<IInvertedList> collection = new LinkedList<>();
+    final Collection<IInvertedList> collection = new LinkedList<>();
     collection.add(firstInvertedList);
     collection.add(secondInvertedList);
     collection.add(thirdInvertedList);

@@ -143,7 +143,7 @@ public final class WebDemoServer {
       serverPath = DEFAULT_SERVER_PATH;
     }
 
-    WebDemoServer server = new WebDemoServer(port, dataFile, serverPath);
+    final WebDemoServer server = new WebDemoServer(port, dataFile, serverPath);
     server.runService();
   }
 
@@ -158,8 +158,9 @@ public final class WebDemoServer {
     final String fileName = file.getName();
     String extensionText = "";
 
-    int i = fileName.lastIndexOf('.');
-    int p = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+    final int i = fileName.lastIndexOf('.');
+    final int p =
+        Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
 
     if (i > p) {
       extensionText = fileName.substring(i + 1);
@@ -197,8 +198,8 @@ public final class WebDemoServer {
    * @throws IOException
    *           If an I/O-Exception occurred.
    */
-  private static void sendHttpAnswer(EHttpContentType contentType,
-      EHttpStatus status, final Socket client) throws IOException {
+  private static void sendHttpAnswer(final EHttpContentType contentType,
+      final EHttpStatus status, final Socket client) throws IOException {
     sendHttpAnswer(EMPTY_ANSWER, contentType, status, client);
   }
 
@@ -217,9 +218,9 @@ public final class WebDemoServer {
    * @throws IOException
    *           If an I/O-Exception occurred.
    */
-  private static void sendHttpAnswer(String answerText,
-      EHttpContentType contentType, EHttpStatus status, final Socket client)
-          throws IOException {
+  private static void sendHttpAnswer(final String answerText,
+      final EHttpContentType contentType, final EHttpStatus status,
+      final Socket client) throws IOException {
     EHttpStatus statusToUse = status;
     String answerTextToUse = answerText;
 
@@ -346,7 +347,7 @@ public final class WebDemoServer {
     // Creating data structure
     System.out.println("\tFetching cities...");
     final int qParameter = 3;
-    QGramProvider qGramProvider = new QGramProvider(qParameter);
+    final QGramProvider qGramProvider = new QGramProvider(qParameter);
     this.mCities = CitySet.buildFromTextFileUtf8Tab(dataFile, qGramProvider);
 
     // Creating fuzzy prefix query and ranking
@@ -363,7 +364,7 @@ public final class WebDemoServer {
    *           If an I/O-exception occurred
    */
   public void runService() throws IOException {
-    boolean continueService = true;
+    final boolean continueService = true;
     System.out.println("Service started.");
     System.out.println("Waiting for requests on port " + this.mPort + " ...");
     while (continueService) {
@@ -374,7 +375,7 @@ public final class WebDemoServer {
         // Read the request
         System.out.println("#" + this.mRequestId + " Connected with "
             + clientSocket.getInetAddress());
-        String request = br.readLine();
+        final String request = br.readLine();
         System.out.println("\tRequest: " + request);
 
         // Reject the request if empty
@@ -388,7 +389,7 @@ public final class WebDemoServer {
 
         // Query GET request
         if (!requestTypeFound) {
-          int requestDataBeginIndex = request.indexOf(QUERY_GET_REQUEST);
+          final int requestDataBeginIndex = request.indexOf(QUERY_GET_REQUEST);
           if (requestDataBeginIndex >= 0) {
             requestTypeFound = true;
             serveQueryGetRequest(request, clientSocket);
@@ -396,7 +397,8 @@ public final class WebDemoServer {
         }
         // Ordinary GET request
         if (!requestTypeFound) {
-          int requestDataBeginIndex = request.indexOf(ORDINARY_GET_REQUEST);
+          final int requestDataBeginIndex =
+              request.indexOf(ORDINARY_GET_REQUEST);
           if (requestDataBeginIndex >= 0) {
             requestTypeFound = true;
             serveOrdinaryGetRequest(request, clientSocket);
@@ -421,7 +423,7 @@ public final class WebDemoServer {
    * @throws IOException
    *           If an I/O-Exception occurred
    */
-  private void sendError(EHttpStatus status, final Socket client)
+  private void sendError(final EHttpStatus status, final Socket client)
       throws IOException {
     // Search for an error file
     final File errorFiles =
@@ -481,9 +483,9 @@ public final class WebDemoServer {
   private void serveOrdinaryGetRequest(final String request,
       final Socket client) throws IOException {
     // Extract request data
-    int requestDataBeginIndex =
+    final int requestDataBeginIndex =
         request.indexOf(ORDINARY_GET_REQUEST) + ORDINARY_GET_REQUEST.length();
-    int requestDataEndIndex =
+    final int requestDataEndIndex =
         request.indexOf(GET_REQUEST_END, requestDataBeginIndex);
     if (requestDataEndIndex < 0) {
       sendError(EHttpStatus.BAD_REQUEST, client);
@@ -555,7 +557,7 @@ public final class WebDemoServer {
   private void serveQueryGetRequest(final String request, final Socket client)
       throws IOException {
     // Extract request data
-    int requestDataBeginIndex =
+    final int requestDataBeginIndex =
         request.indexOf(QUERY_GET_REQUEST) + QUERY_GET_REQUEST.length();
     int requestDataEndIndex =
         request.indexOf(GET_SEPARATOR, requestDataBeginIndex);

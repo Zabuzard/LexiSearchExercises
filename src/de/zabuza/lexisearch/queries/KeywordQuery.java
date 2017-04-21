@@ -123,7 +123,7 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
    */
   private List<Posting> searchAggregate(final Iterable<String> keys,
       final EAggregateMode mode) {
-    LinkedList<IInvertedList> recordsForKeys = new LinkedList<>();
+    final LinkedList<IInvertedList> recordsForKeys = new LinkedList<>();
 
     // Fetch all corresponding inverted indices
     for (final String key : keys) {
@@ -155,7 +155,7 @@ public final class KeywordQuery<T extends IKeyRecord<String>>
     }
 
     // Transform the result into a list
-    ArrayList<Posting> resultingList =
+    final ArrayList<Posting> resultingList =
         new ArrayList<>(resultingInvertedList.getSize());
     for (final Posting posting : resultingInvertedList.getPostings()) {
       resultingList.add(posting);

@@ -221,7 +221,7 @@ public final class CitySet
   @Override
   public boolean contains(final Object o) {
     if (o instanceof ICity) {
-      IKeyRecord<String> currentValue =
+      final IKeyRecord<String> currentValue =
           this.mIdToCity.get(Integer.valueOf(((ICity) o).getId()));
       return currentValue != null && currentValue.equals(o);
     }

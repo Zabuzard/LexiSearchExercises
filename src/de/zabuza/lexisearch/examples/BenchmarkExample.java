@@ -109,7 +109,7 @@ public final class BenchmarkExample {
     }
 
     System.out.println("Fetching documents...");
-    boolean useFixLookupFiles = false;
+    final boolean useFixLookupFiles = false;
     final DocumentSet documents;
     if (useFixLookupFiles) {
       documents = DocumentSet.buildLookupsFromFixTextFileUtf8Tab(dataFile,

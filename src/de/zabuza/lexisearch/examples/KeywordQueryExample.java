@@ -79,7 +79,7 @@ public final class KeywordQueryExample {
     }
 
     System.out.println("Fetching documents...");
-    boolean useFixLookupFiles = false;
+    final boolean useFixLookupFiles = false;
     final DocumentSet documents;
     if (useFixLookupFiles) {
       documents =
@@ -104,8 +104,8 @@ public final class KeywordQueryExample {
         if (query.trim().isEmpty()) {
           stopService = true;
         } else {
-          String[] keywords = query.split(KEYWORD_SEPARATOR);
-          List<Posting> queryResults =
+          final String[] keywords = query.split(KEYWORD_SEPARATOR);
+          final List<Posting> queryResults =
               keywordQuery.searchOr(Arrays.asList(keywords));
           System.out.println("Matching postings are: " + queryResults);
 

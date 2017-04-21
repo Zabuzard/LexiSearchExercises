@@ -110,8 +110,8 @@ public final class PostingBeforeRecordRanking<K>
    * de.zabuza.lexisearch.indexing.IKeyRecordSet)
    */
   @Override
-  public void takeSnapshot(IInvertedIndex<K> invertedIndex,
-      IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
+  public void takeSnapshot(final IInvertedIndex<K> invertedIndex,
+      final IKeyRecordSet<IKeyRecord<K>, K> keyRecords) {
     this.mInvertedIndex = invertedIndex;
     this.mKeyRecords = keyRecords;
     if (this.mScoreComparator == null) {

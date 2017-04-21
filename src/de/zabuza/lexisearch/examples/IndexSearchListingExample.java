@@ -69,7 +69,7 @@ public final class IndexSearchListingExample {
     }
 
     System.out.println("Fetching documents...");
-    boolean useFixLookupFiles = false;
+    final boolean useFixLookupFiles = false;
     final DocumentSet documents;
     if (useFixLookupFiles) {
       documents =
