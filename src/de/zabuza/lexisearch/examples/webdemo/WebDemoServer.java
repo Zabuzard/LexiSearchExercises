@@ -41,10 +41,10 @@ public final class WebDemoServer {
   /**
    * The default port to use.
    */
-  private static final int DEFAULT_PORT = 8888;
+  private static final int DEFAULT_PORT = 8890;
   /**
    * The path from where file serving is allowed. Every file whose path is not
-   * included included in this one must not get served.
+   * included in this one must not get served.
    */
   private static final String DEFAULT_SERVER_PATH = "res/examples/webdemo";
   /**
@@ -92,7 +92,7 @@ public final class WebDemoServer {
    * of arguments.
    */
   private static final String MSG_WRONG_ARGUMENT_LENGTH =
-      "Wrong length of arguments. Two optional arguments are allowed: "
+      "Wrong length of arguments. Three optional arguments are allowed: "
           + "<dataFile> <port> <serverPath>. "
           + "See the documentation for more info.";
   /**
@@ -116,7 +116,7 @@ public final class WebDemoServer {
    *          sample file gets used. The second argument specifies the port to
    *          use for the server. The third argument specifies the path from
    *          where file serving is allowed. Every file whose path is not
-   *          included included in this one must not get served.
+   *          included in this one must not get served.
    * @throws IOException
    *           If an I/O-exception occurred
    */
@@ -186,6 +186,93 @@ public final class WebDemoServer {
   }
 
   /**
+   * Sends the given answer with the given parameters to the given client by
+   * using the HTTP/1.0 protocol.
+   * 
+   * @param answerRaw
+   *          Answer to send as raw bytes
+   * @param client
+   *          Client to send to
+   * @param contentType
+   *          Type of the content to send
+   * @param status
+   *          The status of the answer to send
+   * @throws IOException
+   *           If an I/O-Exception occurred.
+   */
+  private static void sendHttpAnswer(final byte[] answerRaw,
+      final EHttpContentType contentType, final EHttpStatus status,
+      final Socket client) throws IOException {
+    EHttpStatus statusToUse = status;
+    byte[] answerRawToUse = answerRaw;
+
+    final String contentTypeText;
+    if (contentType == EHttpContentType.TEXT) {
+      contentTypeText = "text/plain";
+    } else if (contentType == EHttpContentType.HTML) {
+      contentTypeText = "text/html";
+    } else if (contentType == EHttpContentType.CSS) {
+      contentTypeText = "text/css";
+    } else if (contentType == EHttpContentType.JS) {
+      contentTypeText = "application/javascript";
+    } else if (contentType == EHttpContentType.JSON) {
+      contentTypeText = "application/json";
+    } else if (contentType == EHttpContentType.PNG) {
+      contentTypeText = "image/png";
+    } else if (contentType == EHttpContentType.JPG) {
+      contentTypeText = "image/jpeg";
+    } else {
+      contentTypeText = "text/plain";
+      statusToUse = EHttpStatus.INTERNAL_SERVER_ERROR;
+      // In case of an server error inside this method, don't send the intended
+      // message. It might contain sensible data.
+      answerRawToUse = "".getBytes(TEXT_CHARSET);
+    }
+
+    final int statusNumber;
+    if (statusToUse == EHttpStatus.OK) {
+      statusNumber = 200;
+    } else if (statusToUse == EHttpStatus.NO_CONTENT) {
+      statusNumber = 204;
+    } else if (statusToUse == EHttpStatus.BAD_REQUEST) {
+      statusNumber = 400;
+    } else if (statusToUse == EHttpStatus.FORBIDDEN) {
+      statusNumber = 403;
+    } else if (statusToUse == EHttpStatus.NOT_FOUND) {
+      statusNumber = 404;
+    } else if (statusToUse == EHttpStatus.INTERNAL_SERVER_ERROR) {
+      statusNumber = 500;
+    } else if (statusToUse == EHttpStatus.NOT_IMPLEMENTED) {
+      statusNumber = 501;
+    } else {
+      statusToUse = EHttpStatus.INTERNAL_SERVER_ERROR;
+      statusNumber = 500;
+      // In case of an server error inside this method, don't send the intended
+      // message. It might contain sensible data.
+      answerRawToUse = "".getBytes(TEXT_CHARSET);
+    }
+
+    final String charset = TEXT_CHARSET.displayName().toLowerCase();
+
+    final String nextLine = "\r\n";
+    final StringBuilder answer = new StringBuilder();
+    answer.append("HTTP/1.0 " + statusNumber + " " + statusToUse + nextLine);
+    answer.append("Content-Length: " + answerRawToUse.length + nextLine);
+    answer.append(
+        "Content-Type: " + contentTypeText + "; charset=" + charset + nextLine);
+    answer.append("Connection: close" + nextLine);
+    answer.append(nextLine);
+
+    try (final DataOutputStream output =
+        new DataOutputStream(client.getOutputStream())) {
+      output.write(answer.toString().getBytes(TEXT_CHARSET));
+      output.write(answerRawToUse);
+    }
+
+    System.out.println("\tSent " + statusToUse);
+  }
+
+  /**
    * Sends an empty answer with the given parameters to the given client by
    * using the HTTP/1.0 protocol.
    * 
@@ -221,74 +308,8 @@ public final class WebDemoServer {
   private static void sendHttpAnswer(final String answerText,
       final EHttpContentType contentType, final EHttpStatus status,
       final Socket client) throws IOException {
-    EHttpStatus statusToUse = status;
-    String answerTextToUse = answerText;
-
-    final String contentTypeText;
-    if (contentType == EHttpContentType.TEXT) {
-      contentTypeText = "text/plain";
-    } else if (contentType == EHttpContentType.HTML) {
-      contentTypeText = "text/html";
-    } else if (contentType == EHttpContentType.CSS) {
-      contentTypeText = "text/css";
-    } else if (contentType == EHttpContentType.JS) {
-      contentTypeText = "application/javascript";
-    } else if (contentType == EHttpContentType.JSON) {
-      contentTypeText = "application/json";
-    } else if (contentType == EHttpContentType.PNG) {
-      contentTypeText = "image/png";
-    } else if (contentType == EHttpContentType.JPG) {
-      contentTypeText = "image/jpeg";
-    } else {
-      contentTypeText = "text/plain";
-      statusToUse = EHttpStatus.INTERNAL_SERVER_ERROR;
-      // In case of an server error inside this method, don't send the intended
-      // message. It might contain sensible data.
-      answerTextToUse = "";
-    }
-
-    final int statusNumber;
-    if (statusToUse == EHttpStatus.OK) {
-      statusNumber = 200;
-    } else if (statusToUse == EHttpStatus.NO_CONTENT) {
-      statusNumber = 204;
-    } else if (statusToUse == EHttpStatus.BAD_REQUEST) {
-      statusNumber = 400;
-    } else if (statusToUse == EHttpStatus.FORBIDDEN) {
-      statusNumber = 403;
-    } else if (statusToUse == EHttpStatus.NOT_FOUND) {
-      statusNumber = 404;
-    } else if (statusToUse == EHttpStatus.INTERNAL_SERVER_ERROR) {
-      statusNumber = 500;
-    } else if (statusToUse == EHttpStatus.NOT_IMPLEMENTED) {
-      statusNumber = 501;
-    } else {
-      statusToUse = EHttpStatus.INTERNAL_SERVER_ERROR;
-      statusNumber = 500;
-      // In case of an server error inside this method, don't send the intended
-      // message. It might contain sensible data.
-      answerTextToUse = "";
-    }
-
-    final byte[] answerTextAsBytes = answerTextToUse.getBytes(TEXT_CHARSET);
-    final String charset = TEXT_CHARSET.displayName().toLowerCase();
-
-    final String nextLine = "\r\n";
-    final StringBuilder answer = new StringBuilder();
-    answer.append("HTTP/1.0 " + statusNumber + " " + statusToUse + nextLine);
-    answer.append("Content-Length: " + answerTextAsBytes.length + nextLine);
-    answer.append(
-        "Content-Type: " + contentTypeText + ", charset=" + charset + nextLine);
-    answer.append("Connection: close" + nextLine);
-    answer.append(nextLine);
-    answer.append(answerTextToUse);
-
-    try (final DataOutputStream output =
-        new DataOutputStream(client.getOutputStream())) {
-      output.write(answer.toString().getBytes(TEXT_CHARSET));
-    }
-
-    System.out.println("\tSent " + statusToUse);
+    sendHttpAnswer(answerText.getBytes(TEXT_CHARSET), contentType, status,
+        client);
   }
 
   /**
@@ -297,7 +318,7 @@ public final class WebDemoServer {
   private final CitySet mCities;
   /**
    * The path from where file serving is allowed. Every file which path is not
-   * included included in this one must not get served.
+   * included in this one must not get served.
    */
   private final Path mFileServingPath;
   /**
@@ -330,7 +351,7 @@ public final class WebDemoServer {
    *          The file which holds all the data to search for
    * @param serverPath
    *          The path from where file serving is allowed. Every file whose path
-   *          is not included included in this one must not get served.
+   *          is not included in this one must not get served.
    * @throws IOException
    *           If an I/O-exception occurred
    */
@@ -456,10 +477,9 @@ public final class WebDemoServer {
 
         // Serve the error file
         final byte[] contentAsBytes = Files.readAllBytes(filePath);
-        final String content = new String(contentAsBytes, TEXT_CHARSET);
 
         // Send the answer
-        sendHttpAnswer(content, contentType, status, client);
+        sendHttpAnswer(contentAsBytes, contentType, status, client);
       } else {
         sendHttpAnswer(EHttpContentType.TEXT, status, client);
         return;
@@ -530,10 +550,9 @@ public final class WebDemoServer {
 
         // Serve the file
         final byte[] contentAsBytes = Files.readAllBytes(filePath);
-        final String content = new String(contentAsBytes, TEXT_CHARSET);
 
         // Send the answer
-        sendHttpAnswer(content, contentType, EHttpStatus.OK, client);
+        sendHttpAnswer(contentAsBytes, contentType, EHttpStatus.OK, client);
       } else {
         sendError(EHttpStatus.FORBIDDEN, client);
         return;
